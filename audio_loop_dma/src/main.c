@@ -1,4 +1,5 @@
 //////////////////////////////////////////////////////////////////////////////
+// DIGITALA MUSIKEFFEKTER MED DSP
 // * File name: main.c
 // *                                                                          
 // * Description:  Main function.
