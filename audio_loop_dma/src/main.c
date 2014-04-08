@@ -19,11 +19,13 @@
 
 #include "lowpassFIR.h"
 
-
+extern void systemInit(void);
 extern Int16 aic3204_init( );
 extern Int16 aic3204_close( );
 
 extern int dma_init(void);
+
+extern Int16 led_test( );
 
 /*
  *
@@ -58,14 +60,20 @@ extern DATA dmaPingSrcBufRS[CSL_DMA_BUFFER_SIZE];
 extern DATA dmaPongSrcBufRS[CSL_DMA_BUFFER_SIZE];
 
 void main( void )
-{ 	
+{ 	   
 	short i;
 	int index;
 	
 	short filter = 0; 
 	
+	/* Initialize board */
+    systemInit();
+		
     /* Initialize BSL */
     EZDSP5535_init( );
+    	
+	/* LED test */
+    led_test( );
 
     printf( "\nInitializing AIC3204...\n");
 

@@ -1,1 +1,1 @@
-"../src/aic3204.c" "../src/aic_dma.c" "../src/main.c" 
+"../src/aic3204.c" "../src/aic_dma.c" "../src/led_test.c" "../src/main.c" "../src/systemInit.c" 

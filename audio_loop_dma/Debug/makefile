@@ -10,7 +10,9 @@ CG_TOOL_ROOT := C:/Program Files (x86)/Texas Instruments/ccsv4/tools/compiler/c5
 
 ORDERED_OBJS += \
 $(GEN_CMDS_QUOTED) \
+"./src/systemInit.obj" \
 "./src/main.obj" \
+"./src/led_test.obj" \
 "./src/aic_dma.obj" \
 "./src/aic3204.obj" \
 -l"C:\Users\eld.hakansson\Documents\Chalmers\Kandidatarbete\Digital-musical-effects-with-DSP\audio_loop_dma\lib\cslVC5505.lib" \
@@ -132,8 +134,8 @@ lms_test_new_dma.out: $(OBJS) $(CMD_SRCS) $(LIB_SRCS) $(GEN_CMDS)
 # Other Targets
 clean:
 	-$(RM) $(C5500_EXECUTABLE_OUTPUTS__QTD) "lms_test_new_dma.out"
-	-$(RM) ".\src\aic3204.obj" ".\src\aic_dma.obj" ".\src\main.obj" 
-	-$(RM) ".\src\aic3204.pp" ".\src\aic_dma.pp" ".\src\main.pp" 
+	-$(RM) ".\src\aic3204.obj" ".\src\aic_dma.obj" ".\src\led_test.obj" ".\src\main.obj" ".\src\systemInit.obj" 
+	-$(RM) ".\src\aic3204.pp" ".\src\aic_dma.pp" ".\src\led_test.pp" ".\src\main.pp" ".\src\systemInit.pp" 
 	-@echo ' '
 
 .PHONY: all clean dependents

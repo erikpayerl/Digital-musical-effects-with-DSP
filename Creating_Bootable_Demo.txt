@@ -1,0 +1,28 @@
+
+Creating a Bootable Demo
+------------------------
+This file contains instructions for creating and flashing a bootable demo into the SD card that will run when the eZDSP is powered.
+
+There are three major steps in flashing the demo.
+1. Creating the demo program.
+2. Creating the boot image.
+3. Programming the boot image.
+
+Creating the demo program
+-------------------------
+    This is a program that runs when the eZDSP is powered. Create a project with all the necessary setup and build it  to get a .out file. The "boot_post" test can be used for this.
+Creating the boot image
+-----------------------
+The demo program needs to be converted to a bootable format for the boot image. This can be done by the following steps.
+1. Open directory Debug in audio_loop_dma
+2. Run makeBin.bat
+3. The bootimg.bin file will be created in the same directory.
+
+Programming the boot image
+--------------------------
+This involves loading  boot image to the SD card. 
+
+1. Make a backup of the .bin file in the SD card that was provided with the eZDSP or move it to a sub directory.
+2. Copy the "bootimg#.bin" file that was created to the SD card. It should be in the top level with out any sub directories.
+3. Remove all other .bin files from the top level. Bootloader will not look inside subdirectories so other boot images may be stored there.
+4. Insert the SD card into the eZDSP and power it. The program will run when powered on.
