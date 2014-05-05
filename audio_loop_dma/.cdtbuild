@@ -52,6 +52,15 @@
 <resourceConfiguration exclude="false" id="com.ti.ccstudio.buildDefinitions.C5500.Debug.206312667./audio_loop_dma/src/aic_dma.c" name="aic_dma.c" rcbsApplicability="disable" resourcePath="/audio_loop_dma/src/aic_dma.c" toolsToInvoke="com.ti.ccstudio.buildDefinitions.C5500_4.3.exe.compilerDebug.1853457428./audio_loop_dma/src/aic_dma.c">
 <tool id="com.ti.ccstudio.buildDefinitions.C5500_4.3.exe.compilerDebug.1853457428./audio_loop_dma/src/aic_dma.c" name="C5500 Compiler" superClass="com.ti.ccstudio.buildDefinitions.C5500_4.3.exe.compilerDebug.1853457428"/>
 </resourceConfiguration>
+<resourceConfiguration exclude="true" id="com.ti.ccstudio.buildDefinitions.C5500.Debug.206312667./audio_loop_dma/src/EQfilterBackupp.c" name="EQfilterBackupp.c" rcbsApplicability="disable" resourcePath="/audio_loop_dma/src/EQfilterBackupp.c" toolsToInvoke="com.ti.ccstudio.buildDefinitions.C5500_4.3.exe.compilerDebug.1853457428./audio_loop_dma/src/EQfilterBackupp.c">
+<tool id="com.ti.ccstudio.buildDefinitions.C5500_4.3.exe.compilerDebug.1853457428./audio_loop_dma/src/EQfilterBackupp.c" name="C5500 Compiler" superClass="com.ti.ccstudio.buildDefinitions.C5500_4.3.exe.compilerDebug.1853457428"/>
+</resourceConfiguration>
+<resourceConfiguration exclude="true" id="com.ti.ccstudio.buildDefinitions.C5500.Debug.206312667./audio_loop_dma/src/EQfilter.c" name="EQfilter.c" rcbsApplicability="disable" resourcePath="/audio_loop_dma/src/EQfilter.c" toolsToInvoke="com.ti.ccstudio.buildDefinitions.C5500_4.3.exe.compilerDebug.1853457428./audio_loop_dma/src/EQfilter.c">
+<tool id="com.ti.ccstudio.buildDefinitions.C5500_4.3.exe.compilerDebug.1853457428./audio_loop_dma/src/EQfilter.c" name="C5500 Compiler" superClass="com.ti.ccstudio.buildDefinitions.C5500_4.3.exe.compilerDebug.1853457428"/>
+</resourceConfiguration>
+<resourceConfiguration exclude="false" id="com.ti.ccstudio.buildDefinitions.C5500.Debug.206312667./audio_loop_dma/src/fir2.asm" name="fir2.asm" rcbsApplicability="disable" resourcePath="/audio_loop_dma/src/fir2.asm" toolsToInvoke="com.ti.ccstudio.buildDefinitions.C5500_4.3.exe.compilerDebug.1853457428./audio_loop_dma/src/fir2.asm">
+<tool id="com.ti.ccstudio.buildDefinitions.C5500_4.3.exe.compilerDebug.1853457428./audio_loop_dma/src/fir2.asm" name="C5500 Compiler" superClass="com.ti.ccstudio.buildDefinitions.C5500_4.3.exe.compilerDebug.1853457428"/>
+</resourceConfiguration>
 </configuration>
 <configuration artifactExtension="out" artifactName="lms_test_new_dma" description="" id="com.ti.ccstudio.buildDefinitions.C5500.Release.164980437" name="Release" parent="com.ti.ccstudio.buildDefinitions.C5500.Release">
 <toolChain id="com.ti.ccstudio.buildDefinitions.C5500_4.3.exe.ReleaseToolchain.2068430675" name="TI Code Generation Tools" superClass="com.ti.ccstudio.buildDefinitions.C5500_4.3.exe.ReleaseToolchain" targetTool="com.ti.ccstudio.buildDefinitions.C5500_4.3.exe.linkerRelease.2049690431">

@@ -10,9 +10,13 @@ C_SRCS += \
 ../src/main.c \
 ../src/systemInit.c 
 
+ASM_SRCS += \
+../src/fir2.asm 
+
 OBJS += \
 ./src/aic3204.obj \
 ./src/aic_dma.obj \
+./src/fir2.obj \
 ./src/led_test.obj \
 ./src/main.obj \
 ./src/systemInit.obj 
@@ -27,6 +31,7 @@ C_DEPS += \
 OBJS__QTD += \
 ".\src\aic3204.obj" \
 ".\src\aic_dma.obj" \
+".\src\fir2.obj" \
 ".\src\led_test.obj" \
 ".\src\main.obj" \
 ".\src\systemInit.obj" 
@@ -44,5 +49,8 @@ C_SRCS_QUOTED += \
 "../src/led_test.c" \
 "../src/main.c" \
 "../src/systemInit.c" 
+
+ASM_SRCS_QUOTED += \
+"../src/fir2.asm" 
 
 

@@ -12,6 +12,7 @@ MEMORY
     /*PAGE 0: SARAM31: origin = 0x4e000, len = 0x2000*/
 }
  
+ 
 SECTIONS
 {
     vectors     : > VEC    ALIGN = 256
@@ -25,4 +26,23 @@ SECTIONS
     .sysmem 	: > DARAM
     .cio    	: > DARAM
     .switch     : > DARAM
+    
+    data_br_buf : > DARAM /*ALIGN = 512 /* 2^9 = 512 , Aligned to addr with 9 least-sig zeros */
+    cmplxBuf    : > DARAM
+    scratch_buf : > DARAM
+    
+    dbufferLeft : > DARAM
+    dbufferRight : > DARAM
+    coeffs      : > DARAM
 }
+
+/* C5535 HWAFFT ROM table addresses */
+_hwafft_br       = 0x00fefe9c;
+_hwafft_8pts     = 0x00fefeb0;
+_hwafft_16pts    = 0x00feff9f;
+_hwafft_32pts    = 0x00ff00f5;
+_hwafft_64pts    = 0x00ff03fe;
+_hwafft_128pts   = 0x00ff0593;
+_hwafft_256pts   = 0x00ff07a4;
+_hwafft_512pts   = 0x00ff09a2;
+_hwafft_1024pts  = 0x00ff0c1c;
