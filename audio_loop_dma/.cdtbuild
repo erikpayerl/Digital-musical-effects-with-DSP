@@ -19,22 +19,23 @@
 <option id="com.ti.ccstudio.buildDefinitions.C5500_4.3.compilerID.DIAG_WARNING.515156209" superClass="com.ti.ccstudio.buildDefinitions.C5500_4.3.compilerID.DIAG_WARNING" valueType="stringList">
 <listOptionValue builtIn="false" value="225"/>
 </option>
-<option id="com.ti.ccstudio.buildDefinitions.C5500_4.3.compilerID.MEMORY_MODEL.997868945" superClass="com.ti.ccstudio.buildDefinitions.C5500_4.3.compilerID.MEMORY_MODEL" value="com.ti.ccstudio.buildDefinitions.C5500_4.3.compilerID.MEMORY_MODEL.large" valueType="enumerated"/>
-<option id="com.ti.ccstudio.buildDefinitions.C5500_4.3.compilerID.PTRDIFF_SIZE.1503612251" superClass="com.ti.ccstudio.buildDefinitions.C5500_4.3.compilerID.PTRDIFF_SIZE" value="com.ti.ccstudio.buildDefinitions.C5500_4.3.compilerID.PTRDIFF_SIZE.16" valueType="enumerated"/>
+<option id="com.ti.ccstudio.buildDefinitions.C5500_4.3.compilerID.MEMORY_MODEL.997868945" superClass="com.ti.ccstudio.buildDefinitions.C5500_4.3.compilerID.MEMORY_MODEL" value="com.ti.ccstudio.buildDefinitions.C5500_4.3.compilerID.MEMORY_MODEL.huge" valueType="enumerated"/>
+<option id="com.ti.ccstudio.buildDefinitions.C5500_4.3.compilerID.PTRDIFF_SIZE.1503612251" superClass="com.ti.ccstudio.buildDefinitions.C5500_4.3.compilerID.PTRDIFF_SIZE" value="com.ti.ccstudio.buildDefinitions.C5500_4.3.compilerID.PTRDIFF_SIZE.32" valueType="enumerated"/>
 <option id="com.ti.ccstudio.buildDefinitions.C5500_4.3.compilerID.SILICON_VERSION.601678796" superClass="com.ti.ccstudio.buildDefinitions.C5500_4.3.compilerID.SILICON_VERSION" value="5515" valueType="string"/>
 <option id="com.ti.ccstudio.buildDefinitions.C5500_4.3.compilerID.INCLUDE_PATH.430411648" superClass="com.ti.ccstudio.buildDefinitions.C5500_4.3.compilerID.INCLUDE_PATH" valueType="includePath">
 <listOptionValue builtIn="false" value="&quot;${workspace_loc:/audio_loop_dma/include}&quot;"/>
 <listOptionValue builtIn="false" value="&quot;${workspace_loc:/audio_loop_dma/include/csl}&quot;"/>
 <listOptionValue builtIn="false" value="&quot;${CG_TOOL_ROOT}/include&quot;"/>
 </option>
+<option id="com.ti.ccstudio.buildDefinitions.C5500_4.3.compilerID.NO_MAC_EXPAND.921517213" superClass="com.ti.ccstudio.buildDefinitions.C5500_4.3.compilerID.NO_MAC_EXPAND" value="true" valueType="boolean"/>
 </tool>
 <tool id="com.ti.ccstudio.buildDefinitions.C5500_4.3.exe.linkerDebug.246937054" name="C5500 Linker" superClass="com.ti.ccstudio.buildDefinitions.C5500_4.3.exe.linkerDebug">
 <option id="com.ti.ccstudio.buildDefinitions.C5500_4.3.linkerID.OUTPUT_FILE.881253484" superClass="com.ti.ccstudio.buildDefinitions.C5500_4.3.linkerID.OUTPUT_FILE" value="&quot;lms_test_new_dma.out&quot;" valueType="string"/>
 <option id="com.ti.ccstudio.buildDefinitions.C5500_4.3.linkerID.MAP_FILE.1079924117" superClass="com.ti.ccstudio.buildDefinitions.C5500_4.3.linkerID.MAP_FILE" value="&quot;lms_test_new_dma.map&quot;" valueType="string"/>
 <option id="com.ti.ccstudio.buildDefinitions.C5500_4.3.linkerID.LIBRARY.520753499" superClass="com.ti.ccstudio.buildDefinitions.C5500_4.3.linkerID.LIBRARY" valueType="libs">
-<listOptionValue builtIn="false" value="&quot;${workspace_loc:/audio_loop_dma/lib/cslVC5505.lib}&quot;"/>
+<listOptionValue builtIn="false" value="&quot;${workspace_loc:/audio_loop_dma/lib/CSLc55x5h.lib}&quot;"/>
 <listOptionValue builtIn="false" value="&quot;${workspace_loc:/audio_loop_dma/lib/ezdsp5535bsl.lib}&quot;"/>
-<listOptionValue builtIn="false" value="&quot;rts55x.lib&quot;"/>
+<listOptionValue builtIn="false" value="&quot;rts55h.lib&quot;"/>
 </option>
 <option id="com.ti.ccstudio.buildDefinitions.C5500_4.3.linkerID.SEARCH_PATH.2146247920" superClass="com.ti.ccstudio.buildDefinitions.C5500_4.3.linkerID.SEARCH_PATH" valueType="stringList">
 <listOptionValue builtIn="false" value="&quot;${CG_TOOL_ROOT}/lib&quot;"/>
@@ -43,24 +44,6 @@
 </tool>
 <macros expandEnvironmentMacros="true"/>
 </toolChain>
-<resourceConfiguration exclude="false" id="com.ti.ccstudio.buildDefinitions.C5500.Debug.206312667./audio_loop_dma/src/main.c" name="main.c" rcbsApplicability="disable" resourcePath="/audio_loop_dma/src/main.c" toolsToInvoke="com.ti.ccstudio.buildDefinitions.C5500_4.3.exe.compilerDebug.1853457428./audio_loop_dma/src/main.c">
-<tool id="com.ti.ccstudio.buildDefinitions.C5500_4.3.exe.compilerDebug.1853457428./audio_loop_dma/src/main.c" name="C5500 Compiler" superClass="com.ti.ccstudio.buildDefinitions.C5500_4.3.exe.compilerDebug.1853457428"/>
-</resourceConfiguration>
-<resourceConfiguration exclude="false" id="com.ti.ccstudio.buildDefinitions.C5500.Debug.206312667./audio_loop_dma/src/aic3204.c" name="aic3204.c" rcbsApplicability="disable" resourcePath="/audio_loop_dma/src/aic3204.c" toolsToInvoke="com.ti.ccstudio.buildDefinitions.C5500_4.3.exe.compilerDebug.1853457428./audio_loop_dma/src/aic3204.c">
-<tool id="com.ti.ccstudio.buildDefinitions.C5500_4.3.exe.compilerDebug.1853457428./audio_loop_dma/src/aic3204.c" name="C5500 Compiler" superClass="com.ti.ccstudio.buildDefinitions.C5500_4.3.exe.compilerDebug.1853457428"/>
-</resourceConfiguration>
-<resourceConfiguration exclude="false" id="com.ti.ccstudio.buildDefinitions.C5500.Debug.206312667./audio_loop_dma/src/aic_dma.c" name="aic_dma.c" rcbsApplicability="disable" resourcePath="/audio_loop_dma/src/aic_dma.c" toolsToInvoke="com.ti.ccstudio.buildDefinitions.C5500_4.3.exe.compilerDebug.1853457428./audio_loop_dma/src/aic_dma.c">
-<tool id="com.ti.ccstudio.buildDefinitions.C5500_4.3.exe.compilerDebug.1853457428./audio_loop_dma/src/aic_dma.c" name="C5500 Compiler" superClass="com.ti.ccstudio.buildDefinitions.C5500_4.3.exe.compilerDebug.1853457428"/>
-</resourceConfiguration>
-<resourceConfiguration exclude="true" id="com.ti.ccstudio.buildDefinitions.C5500.Debug.206312667./audio_loop_dma/src/EQfilterBackupp.c" name="EQfilterBackupp.c" rcbsApplicability="disable" resourcePath="/audio_loop_dma/src/EQfilterBackupp.c" toolsToInvoke="com.ti.ccstudio.buildDefinitions.C5500_4.3.exe.compilerDebug.1853457428./audio_loop_dma/src/EQfilterBackupp.c">
-<tool id="com.ti.ccstudio.buildDefinitions.C5500_4.3.exe.compilerDebug.1853457428./audio_loop_dma/src/EQfilterBackupp.c" name="C5500 Compiler" superClass="com.ti.ccstudio.buildDefinitions.C5500_4.3.exe.compilerDebug.1853457428"/>
-</resourceConfiguration>
-<resourceConfiguration exclude="true" id="com.ti.ccstudio.buildDefinitions.C5500.Debug.206312667./audio_loop_dma/src/EQfilter.c" name="EQfilter.c" rcbsApplicability="disable" resourcePath="/audio_loop_dma/src/EQfilter.c" toolsToInvoke="com.ti.ccstudio.buildDefinitions.C5500_4.3.exe.compilerDebug.1853457428./audio_loop_dma/src/EQfilter.c">
-<tool id="com.ti.ccstudio.buildDefinitions.C5500_4.3.exe.compilerDebug.1853457428./audio_loop_dma/src/EQfilter.c" name="C5500 Compiler" superClass="com.ti.ccstudio.buildDefinitions.C5500_4.3.exe.compilerDebug.1853457428"/>
-</resourceConfiguration>
-<resourceConfiguration exclude="false" id="com.ti.ccstudio.buildDefinitions.C5500.Debug.206312667./audio_loop_dma/src/fir2.asm" name="fir2.asm" rcbsApplicability="disable" resourcePath="/audio_loop_dma/src/fir2.asm" toolsToInvoke="com.ti.ccstudio.buildDefinitions.C5500_4.3.exe.compilerDebug.1853457428./audio_loop_dma/src/fir2.asm">
-<tool id="com.ti.ccstudio.buildDefinitions.C5500_4.3.exe.compilerDebug.1853457428./audio_loop_dma/src/fir2.asm" name="C5500 Compiler" superClass="com.ti.ccstudio.buildDefinitions.C5500_4.3.exe.compilerDebug.1853457428"/>
-</resourceConfiguration>
 </configuration>
 <configuration artifactExtension="out" artifactName="lms_test_new_dma" description="" id="com.ti.ccstudio.buildDefinitions.C5500.Release.164980437" name="Release" parent="com.ti.ccstudio.buildDefinitions.C5500.Release">
 <toolChain id="com.ti.ccstudio.buildDefinitions.C5500_4.3.exe.ReleaseToolchain.2068430675" name="TI Code Generation Tools" superClass="com.ti.ccstudio.buildDefinitions.C5500_4.3.exe.ReleaseToolchain" targetTool="com.ti.ccstudio.buildDefinitions.C5500_4.3.exe.linkerRelease.2049690431">
