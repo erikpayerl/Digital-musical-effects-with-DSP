@@ -1,1 +1,1 @@
-"../src/aic3204.c" "../src/aic_dma.c" "../src/fir2.asm" "../src/led_test.c" "../src/main.c" "../src/systemInit.c" 
+"../src/EQ.c" "../src/LEDFlasher5505.c" "../src/PLL.c" "../src/aic3204.c" "../src/aic3204_init.c" "../src/main.c" "../src/stereo.c" "../src/usbstk5505.c" "../src/usbstk5505_gpio.c" "../src/usbstk5505_i2c.c" "../src/usbstk5505_led.c" 

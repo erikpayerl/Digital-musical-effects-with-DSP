@@ -4,8 +4,8 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 LIB_SRCS += \
-../lib/55xdspx_r3.lib \
-../lib/cslVC5505.lib \
+../lib/55xdsph.lib \
+../lib/CSLc55x5h.lib \
 ../lib/ezdsp5535bsl.lib 
 
 

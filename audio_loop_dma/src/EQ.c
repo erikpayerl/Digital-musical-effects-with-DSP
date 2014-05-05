@@ -1,34 +1,28 @@
-#include "dsplib.h"
-#include "data_types.h"
-#include "EQ.h"
+#include "tistdtypes.h"
+#include "EQfilter.h"
 #include "hwafft.h"
-#include <stdio.h>
 
-
-/* --- Special buffers required for HWAFFT ---*/
-#pragma DATA_SECTION(complex_buffer, "cmplxBuf");
-//Static Allocation to Section: "cmplxBuf : > DARAM" in Linker CMD File
-Int32 complex_buffer[FFT_LENGTH];
-
-#pragma DATA_SECTION(bitreversed_buffer, "data_br_buf");
-#pragma DATA_ALIGN(bitreversed_buffer, 2*FFT_LENGTH);
-Int32 bitreversed_buffer[FFT_LENGTH];
-
-#pragma DATA_SECTION(scratch_buffer, "scratch_buf");
-//Static Allocation to Section: "scratch_buf : > DARAM" in Linker CMD File
-Int32 scratch_buffer[FFT_LENGTH];
-/* -------------------------------------------*/
-
-void EQfilter( DATA *A, DATA *H )
-{
+void EQCoeff(Uint8 *a, Int16 *H) {
 	
-	/*DATA H[128];*/ 
 	Int32 *complex_data, *bitrev_data, *scratch, *fft_data;
 	Uint16 out_sel;
-	 
-	Int16 x;
-	Int16 i;
+	Int16 x, i, dF;
+	
+	//EQ-band 
+	Int16 A[7];
 
+	/* EQ-band gains, 0-1 -> Uint8 0 - 255 */
+	/* Map Uint8 to Int16 (Int32) */
+	A[0] = (Int16)(a[0]) << 7;
+	A[1] = (Int16)(a[1]) << 7;
+	A[2] = (Int16)(a[2]) << 7;
+	A[3] = (Int16)(a[3]) << 7;
+	A[4] = (Int16)(a[4]) << 7;
+	A[5] = (Int16)(a[5]) << 7;
+	A[6] = (Int16)(a[6]) << 7;
+
+	dF = 32768/FFT_LENGTH;
+	
 	for (i=0;i < (FFT_LENGTH/2) ;i++) {
 		x = i*dF; 
 		if (x<fc[0])
@@ -43,8 +37,11 @@ void EQfilter( DATA *A, DATA *H )
 			H[i] = A[4];
 		else if (x<fc[5])
 			H[i] = A[5];
-		else
+		else if (x<13763) // 0.42 normalized freq, approx 20000 Hz
 			H[i] = A[6];
+		else
+			H[i] = 0;
+			//H[i]=(Int16)(-13*(Int32)(x)+212160);
 	}
 	
 	/* Phase = exp(-1i*pi*k)= 1, -1, 1 -1,...  , k = 0,1,2,... */
@@ -61,7 +58,7 @@ void EQfilter( DATA *A, DATA *H )
 	scratch = scratch_buffer;
 	complex_data = complex_buffer;
 	
-	/* Convert real data to "pseudo"-complex data (real, 0) */
+	/* Convert real Int16 to "pseudo"-complex Int16 (real, 0) */
 	/* Int32 complex = Int16 real (MSBs) + Int16 imag (LSBs) */
 	for (i = 0; i < FFT_LENGTH; i++) {
 		*(complex_data + i) = ( (Int32) (*(H + i)) ) << 16;
@@ -71,11 +68,11 @@ void EQfilter( DATA *A, DATA *H )
 	hwafft_br(complex_data, bitrev_data, FFT_LENGTH);
 
 	/* Perform iFFT */
-	out_sel = hwafft_128pts(bitrev_data, scratch, IFFT_FLAG, SCALE_FLAG);
+	out_sel = hwafft_512pts(bitrev_data, scratch, IFFT_FLAG, SCALE_FLAG);
 
-	/* Return appropriate data pointer */
+	/* Return appropriate Int16 pointer */
 	if (out_sel == OUT_SEL_DATA) {
-		fft_data = bitrev_data; // results stored in this data vector 
+		fft_data = bitrev_data; // results stored in this Int16 vector 
 	}else {
 		fft_data = scratch; // results stored in this scratch vector 
 	}
@@ -86,5 +83,7 @@ void EQfilter( DATA *A, DATA *H )
 		//*(imagR + i) = (Int16)((*(fft_data + i)) & 0x0000FFFF);
 	}
 	
-	printf("EQfilter() Done! \n");
+	/* Window */
+	for (i = 0; i < FFT_LENGTH; i++ ) { 	H[i] = (Int16)(((Int32)(Int16)H[i] * (Int32)(Int16)blackman512[i]) >> 15);	}
+
 }

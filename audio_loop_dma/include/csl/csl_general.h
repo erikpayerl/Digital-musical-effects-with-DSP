@@ -156,7 +156,7 @@ extern "C" {
 
 #if (!(defined(CHIP_VC5505) || defined(CHIP_VC5504)))
 
-#define C5515_EVM
+//#define C5515_EVM
 
 #if (!(defined(C5515_EVM)))
 #define C5515_EZDSP

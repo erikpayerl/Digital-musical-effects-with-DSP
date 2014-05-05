@@ -3,126 +3,61 @@
 // * File name: main.c
 // *                                                                          
 // * Description:  Main function.
-// *                                                                          
-// * Tomas McKelvey 2013-11-20                                                                        
+// *                                                                                                                                              
 //////////////////////////////////////////////////////////////////////////////
 
 #include "stdio.h"
-#include "ezdsp5535.h"
-#include "ezdsp5535_i2s.h"
-#include "ezdsp5535_i2c.h"
-#include "aic_dma.h"
-#include "dsplib.h"
-#include "stdlib.h"
-#include "math.h"
-#include "tms320.h"
-#include "hwafft.h"
-#include "time.h"
+#include "usbstk5505.h"
+#include "aic3204.h"
+#include "PLL.h"
+#include "stereo.h"
+#include "Dsplib.h"
 
+#include "EQ.h"
 
-#include "EQfilter.h"
+#define BUFFER_SIZE 128
+Int16 left_in_buffer[BUFFER_SIZE];  
+Int16 right_in_buffer[BUFFER_SIZE];   
 
-extern void systemInit(void);
-extern Int16 aic3204_init( );
-extern Int16 aic3204_close( );
+Int16 left_out_buffer[BUFFER_SIZE];  
+Int16 right_out_buffer[BUFFER_SIZE]; 
 
-extern int dma_init(void);
+Int16 *li = &left_in_buffer[0];
+Int16 *ri = &right_in_buffer[0];
+Int16 *lo = &left_out_buffer[0];
+Int16 *ro = &right_out_buffer[0];
 
-extern Int16 led_test( );
+Int16 *tmpL;
+Int16 *tmpR;
 
-extern void EQfilter( DATA *A, DATA *H );
-
-
-/*
- *
- *  main( )
- *
- */
- int rec_data;
- int * ptr;
- int data_ready;
- int enable_lms = 0;
- extern int pp;
- int pp0=0;
- int pp1=0;
- int new_filter = 1;
-
-//Delay buffers
-DATA  *dbptrL = &dbL[0];
-DATA  *dbptrR = &dbR[0];
+Int16 counter = 0;
 
 //Filter coeff. buffer
-//DATA *H = &coeff_buffer[0];
-  
-/* Tidigare var dmaBuffrarna av typen unsigned int. Bytte till datatypen DATA som dsplib använder sig av.
-   DATA är Q15 format, dvs signed int16, och spara tal mellan -1 och 1. /Erik P */
+Int16 *H = &coeff_buffer[0];
 
-/* Buffers for L/R audio input/receive */
-extern DATA dmaPingDstBufLR[CSL_DMA_BUFFER_SIZE];
-extern DATA dmaPongDstBufLR[CSL_DMA_BUFFER_SIZE];
-extern DATA dmaPingDstBufRR[CSL_DMA_BUFFER_SIZE];
-extern DATA dmaPongDstBufRR[CSL_DMA_BUFFER_SIZE];
+Int16 left_input;
+Int16 right_input;
+Int16 left_output;
+Int16 right_output;
+Int16 mono_input;
 
-/* Declaration of the L/R audio output/send buffers */
-extern DATA dmaPingSrcBufLS[CSL_DMA_BUFFER_SIZE];
-extern DATA dmaPongSrcBufLS[CSL_DMA_BUFFER_SIZE];
-extern DATA dmaPingSrcBufRS[CSL_DMA_BUFFER_SIZE];
-extern DATA dmaPongSrcBufRS[CSL_DMA_BUFFER_SIZE];
+//Delay buffers
+Int16  *dbptrL = &dbL[0];
+Int16  *dbptrR = &dbR[0];
 
+#define SAMPLES_PER_SECOND 48000
+#define GAIN_IN_dB         0
 
-void main( void )
-{ 	   	
-	clock_t start, stop, overhead;
-		
-	int index;
-	Int32 *complex_data, *bitrev_data, *scratch, *fft_data;
-	Uint16 out_sel;
-	Int16 x, i, dF;
-	DATA H[FFT_LENGTH];
-	
-	//EQ-band 
-	DATA A[7];
-	Uint8 a[7];
+unsigned int i = 0;
+int new_filter = 1;
 
-	short filter = 1; 
-	
-	start = clock(); /* Calculate the overhead of calling clock */
-	stop = clock(); /* and subtract this amount from the results. */
-	overhead = stop - start;	
-	
-	/* Initialize board */
-    systemInit();
-		
-    /* Initialize BSL */
-    EZDSP5535_init( );
-
-    printf( "\nInitializing AIC3204...\n");
-
-    /* Initialize I2C */
-    EZDSP5535_I2C_init( );
-
-    /* Call aic init */
-    aic3204_init( );
-    
-    /* LED test */
-    //led_test( );
-
-    /* Call dma init */
-    dma_init( );
-    
-	/* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	 * 
-	 * Funktionsanrop efter dma_init() förvränger ljudet av någon anledning!
-	 * 
-	 * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	 */ 
-
-	/* clear delay buffers */ 
-	for (i = 0; i < (FFT_LENGTH+2); i++) dbL[i] = 0;  // clear delay buffer (a must)
-	for (i = 0; i < (FFT_LENGTH+2); i++) dbR[i] = 0;  // clear delay buffer (a must)
-	
-	/* EQ-band gains, 0-1 -> Uint8 0 - 255 */
-	
+/* ------------------------------------------------------------------------ *
+ *                                                                          *
+ *  main( )                                                                 *
+ *                                                                          *
+ * ------------------------------------------------------------------------ */
+void main( void ) 
+{
 	a[0] = 255;
 	a[1] = 255;
 	a[2] = 255;
@@ -130,150 +65,89 @@ void main( void )
 	a[4] = 255;
 	a[5] = 255;
 	a[6] = 255;
-	
-	/* Map Uint8 to DATA (Int32) */
-	A[0] = (DATA)(a[0]) << 7;
-	A[1] = (DATA)(a[1]) << 7;
-	A[2] = (DATA)(a[2]) << 7;
-	A[3] = (DATA)(a[3]) << 7;
-	A[4] = (DATA)(a[4]) << 7;
-	A[5] = (DATA)(a[5]) << 7;
-	A[6] = (DATA)(a[6]) << 7;
 
-	while (1) // eternal loop
-	{
-		/* Calculate new EQ-filter coeff. 
-		 * Cycles approx= 110 * FFT_LENGTH 7752 15802 32000 55621
-		 * */
-		if (new_filter>0)
-		{			
-			//start = clock();
-			new_filter--;
-			dF = 32768/FFT_LENGTH;
-			
-			for (i=0;i < (FFT_LENGTH/2) ;i++) {
-				x = i*dF; 
-				if (x<fc[0])
-					H[i] = A[0];
-				else if (x<fc[1])
-					H[i] = A[1];
-				else if (x<fc[2])
-					H[i] = A[2];
-				else if (x<fc[3])
-					H[i] = A[3];
-				else if (x<fc[4])
-					H[i] = A[4];
-				else if (x<fc[5])
-					H[i] = A[5];
-				else if (x<13763) // 0.42 normalized freq, approx 20000 Hz
-					H[i] = A[6];
-				else
-					H[i] = 0;
-					//H[i]=(DATA)(-13*(Int32)(x)+212160);
-			}
-			
-			/* Phase = exp(-1i*pi*k)= 1, -1, 1 -1,...  , k = 0,1,2,... */
-			for (i=1;i<(FFT_LENGTH/2);i+=2)    H[i]=-H[i];
-			
-			/* Linear phase -> H(FFT_LENGTH-k) = *H(k) */
-			for (i=0;i<(FFT_LENGTH/2 -1);i++) 	H[FFT_LENGTH-1-i] = H[i+1];
-			
-			/* FFT_LENGTH = EVEN -> H[FFT_LENGTH/2] = 0, for linear phase */
-			H[FFT_LENGTH/2] = 0;
-			
-			/* Initialize relevant pointers */
-			bitrev_data  = bitreversed_buffer;
-			scratch = scratch_buffer;
-			complex_data = complex_buffer;
-			
-			/* Convert real data to "pseudo"-complex data (real, 0) */
-			/* Int32 complex = Int16 real (MSBs) + Int16 imag (LSBs) */
-			for (i = 0; i < FFT_LENGTH; i++) {
-				*(complex_data + i) = ( (Int32) (*(H + i)) ) << 16;
-			}
-		
-			/* Perform bit-reversing */
-			hwafft_br(complex_data, bitrev_data, FFT_LENGTH);
-		
-			/* Perform iFFT */
-			out_sel = hwafft_512pts(bitrev_data, scratch, IFFT_FLAG, SCALE_FLAG);
-		
-			/* Return appropriate data pointer */
-			if (out_sel == OUT_SEL_DATA) {
-				fft_data = bitrev_data; // results stored in this data vector 
-			}else {
-				fft_data = scratch; // results stored in this scratch vector 
-			}
-		
-			/* Extract real part  */
-			for (i = 0; i < FFT_LENGTH; i++) {
-				*(H + i) = (Int16)((*(fft_data + i)) >> 16);
-				//*(imagR + i) = (Int16)((*(fft_data + i)) & 0x0000FFFF);
-			}
-			
-			/* Window */
-			for (i = 0; i < FFT_LENGTH; i++ ) { 	H[i] = (DATA)(((LDATA)(DATA)H[i] * (LDATA)(DATA)blackman512[i]) >> 15);	}
-			
-			//stop = clock();
-			//printf("cycles: %ld\n", (long)(stop - start - overhead));
-		}
-		
- 		if (data_ready>0)
- 		{               
-            data_ready--;
-        	if (pp == 0){
-    		// PING EVENT
-    		
-    			if (filter)
-    			{
-    				/*
-    				for(index = 0; index < CSL_DMA_BUFFER_SIZE; index++)
-					{
-						dmaPingDstBufLR[index] = dmaPingDstBufLR[index] >> 2;
-						dmaPingDstBufRR[index] = dmaPingDstBufRR[index] >> 2;
-	      			};*/
-	      			
-	    			/* compute 2-chanels: cycles 260000, ca 130000 pro chanel , 790355 */
-	    			//start = clock();
-	    			(void)fir2(dmaPingDstBufLR, H, dmaPingSrcBufLS, dbptrL, CSL_DMA_BUFFER_SIZE, FFT_LENGTH);	    			
-	    			(void)fir2(dmaPingDstBufRR, H, dmaPingSrcBufRS, dbptrR, CSL_DMA_BUFFER_SIZE, FFT_LENGTH);
-	    			//stop = clock();
-					//printf("cycles: %ld\n", (long)(stop - start - overhead));
-    			}
-    			else
-				{			  
-					for(index = 0; index < CSL_DMA_BUFFER_SIZE; index++)
-					{
-						dmaPingSrcBufLS[index] = dmaPingDstBufLR[index];  // Feed through L/R Audio
-						dmaPingSrcBufRS[index] = dmaPingDstBufRR[index];
-	      			};
-				}
-			}
-  			else //  PONG EVENT
-  			{  	
-				if (filter)
-				{
-					/*
-					for(index = 0; index < CSL_DMA_BUFFER_SIZE; index++)
-					{
-						dmaPongDstBufLR[index] = dmaPongDstBufLR[index] >> 2;
-						dmaPongDstBufRR[index] = dmaPongDstBufRR[index] >> 2;
-	      			};*/
-					
-	  				// compute
-	    			(void)fir2(dmaPongDstBufLR, H, dmaPongSrcBufLS, dbptrL, CSL_DMA_BUFFER_SIZE, FFT_LENGTH);
-	    			(void)fir2(dmaPongDstBufRR, H, dmaPongSrcBufRS, dbptrR, CSL_DMA_BUFFER_SIZE, FFT_LENGTH);
-				}
-				else
-				{
-	  				for(index = 0; index < CSL_DMA_BUFFER_SIZE; index++)
-	      			{
-						dmaPongSrcBufLS[index] = dmaPongDstBufLR[index];  // Feed through L/R Audio
-						dmaPongSrcBufRS[index] = dmaPongDstBufRR[index];
+	/* clear delay buffers */ 
+	for (i = 0; i < (FFT_LENGTH+2); i++) dbL[i] = 0;  // clear delay buffer (a must)
+	for (i = 0; i < (FFT_LENGTH+2); i++) dbR[i] = 0;  // clear delay buffer (a must)
 	
-	      			};
-				}
-			}
-		}       
-	}	
+	/* clear in/out buffers */
+	for (i = 0; i < (BUFFER_SIZE); i++) left_in_buffer[i] = 0;
+	for (i = 0; i < (BUFFER_SIZE); i++) left_out_buffer[i] = 0;
+	for (i = 0; i < (BUFFER_SIZE); i++) right_in_buffer[i] = 0;
+	for (i = 0; i < (BUFFER_SIZE); i++) right_out_buffer[i] = 0;
+	
+    /* Initialize BSL */
+    USBSTK5505_init( );
+    
+    /* Initialize the Phase Locked Loop in EEPROM */
+    pll_frequency_setup(100);
+    
+	/* Initialise hardware interface and I2C for code */
+    aic3204_hardware_init();
+    
+    /* Initialise the AIC3204 codec */
+	aic3204_init(); 
+
+    printf("\n\nRunning FIR Filters Project\n");
+    printf( "<-> Audio Loopback from Stereo Line IN --> to HP/Lineout\n\n" );
+	
+	/* Set sampling frequency in Hz and ADC gain in dB */
+    set_sampling_frequency_and_gain(SAMPLES_PER_SECOND, GAIN_IN_dB); 
+
+    asm(" bclr XF");
+    
+ 	while (1)
+ 	{
+ 		if (new_filter>0)
+		{		
+			new_filter--;
+			EQCoeff(a, H);
+		}
+
+		aic3204_codec_read(&left_input, &right_input); // Configured for one interrupt per two channels.
+		
+		/* Store latest input in buffer */
+	  	li[counter] = left_input; 
+		ri[counter] = right_input;
+		
+		//left_output = lo[counter]; 
+	    //right_output = ro[counter];
+		
+	 	if ( counter < (BUFFER_SIZE-1))
+	    {
+	    	counter++; /* Point to next buffer location */
+	    } 
+	 	else if (counter == (BUFFER_SIZE-1))
+	    {
+	     	/* Receive buffer is now full */
+	     	tmpL = li;
+	     	tmpR = ri;
+	     	
+	     	li=lo;
+	     	ri=ro;
+	     	
+	     	lo=tmpL;
+	     	ro=tmpR;
+	    	
+	    	counter = 0; /* Reset counter */    
+	    }
+	    
+	    (void)fir2(&left_input, H, &left_output, dbptrL, 1, FFT_LENGTH);
+		(void)fir2(&right_input, H, &right_output, dbptrR, 1, FFT_LENGTH);
+		
+	    //mono_input = stereo_to_mono(left_input, right_input);
+		 
+	    //left_output =  left_input;            // Very simple processing. Replace with your own code!
+	    //right_output = right_input;          // Directly connect inputs to outputs.
+	      
+	    aic3204_codec_write(left_output, right_output);
+ 	}
 }
+
+/* ------------------------------------------------------------------------ *
+ *                                                                          *
+ *  End of main.c                                                           *
+ *                                                                          *
+ * ------------------------------------------------------------------------ */
+
+
