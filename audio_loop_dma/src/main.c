@@ -23,7 +23,8 @@
 #include "EQfilter.h"
 
 extern void systemInit(void);
-extern Int16 aic3204_init( );
+
+extern Int16 aic3204_init(unsigned long SamplingFrequency, unsigned int ADCgain);
 extern Int16 aic3204_close( );
 
 extern int dma_init(void);
@@ -38,13 +39,19 @@ extern void EQfilter( DATA *A, DATA *H );
  *  main( )
  *
  */
+#define SAMPLES_PER_SECOND 48000	//12000, 24000, 48000
+
+ int data_ready;
+ extern int pp;
+
+/*//Vet ej vad dessa variabler gör. Bruset försvan då dessa togs bort!
  int rec_data;
  int * ptr;
- int data_ready;
  int enable_lms = 0;
- extern int pp;
  int pp0=0;
  int pp1=0;
+ */
+
  int new_filter = 1;
 
 //Delay buffers
@@ -102,7 +109,7 @@ void main( void )
     EZDSP5535_I2C_init( );
 
     /* Call aic init */
-    aic3204_init( );
+    aic3204_init(SAMPLES_PER_SECOND,0);
     
     /* LED test */
     //led_test( );
@@ -123,13 +130,13 @@ void main( void )
 	
 	/* EQ-band gains, 0-1 -> Uint8 0 - 255 */
 	
-	a[0] = 255;
+	a[0] = 0;
 	a[1] = 255;
-	a[2] = 255;
+	a[2] = 0;
 	a[3] = 255;
-	a[4] = 255;
-	a[5] = 255;
-	a[6] = 255;
+	a[4] = 0;
+	a[5] = 0;
+	a[6] = 0;
 	
 	/* Map Uint8 to DATA (Int32) */
 	A[0] = (DATA)(a[0]) << 7;
@@ -196,7 +203,11 @@ void main( void )
 			hwafft_br(complex_data, bitrev_data, FFT_LENGTH);
 		
 			/* Perform iFFT */
-			out_sel = hwafft_512pts(bitrev_data, scratch, IFFT_FLAG, SCALE_FLAG);
+			if (FFT_LENGTH==512) {
+				out_sel = hwafft_512pts(bitrev_data, scratch, IFFT_FLAG, SCALE_FLAG);
+			} else if (FFT_LENGTH==256) {
+				out_sel = hwafft_256pts(bitrev_data, scratch, IFFT_FLAG, SCALE_FLAG);
+			}
 		
 			/* Return appropriate data pointer */
 			if (out_sel == OUT_SEL_DATA) {
@@ -212,10 +223,11 @@ void main( void )
 			}
 			
 			/* Window */
-			for (i = 0; i < FFT_LENGTH; i++ ) { 	H[i] = (DATA)(((LDATA)(DATA)H[i] * (LDATA)(DATA)blackman512[i]) >> 15);	}
+			//for (i = 0; i < FFT_LENGTH; i++ ) { 	H[i] = (DATA)(((LDATA)(DATA)H[i] * (LDATA)(DATA)blackman512[i]) >> 15);	}
 			
 			//stop = clock();
 			//printf("cycles: %ld\n", (long)(stop - start - overhead));
+			//index = test();
 		}
 		
  		if (data_ready>0)

@@ -16,6 +16,7 @@ $(GEN_CMDS_QUOTED) \
 "./src/fir2.obj" \
 "./src/aic_dma.obj" \
 "./src/aic3204.obj" \
+"./src/EQfilter.obj" \
 -l"C:\Users\eld.hakansson\Documents\Chalmers\Kandidatarbete\Digital-musical-effects-with-DSP\audio_loop_dma\lib\cslVC5505.lib" \
 -l"C:\Users\eld.hakansson\Documents\Chalmers\Kandidatarbete\Digital-musical-effects-with-DSP\audio_loop_dma\lib\ezdsp5535bsl.lib" \
 -l"rts55x.lib" \
@@ -128,15 +129,16 @@ all: lms_test_new_dma.out
 lms_test_new_dma.out: $(OBJS) $(CMD_SRCS) $(LIB_SRCS) $(GEN_CMDS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: Linker'
-	"C:/Program Files (x86)/Texas Instruments/ccsv4/tools/compiler/c5500/bin/cl55" -v5515 -g --diag_warning=225 --ptrdiff_size=16 --memory_model=large -z -m"lms_test_new_dma.map" --warn_sections -i"C:/Program Files (x86)/Texas Instruments/ccsv4/tools/compiler/c5500/lib" -i"C:/Program Files (x86)/Texas Instruments/ccsv4/tools/compiler/c5500/include" --reread_libs --rom_model -o "lms_test_new_dma.out" $(ORDERED_OBJS)
+	"C:/Program Files (x86)/Texas Instruments/ccsv4/tools/compiler/c5500/bin/cl55" -v5515 -g --diag_warning=225 --ptrdiff_size=16 --no_mac_expand --memory_model=large -z -m"lms_test_new_dma.map" --warn_sections -i"C:/Program Files (x86)/Texas Instruments/ccsv4/tools/compiler/c5500/lib" -i"C:/Program Files (x86)/Texas Instruments/ccsv4/tools/compiler/c5500/include" --reread_libs --rom_model -o "lms_test_new_dma.out" $(ORDERED_OBJS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 
 # Other Targets
 clean:
 	-$(RM) $(C5500_EXECUTABLE_OUTPUTS__QTD) "lms_test_new_dma.out"
-	-$(RM) ".\src\aic3204.obj" ".\src\aic_dma.obj" ".\src\fir2.obj" ".\src\led_test.obj" ".\src\main.obj" ".\src\systemInit.obj" 
-	-$(RM) ".\src\aic3204.pp" ".\src\aic_dma.pp" ".\src\led_test.pp" ".\src\main.pp" ".\src\systemInit.pp" 
+	-$(RM) ".\src\EQfilter.obj" ".\src\aic3204.obj" ".\src\aic_dma.obj" ".\src\fir2.obj" ".\src\led_test.obj" ".\src\main.obj" ".\src\systemInit.obj" 
+	-$(RM) ".\src\fir2.pp" 
+	-$(RM) ".\src\EQfilter.pp" ".\src\aic3204.pp" ".\src\aic_dma.pp" ".\src\led_test.pp" ".\src\main.pp" ".\src\systemInit.pp" 
 	-@echo ' '
 
 .PHONY: all clean dependents

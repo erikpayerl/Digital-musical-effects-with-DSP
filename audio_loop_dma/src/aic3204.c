@@ -51,11 +51,23 @@ Int16 AIC3204_rset( Uint16 regnum, Uint16 regval )
  *
  */ 
 
-Int16 aic3204_init()
+Int16 aic3204_init(unsigned long SamplingFrequency, unsigned int ADCgain)
 {
 //    Int16 sec, msec;
 //    Int16 sample, data1, data2;
-     
+
+	unsigned int gain;
+	
+    if ( ADCgain >= 48)
+    {
+    	gain = 95;      //  Limit gain to 47.5 dB
+    	ADCgain = 48;   // For display using printf()
+    }
+    else 
+    {
+    	gain = (ADCgain << 1); // Convert 1dB steps to 0.5dB steps
+    }
+    
     /* Configure AIC3204 */
     AIC3204_rset( 0,  0x00 );  // Select page 0
     AIC3204_rset( 1,  0x01 );  // Reset codec
@@ -92,25 +104,47 @@ Int16 aic3204_init()
     AIC3204_rset( 20, 0x80 );  // AOSR for AOSR = 128 decimal or 0x0080 for decimation filters 1 to 6
 //    AIC3204_rset( 20, 0x00 );  // AOSR for AOSR = 128 decimal or 0x0080 for decimation filters 1 to 6
 
-// Settings below is for 48 kHz operation
-    AIC3204_rset( 11, 0x82 );  // Power up NDAC and set NDAC value to 2
-    AIC3204_rset( 12, 0x87 );  // Power up MDAC and set MDAC value to 7
-    AIC3204_rset( 18, 0x87 );  // Power up NADC and set NADC value to 7
-    AIC3204_rset( 19, 0x82 );  // Power up MADC and set MADC value to 2
 
-// Settings below is for 24 kHz operation
-//    AIC3204_rset( 11, 0x84 );  // Power up NDAC and set NDAC value to 2
-//    AIC3204_rset( 12, 0x87 );  // Power up MDAC and set MDAC value to 7
-//    AIC3204_rset( 18, 0x87 );  // Power up NADC and set NADC value to 7
-//    AIC3204_rset( 19, 0x84 );  // Power up MADC and set MADC value to 2
-
-// Settings below is for 12 kHz operation
-//    AIC3204_rset( 11, 0x88 );  // Power up NDAC and set NDAC value to 2
-//    AIC3204_rset( 12, 0x87 );  // Power up MDAC and set MDAC value to 7
-//    AIC3204_rset( 18, 0x87 );  // Power up NADC and set NADC value to 7
-//    AIC3204_rset( 19, 0x88 );  // Power up MADC and set MADC value to 2
-
-    
+	switch (SamplingFrequency)
+    {
+	case 48000:
+	 	//Settings below is for 48 kHz operation
+	    AIC3204_rset( 11, 0x82 );  // Power up NDAC and set NDAC value to 2
+	    AIC3204_rset( 12, 0x87 );  // Power up MDAC and set MDAC value to 7
+	    AIC3204_rset( 18, 0x87 );  // Power up NADC and set NADC value to 7
+	    AIC3204_rset( 19, 0x82 );  // Power up MADC and set MADC value to 2
+	    printf("Sampling frequency set on 48 kHz. Gain = %2d dB\n", ADCgain);
+	break;
+	
+	case 24000:
+		//Settings below is for 24 kHz operation
+	    AIC3204_rset( 11, 0x84 );  // Power up NDAC and set NDAC value to 2
+	    AIC3204_rset( 12, 0x87 );  // Power up MDAC and set MDAC value to 7
+	    AIC3204_rset( 18, 0x87 );  // Power up NADC and set NADC value to 7
+	    AIC3204_rset( 19, 0x84 );  // Power up MADC and set MADC value to 2
+	    printf("Sampling frequency set on 24 kHz. Gain = %2d dB\n", ADCgain);
+	    
+	break;
+	
+	case 12000:
+		//Settings below is for 12 kHz operation
+	    AIC3204_rset( 11, 0x88 );  // Power up NDAC and set NDAC value to 2
+	    AIC3204_rset( 12, 0x87 );  // Power up MDAC and set MDAC value to 7
+	    AIC3204_rset( 18, 0x87 );  // Power up NADC and set NADC value to 7
+	    AIC3204_rset( 19, 0x88 );  // Power up MADC and set MADC value to 2
+	    printf("Sampling frequency set on 12 kHz. Gain = %2d dB\n", ADCgain);
+	break;
+	
+	default:
+	 	//Settings below is for 48 kHz operation
+	    AIC3204_rset( 11, 0x82 );  // Power up NDAC and set NDAC value to 2
+	    AIC3204_rset( 12, 0x87 );  // Power up MDAC and set MDAC value to 7
+	    AIC3204_rset( 18, 0x87 );  // Power up NADC and set NADC value to 7
+	    AIC3204_rset( 19, 0x82 );  // Power up MADC and set MADC value to 2
+	    printf("Sampling frequency set on default (48 kHz). Gain = %2d dB\n", ADCgain);
+    break;
+    }
+ 
     /* DAC ROUTING and Power Up */
     AIC3204_rset( 0,  0x01 );  // Select page 1
     AIC3204_rset( 12, 0x08 );  // LDAC AFIR routed to HPL
@@ -132,8 +166,8 @@ Int16 aic3204_init()
     AIC3204_rset( 55, 0x30 );  // IN2_R to RADC_P through 40 kohmm
     AIC3204_rset( 54, 0x03 );  // CM_1 (common mode) to LADC_M through 40 kohm
     AIC3204_rset( 57, 0xc0 );  // CM_1 (common mode) to RADC_M through 40 kohm
-    AIC3204_rset( 59, 0x00 );  // MIC_PGA_L unmute
-    AIC3204_rset( 60, 0x00 );  // MIC_PGA_R unmute
+    AIC3204_rset( 59, gain );//0x00 );  // MIC_PGA_L unmute
+    AIC3204_rset( 60, gain );//0x00 );  // MIC_PGA_R unmute
     AIC3204_rset( 0,  0x00 );  // Select page 0
     AIC3204_rset( 81, 0xc0 );  // Powerup Left and Right ADC
     AIC3204_rset( 82, 0x00 );  // Unmute Left and Right ADC
@@ -165,7 +199,6 @@ Int16 aic3204_init()
 */
 	
  
- 
     return 0;
 }
 
@@ -175,6 +208,5 @@ Int16 aic3204_close()
     AIC3204_rset( 1, 0x01 );  // Reset codec   
     return 0;
 }
-
 
 
