@@ -11,6 +11,7 @@ CG_TOOL_ROOT := C:/Program Files (x86)/Texas Instruments/ccsv4/tools/compiler/c5
 ORDERED_OBJS += \
 $(GEN_CMDS_QUOTED) \
 "./src/systemInit.obj" \
+"./src/stereo.obj" \
 "./src/main.obj" \
 "./src/led_test.obj" \
 "./src/fir2.obj" \
@@ -136,9 +137,9 @@ lms_test_new_dma.out: $(OBJS) $(CMD_SRCS) $(LIB_SRCS) $(GEN_CMDS)
 # Other Targets
 clean:
 	-$(RM) $(C5500_EXECUTABLE_OUTPUTS__QTD) "lms_test_new_dma.out"
-	-$(RM) ".\src\EQfilter.obj" ".\src\aic3204.obj" ".\src\aic_dma.obj" ".\src\fir2.obj" ".\src\led_test.obj" ".\src\main.obj" ".\src\systemInit.obj" 
+	-$(RM) ".\src\EQfilter.obj" ".\src\aic3204.obj" ".\src\aic_dma.obj" ".\src\fir2.obj" ".\src\led_test.obj" ".\src\main.obj" ".\src\stereo.obj" ".\src\systemInit.obj" 
 	-$(RM) ".\src\fir2.pp" 
-	-$(RM) ".\src\EQfilter.pp" ".\src\aic3204.pp" ".\src\aic_dma.pp" ".\src\led_test.pp" ".\src\main.pp" ".\src\systemInit.pp" 
+	-$(RM) ".\src\EQfilter.pp" ".\src\aic3204.pp" ".\src\aic_dma.pp" ".\src\led_test.pp" ".\src\main.pp" ".\src\stereo.pp" ".\src\systemInit.pp" 
 	-@echo ' '
 
 .PHONY: all clean dependents

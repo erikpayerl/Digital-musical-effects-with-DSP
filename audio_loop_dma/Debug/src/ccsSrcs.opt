@@ -1,1 +1,1 @@
-"../src/EQfilter.c" "../src/aic3204.c" "../src/aic_dma.c" "../src/fir2.asm" "../src/led_test.c" "../src/main.c" "../src/systemInit.c" 
+"../src/EQfilter.c" "../src/aic3204.c" "../src/aic_dma.c" "../src/fir2.asm" "../src/led_test.c" "../src/main.c" "../src/stereo.c" "../src/systemInit.c" 

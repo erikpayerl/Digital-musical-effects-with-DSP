@@ -34,6 +34,15 @@ SECTIONS
     dbufferLeft : > DARAM
     dbufferRight : > DARAM
     coeffs      : > DARAM
+    
+    /* dmaPingDstBufLR : > DARAM */
+    /* dmaPongDstBufLR : > DARAM */
+    /* dmaPingDstBufRR : > DARAM */
+    /* dmaPongDstBufRR : > DARAM */
+    /* dmaPingSrcBufLS : > DARAM */
+    /* dmaPongSrcBufLS : > DARAM */
+    /* dmaPingSrcBufRS : > DARAM */
+    /* dmaPongSrcBufRS : > DARAM */
 }
 
 /* C5535 HWAFFT ROM table addresses */

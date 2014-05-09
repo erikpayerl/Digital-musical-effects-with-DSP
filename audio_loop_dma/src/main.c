@@ -16,9 +16,8 @@
 #include "stdlib.h"
 #include "math.h"
 #include "tms320.h"
-#include "hwafft.h"
 #include "time.h"
-
+#include "stereo.h"
 
 #include "EQfilter.h"
 
@@ -26,40 +25,23 @@ extern void systemInit(void);
 
 extern Int16 aic3204_init(unsigned long SamplingFrequency, unsigned int ADCgain);
 extern Int16 aic3204_close( );
-
 extern int dma_init(void);
-
 extern Int16 led_test( );
 
-extern void EQfilter( DATA *A, DATA *H );
-
-
-/*
- *
- *  main( )
- *
- */
 #define SAMPLES_PER_SECOND 48000	//12000, 24000, 48000
 
- int data_ready;
- extern int pp;
+int data_ready;
+extern int pp;
 
-/*//Vet ej vad dessa variabler gör. Bruset försvan då dessa togs bort!
- int rec_data;
- int * ptr;
- int enable_lms = 0;
- int pp0=0;
- int pp1=0;
- */
-
- int new_filter = 1;
+int new_filter = 1;
+short filter = 1;
 
 //Delay buffers
 DATA  *dbptrL = &dbL[0];
 DATA  *dbptrR = &dbR[0];
 
 //Filter coeff. buffer
-//DATA *H = &coeff_buffer[0];
+DATA *H = &coeff_buffer[0];
   
 /* Tidigare var dmaBuffrarna av typen unsigned int. Bytte till datatypen DATA som dsplib använder sig av.
    DATA är Q15 format, dvs signed int16, och spara tal mellan -1 och 1. /Erik P */
@@ -76,22 +58,20 @@ extern DATA dmaPongSrcBufLS[CSL_DMA_BUFFER_SIZE];
 extern DATA dmaPingSrcBufRS[CSL_DMA_BUFFER_SIZE];
 extern DATA dmaPongSrcBufRS[CSL_DMA_BUFFER_SIZE];
 
+Uint16 monoInputPing[CSL_DMA_BUFFER_SIZE];
+Uint16 monoInputPong[CSL_DMA_BUFFER_SIZE];
 
 void main( void )
 { 	   	
 	clock_t start, stop, overhead;
 		
 	int index;
-	Int32 *complex_data, *bitrev_data, *scratch, *fft_data;
-	Uint16 out_sel;
-	Int16 x, i, dF;
-	DATA H[FFT_LENGTH];
+	Int16 i;
 	
-	//EQ-band 
-	DATA A[7];
-	Uint8 a[7];
-
-	short filter = 1; 
+	int oflagL=0;
+	int oflagR=0;
+	
+	int no_overflow=1;
 	
 	start = clock(); /* Calculate the overhead of calling clock */
 	stop = clock(); /* and subtract this amount from the results. */
@@ -116,141 +96,64 @@ void main( void )
 
     /* Call dma init */
     dma_init( );
-    
-	/* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	 * 
-	 * Funktionsanrop efter dma_init() förvränger ljudet av någon anledning!
-	 * 
-	 * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	 */ 
 
 	/* clear delay buffers */ 
 	for (i = 0; i < (FFT_LENGTH+2); i++) dbL[i] = 0;  // clear delay buffer (a must)
 	for (i = 0; i < (FFT_LENGTH+2); i++) dbR[i] = 0;  // clear delay buffer (a must)
 	
 	/* EQ-band gains, 0-1 -> Uint8 0 - 255 */
-	
-	a[0] = 0;
+	a[0] = 255;
 	a[1] = 255;
 	a[2] = 0;
-	a[3] = 255;
+	a[3] = 0;
 	a[4] = 0;
 	a[5] = 0;
 	a[6] = 0;
-	
-	/* Map Uint8 to DATA (Int32) */
-	A[0] = (DATA)(a[0]) << 7;
-	A[1] = (DATA)(a[1]) << 7;
-	A[2] = (DATA)(a[2]) << 7;
-	A[3] = (DATA)(a[3]) << 7;
-	A[4] = (DATA)(a[4]) << 7;
-	A[5] = (DATA)(a[5]) << 7;
-	A[6] = (DATA)(a[6]) << 7;
+	a[7] = 0;
 
-	while (1) // eternal loop
+	while (no_overflow) // eternal loop
 	{
-		/* Calculate new EQ-filter coeff. 
-		 * Cycles approx= 110 * FFT_LENGTH 7752 15802 32000 55621
-		 * */
+		/* Calculate new EQ-filter coeff.                         *
+		 * Cycles approx= 110 * FFT_LENGTH 7752 15802 32000 55621 */
 		if (new_filter>0)
 		{			
 			//start = clock();
 			new_filter--;
-			dF = 32768/FFT_LENGTH;
+			(void)EQfilter(a, H);
 			
-			for (i=0;i < (FFT_LENGTH/2) ;i++) {
-				x = i*dF; 
-				if (x<fc[0])
-					H[i] = A[0];
-				else if (x<fc[1])
-					H[i] = A[1];
-				else if (x<fc[2])
-					H[i] = A[2];
-				else if (x<fc[3])
-					H[i] = A[3];
-				else if (x<fc[4])
-					H[i] = A[4];
-				else if (x<fc[5])
-					H[i] = A[5];
-				else if (x<13763) // 0.42 normalized freq, approx 20000 Hz
-					H[i] = A[6];
-				else
-					H[i] = 0;
-					//H[i]=(DATA)(-13*(Int32)(x)+212160);
-			}
-			
-			/* Phase = exp(-1i*pi*k)= 1, -1, 1 -1,...  , k = 0,1,2,... */
-			for (i=1;i<(FFT_LENGTH/2);i+=2)    H[i]=-H[i];
-			
-			/* Linear phase -> H(FFT_LENGTH-k) = *H(k) */
-			for (i=0;i<(FFT_LENGTH/2 -1);i++) 	H[FFT_LENGTH-1-i] = H[i+1];
-			
-			/* FFT_LENGTH = EVEN -> H[FFT_LENGTH/2] = 0, for linear phase */
-			H[FFT_LENGTH/2] = 0;
-			
-			/* Initialize relevant pointers */
-			bitrev_data  = bitreversed_buffer;
-			scratch = scratch_buffer;
-			complex_data = complex_buffer;
-			
-			/* Convert real data to "pseudo"-complex data (real, 0) */
-			/* Int32 complex = Int16 real (MSBs) + Int16 imag (LSBs) */
-			for (i = 0; i < FFT_LENGTH; i++) {
-				*(complex_data + i) = ( (Int32) (*(H + i)) ) << 16;
-			}
-		
-			/* Perform bit-reversing */
-			hwafft_br(complex_data, bitrev_data, FFT_LENGTH);
-		
-			/* Perform iFFT */
-			if (FFT_LENGTH==512) {
-				out_sel = hwafft_512pts(bitrev_data, scratch, IFFT_FLAG, SCALE_FLAG);
-			} else if (FFT_LENGTH==256) {
-				out_sel = hwafft_256pts(bitrev_data, scratch, IFFT_FLAG, SCALE_FLAG);
-			}
-		
-			/* Return appropriate data pointer */
-			if (out_sel == OUT_SEL_DATA) {
-				fft_data = bitrev_data; // results stored in this data vector 
-			}else {
-				fft_data = scratch; // results stored in this scratch vector 
-			}
-		
-			/* Extract real part  */
-			for (i = 0; i < FFT_LENGTH; i++) {
-				*(H + i) = (Int16)((*(fft_data + i)) >> 16);
-				//*(imagR + i) = (Int16)((*(fft_data + i)) & 0x0000FFFF);
-			}
-			
-			/* Window */
-			//for (i = 0; i < FFT_LENGTH; i++ ) { 	H[i] = (DATA)(((LDATA)(DATA)H[i] * (LDATA)(DATA)blackman512[i]) >> 15);	}
+			/* Print filter coeff. */
+			//for (i = 0; i < FFT_LENGTH; i++ ) { 	printf("%d\n",*(H + i)); }
 			
 			//stop = clock();
 			//printf("cycles: %ld\n", (long)(stop - start - overhead));
-			//index = test();
 		}
-		
+				
  		if (data_ready>0)
  		{               
             data_ready--;
         	if (pp == 0){
     		// PING EVENT
     		
-    			if (filter)
-    			{
-    				/*
-    				for(index = 0; index < CSL_DMA_BUFFER_SIZE; index++)
-					{
-						dmaPingDstBufLR[index] = dmaPingDstBufLR[index] >> 2;
-						dmaPingDstBufRR[index] = dmaPingDstBufRR[index] >> 2;
-	      			};*/
-	      			
+    			if (filter==1)
+    			{		      			
 	    			/* compute 2-chanels: cycles 260000, ca 130000 pro chanel , 790355 */
 	    			//start = clock();
-	    			(void)fir2(dmaPingDstBufLR, H, dmaPingSrcBufLS, dbptrL, CSL_DMA_BUFFER_SIZE, FFT_LENGTH);	    			
-	    			(void)fir2(dmaPingDstBufRR, H, dmaPingSrcBufRS, dbptrR, CSL_DMA_BUFFER_SIZE, FFT_LENGTH);
+	    			oflagL=fir2(dmaPingDstBufLR, H, dmaPingSrcBufLS, dbptrL, CSL_DMA_BUFFER_SIZE, FFT_LENGTH);	    			
+	    			oflagR=fir2(dmaPingDstBufRR, H, dmaPingSrcBufRS, dbptrR, CSL_DMA_BUFFER_SIZE, FFT_LENGTH);
+	    			
+	      			if (oflagL==1 || oflagR==1){
+	      				no_overflow=0;
+					}
+	      			
 	    			//stop = clock();
 					//printf("cycles: %ld\n", (long)(stop - start - overhead));
+    			}
+    			else if (filter==2)
+    			{
+    				for(index = 0; index < CSL_DMA_BUFFER_SIZE; index++)
+	      			{
+    					dmaPingSrcBufLS[index] = dmaPingSrcBufRS[index] = stereo_to_mono(dmaPingDstBufLR[index], dmaPingDstBufRR[index]);
+	      			}
     			}
     			else
 				{			  
@@ -263,19 +166,23 @@ void main( void )
 			}
   			else //  PONG EVENT
   			{  	
-				if (filter)
-				{
-					/*
-					for(index = 0; index < CSL_DMA_BUFFER_SIZE; index++)
-					{
-						dmaPongDstBufLR[index] = dmaPongDstBufLR[index] >> 2;
-						dmaPongDstBufRR[index] = dmaPongDstBufRR[index] >> 2;
-	      			};*/
-					
+				if (filter==1)
+				{				
 	  				// compute
-	    			(void)fir2(dmaPongDstBufLR, H, dmaPongSrcBufLS, dbptrL, CSL_DMA_BUFFER_SIZE, FFT_LENGTH);
-	    			(void)fir2(dmaPongDstBufRR, H, dmaPongSrcBufRS, dbptrR, CSL_DMA_BUFFER_SIZE, FFT_LENGTH);
+	    			oflagL=fir2(dmaPongDstBufLR, H, dmaPongSrcBufLS, dbptrL, CSL_DMA_BUFFER_SIZE, FFT_LENGTH);
+	    			oflagR=fir2(dmaPongDstBufRR, H, dmaPongSrcBufRS, dbptrR, CSL_DMA_BUFFER_SIZE, FFT_LENGTH);
+	    			
+	    			if (oflagL==1 || oflagR==1){
+	      				no_overflow=0;
+					}
 				}
+				else if (filter==2)
+    			{
+    				for(index = 0; index < CSL_DMA_BUFFER_SIZE; index++)
+	      			{
+ 						dmaPongSrcBufLS[index] = dmaPongSrcBufRS[index] = stereo_to_mono(dmaPongDstBufLR[index], dmaPongDstBufRR[index]);  // Feed through L/R mono audio
+	      			}  				
+    			}
 				else
 				{
 	  				for(index = 0; index < CSL_DMA_BUFFER_SIZE; index++)
@@ -288,4 +195,6 @@ void main( void )
 			}
 		}       
 	}	
+	printf("overflow");
+	aic3204_close( );
 }

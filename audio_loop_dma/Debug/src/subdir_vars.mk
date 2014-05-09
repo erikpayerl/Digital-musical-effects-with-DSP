@@ -9,6 +9,7 @@ C_SRCS += \
 ../src/aic_dma.c \
 ../src/led_test.c \
 ../src/main.c \
+../src/stereo.c \
 ../src/systemInit.c 
 
 ASM_SRCS += \
@@ -24,6 +25,7 @@ OBJS += \
 ./src/fir2.obj \
 ./src/led_test.obj \
 ./src/main.obj \
+./src/stereo.obj \
 ./src/systemInit.obj 
 
 C_DEPS += \
@@ -32,6 +34,7 @@ C_DEPS += \
 ./src/aic_dma.pp \
 ./src/led_test.pp \
 ./src/main.pp \
+./src/stereo.pp \
 ./src/systemInit.pp 
 
 OBJS__QTD += \
@@ -41,6 +44,7 @@ OBJS__QTD += \
 ".\src\fir2.obj" \
 ".\src\led_test.obj" \
 ".\src\main.obj" \
+".\src\stereo.obj" \
 ".\src\systemInit.obj" 
 
 ASM_DEPS__QTD += \
@@ -52,6 +56,7 @@ C_DEPS__QTD += \
 ".\src\aic_dma.pp" \
 ".\src\led_test.pp" \
 ".\src\main.pp" \
+".\src\stereo.pp" \
 ".\src\systemInit.pp" 
 
 C_SRCS_QUOTED += \
@@ -60,6 +65,7 @@ C_SRCS_QUOTED += \
 "../src/aic_dma.c" \
 "../src/led_test.c" \
 "../src/main.c" \
+"../src/stereo.c" \
 "../src/systemInit.c" 
 
 ASM_SRCS_QUOTED += \
