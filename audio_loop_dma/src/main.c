@@ -3,7 +3,8 @@
 // * File name: main.c
 // *                                                                          
 // * Description:  Main function.
-// *                                                                          
+// * 
+// * Erik Payerl    2014-05-09                                                                         
 // * Tomas McKelvey 2013-11-20                                                                        
 //////////////////////////////////////////////////////////////////////////////
 
@@ -102,19 +103,18 @@ void main( void )
 	for (i = 0; i < (FFT_LENGTH+2); i++) dbR[i] = 0;  // clear delay buffer (a must)
 	
 	/* EQ-band gains, 0-1 -> Uint8 0 - 255 */
-	a[0] = 255;
-	a[1] = 255;
-	a[2] = 0;
-	a[3] = 0;
-	a[4] = 0;
-	a[5] = 0;
-	a[6] = 0;
-	a[7] = 0;
+	a[0] = 128;
+	a[1] = 128;
+	a[2] = 128;
+	a[3] = 128;
+	a[4] = 128;
+	a[5] = 128;
+	a[6] = 128;
+	a[7] = 128;
 
 	while (no_overflow) // eternal loop
 	{
-		/* Calculate new EQ-filter coeff.                         *
-		 * Cycles approx= 110 * FFT_LENGTH 7752 15802 32000 55621 */
+		/* Calculate new EQ-filter coeff. */
 		if (new_filter>0)
 		{			
 			//start = clock();
@@ -136,8 +136,8 @@ void main( void )
     		
     			if (filter==1)
     			{		      			
-	    			/* compute 2-chanels: cycles 260000, ca 130000 pro chanel , 790355 */
-	    			//start = clock();
+	    			/* compute 2-chanels: cycles ca 790000 when FFT_LENGTH = 512 */
+	    			start = clock();
 	    			oflagL=fir2(dmaPingDstBufLR, H, dmaPingSrcBufLS, dbptrL, CSL_DMA_BUFFER_SIZE, FFT_LENGTH);	    			
 	    			oflagR=fir2(dmaPingDstBufRR, H, dmaPingSrcBufRS, dbptrR, CSL_DMA_BUFFER_SIZE, FFT_LENGTH);
 	    			
@@ -145,8 +145,8 @@ void main( void )
 	      				no_overflow=0;
 					}
 	      			
-	    			//stop = clock();
-					//printf("cycles: %ld\n", (long)(stop - start - overhead));
+	    			stop = clock();
+					printf("cycles: %ld\n", (long)(stop - start - overhead));
     			}
     			else if (filter==2)
     			{
@@ -168,7 +168,7 @@ void main( void )
   			{  	
 				if (filter==1)
 				{				
-	  				// compute
+	  				/* compute 2-chanels: cycles ca 790000 when FFT_LENGTH = 512 */
 	    			oflagL=fir2(dmaPongDstBufLR, H, dmaPongSrcBufLS, dbptrL, CSL_DMA_BUFFER_SIZE, FFT_LENGTH);
 	    			oflagR=fir2(dmaPongDstBufRR, H, dmaPongSrcBufRS, dbptrR, CSL_DMA_BUFFER_SIZE, FFT_LENGTH);
 	    			

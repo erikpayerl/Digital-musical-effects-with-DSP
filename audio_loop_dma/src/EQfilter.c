@@ -7,6 +7,8 @@
 // *                                                                          
 // * Usage:        void  = EQfilter( Uint8 *a,   // pointer to band amplitudes
 // *                                 DATA  *H )  // return coefficient vector
+// *
+// * Benchmarks:  Cycles ca 80000 for FFT_LENGTH 512
 // *               
 // * Erik Payerl 2014-05-07                                                           
 //////////////////////////////////////////////////////////////////////////////

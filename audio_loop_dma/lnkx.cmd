@@ -27,6 +27,7 @@ SECTIONS
     .cio    	: > DARAM
     .switch     : > DARAM
     
+    /* User defined */
     data_br_buf : > DARAM /*ALIGN = 512 /* 2^9 = 512 , Aligned to addr with 9 least-sig zeros */
     cmplxBuf    : > DARAM
     scratch_buf : > DARAM
@@ -34,15 +35,6 @@ SECTIONS
     dbufferLeft : > DARAM
     dbufferRight : > DARAM
     coeffs      : > DARAM
-    
-    /* dmaPingDstBufLR : > DARAM */
-    /* dmaPongDstBufLR : > DARAM */
-    /* dmaPingDstBufRR : > DARAM */
-    /* dmaPongDstBufRR : > DARAM */
-    /* dmaPingSrcBufLS : > DARAM */
-    /* dmaPongSrcBufLS : > DARAM */
-    /* dmaPingSrcBufRS : > DARAM */
-    /* dmaPongSrcBufRS : > DARAM */
 }
 
 /* C5535 HWAFFT ROM table addresses */
