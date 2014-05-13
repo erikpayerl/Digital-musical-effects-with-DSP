@@ -44,8 +44,8 @@
 </tool>
 <macros expandEnvironmentMacros="true"/>
 </toolChain>
-<resourceConfiguration exclude="true" id="com.ti.ccstudio.buildDefinitions.C5500.Debug.206312667./audio_loop_dma/src/EQfilterBackupp.c" name="EQfilterBackupp.c" rcbsApplicability="disable" resourcePath="/audio_loop_dma/src/EQfilterBackupp.c" toolsToInvoke="com.ti.ccstudio.buildDefinitions.C5500_4.3.exe.compilerDebug.1853457428./audio_loop_dma/src/EQfilterBackupp.c">
-<tool id="com.ti.ccstudio.buildDefinitions.C5500_4.3.exe.compilerDebug.1853457428./audio_loop_dma/src/EQfilterBackupp.c" name="C5500 Compiler" superClass="com.ti.ccstudio.buildDefinitions.C5500_4.3.exe.compilerDebug.1853457428"/>
+<resourceConfiguration exclude="false" id="com.ti.ccstudio.buildDefinitions.C5500.Debug.206312667./audio_loop_dma/src/ main_backupp.c" name=" main_backupp.c" rcbsApplicability="disable" resourcePath="/audio_loop_dma/src/ main.c" toolsToInvoke="com.ti.ccstudio.buildDefinitions.C5500_4.3.exe.compilerDebug.1853457428./audio_loop_dma/src/ main_backupp.c">
+<tool id="com.ti.ccstudio.buildDefinitions.C5500_4.3.exe.compilerDebug.1853457428./audio_loop_dma/src/ main_backupp.c" name="C5500 Compiler" superClass="com.ti.ccstudio.buildDefinitions.C5500_4.3.exe.compilerDebug.1853457428"/>
 </resourceConfiguration>
 </configuration>
 <configuration artifactExtension="out" artifactName="lms_test_new_dma" description="" id="com.ti.ccstudio.buildDefinitions.C5500.Release.164980437" name="Release" parent="com.ti.ccstudio.buildDefinitions.C5500.Release">

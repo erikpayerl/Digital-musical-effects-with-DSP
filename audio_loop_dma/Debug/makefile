@@ -10,14 +10,19 @@ CG_TOOL_ROOT := C:/Program Files (x86)/Texas Instruments/ccsv4/tools/compiler/c5
 
 ORDERED_OBJS += \
 $(GEN_CMDS_QUOTED) \
+"./src/uart_config.obj" \
+"./src/tremolo.obj" \
 "./src/systemInit.obj" \
+"./src/svf.obj" \
 "./src/stereo.obj" \
-"./src/main.obj" \
-"./src/led_test.obj" \
+"./src/fuzz.obj" \
 "./src/fir2.obj" \
+"./src/echo.obj" \
 "./src/aic_dma.obj" \
 "./src/aic3204.obj" \
+"./src/LFO.obj" \
 "./src/EQfilter.obj" \
+"./src/ main.obj" \
 -l"C:\Users\eld.hakansson\Documents\Chalmers\Kandidatarbete\Digital-musical-effects-with-DSP\audio_loop_dma\lib\cslVC5505.lib" \
 -l"C:\Users\eld.hakansson\Documents\Chalmers\Kandidatarbete\Digital-musical-effects-with-DSP\audio_loop_dma\lib\ezdsp5535bsl.lib" \
 -l"rts55x.lib" \
@@ -137,9 +142,9 @@ lms_test_new_dma.out: $(OBJS) $(CMD_SRCS) $(LIB_SRCS) $(GEN_CMDS)
 # Other Targets
 clean:
 	-$(RM) $(C5500_EXECUTABLE_OUTPUTS__QTD) "lms_test_new_dma.out"
-	-$(RM) ".\src\EQfilter.obj" ".\src\aic3204.obj" ".\src\aic_dma.obj" ".\src\fir2.obj" ".\src\led_test.obj" ".\src\main.obj" ".\src\stereo.obj" ".\src\systemInit.obj" 
+	-$(RM) ".\src\ main.obj" ".\src\EQfilter.obj" ".\src\LFO.obj" ".\src\aic3204.obj" ".\src\aic_dma.obj" ".\src\echo.obj" ".\src\fir2.obj" ".\src\fuzz.obj" ".\src\stereo.obj" ".\src\svf.obj" ".\src\systemInit.obj" ".\src\tremolo.obj" ".\src\uart_config.obj" 
 	-$(RM) ".\src\fir2.pp" 
-	-$(RM) ".\src\EQfilter.pp" ".\src\aic3204.pp" ".\src\aic_dma.pp" ".\src\led_test.pp" ".\src\main.pp" ".\src\stereo.pp" ".\src\systemInit.pp" 
+	-$(RM) ".\src\ main.pp" ".\src\EQfilter.pp" ".\src\LFO.pp" ".\src\aic3204.pp" ".\src\aic_dma.pp" ".\src\echo.pp" ".\src\fuzz.pp" ".\src\stereo.pp" ".\src\svf.pp" ".\src\systemInit.pp" ".\src\tremolo.pp" ".\src\uart_config.pp" 
 	-@echo ' '
 
 .PHONY: all clean dependents

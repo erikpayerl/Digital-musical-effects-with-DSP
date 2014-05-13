@@ -7,7 +7,7 @@
 // *              
 // *              Defines window function.
 // *   
-// * Erik Payerl 2014-05-09                                                          
+// * Erik Payerl  2014-05-09                                                          
 //////////////////////////////////////////////////////////////////////////////
 
 #ifndef EQ_H_
@@ -29,7 +29,7 @@ Int32 bitreversed_buffer[FFT_LENGTH];
 Int32 scratch_buffer[FFT_LENGTH];
 /* -------------------------------------------*/
 
-Int16 x, i, dF;
+Int16 x, ii, dF;
 DATA A[8];
 	
 DATA fc[7] ={

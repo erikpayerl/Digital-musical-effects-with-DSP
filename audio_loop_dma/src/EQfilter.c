@@ -1,27 +1,27 @@
 //////////////////////////////////////////////////////////////////////////////
 // * File name:    EQfilter.c
 // * 
-// * Function:     EQfilter();                                                                        
-// * Description:  Calculate filter coefficiants for 8-band graphic equalizer
-// *               using hwafft. FFT_LENGTH = 512.
+// * Function:     EQcoeff                                                                        
+// * Description:  Calculate filter coefficiants for 8-band graphic equalizer.
+// *               Method: Frequency sampling. FFT with hwafft. FFT_LENGTH = 512.
 // *                                                                          
-// * Usage:        void  = EQfilter( Uint8 *a,   // pointer to band amplitudes
-// *                                 DATA  *H )  // return coefficient vector
+// * Usage:        void  = EQfilter( Uint8 *a)   // pointer to band amplitudes
+// *                                 
+// * Benchmarks:   Cycles ca 80000 for FFT_LENGTH 512              
 // *
-// * Benchmarks:  Cycles ca 80000 for FFT_LENGTH 512
-// *               
-// * Erik Payerl 2014-05-07                                                           
+// *
+// * Erik Payerl   2014-05-12                                                           
 //////////////////////////////////////////////////////////////////////////////
 #include "ezdsp5535.h"
 #include "tms320.h"
 #include "hwafft.h"
 #include "EQ.h"
 
+// Arrays for coeff calculation
 Int32 *complex_data, *bitrev_data, *scratch, *fft_data;
 Uint16 out_sel;
 
-void EQfilter( Uint8 *a, DATA *H )
-{	
+void EQcoeff( Uint8 *a, DATA *H ) {	
 	/* Map Uint8 to DATA (Int32) */
 	A[0] = (DATA)(a[0]) << 7;
 	A[1] = (DATA)(a[1]) << 7;
@@ -36,36 +36,36 @@ void EQfilter( Uint8 *a, DATA *H )
 	dF = 32768/FFT_LENGTH;
 		
 	/* Magnitud for filterbands */	
-	for (i=0;i < (FFT_LENGTH/2) ;i++) {
-		x = i*dF; 
+	for (ii=0;ii < (FFT_LENGTH/2) ;ii++) {
+		x = ii*dF; 
 		if (x<fc[0])
-			H[i] = A[0];
+			H[ii] = A[0];
 		else if (x<fc[1])
-			H[i] = A[1];
+			H[ii] = A[1];
 		else if (x<fc[2])
-			H[i] = A[2];
+			H[ii] = A[2];
 		else if (x<fc[3])
-			H[i] = A[3];
+			H[ii] = A[3];
 		else if (x<fc[4])
-			H[i] = A[4];
+			H[ii] = A[4];
 		else if (x<fc[5])
-			H[i] = A[5];
+			H[ii] = A[5];
 		else if (x<fc[6])
-			H[i] = A[6];
+			H[ii] = A[6];
 		/* 12544 = 0.3828 normalized freq = 18375 Hz when fs = 48000 Hz,                      *
 		 * if H(x)>0 when x>=12544 -> the frequency respons H(z) of the filter gets inverted! *
 		 * I do not know why...                                                               */
-		else if (x<12544)
-			H[i] = A[7];
+		else if (x<11360)
+			H[ii] = A[7];
 		else
-			H[i] = 0;
+			H[ii] = 0;
 	}
 	
 	/* Phase = exp(-1i*pi*k)= 1, -1, 1 -1,...  , k = 0,1,2,... */
-	for (i=1;i<(FFT_LENGTH/2);i+=2)    H[i]=-H[i];
+	for (ii=1;ii<(FFT_LENGTH/2);ii+=2)    H[ii]=-H[ii];
 	
 	/* Linear phase -> H(FFT_LENGTH-k) = *H(k) */
-	for (i=0;i<(FFT_LENGTH/2 -1);i++) 	H[FFT_LENGTH-1-i] = H[i+1];
+	for (ii=0;ii<(FFT_LENGTH/2 -1);ii++) 	H[FFT_LENGTH-1-ii] = H[ii+1];
 	
 	/* FFT_LENGTH = EVEN -> H[FFT_LENGTH/2] = 0, for linear phase */
 	H[FFT_LENGTH/2] = 0;   
@@ -77,8 +77,8 @@ void EQfilter( Uint8 *a, DATA *H )
 	
 	/* Convert real data to "pseudo"-complex data (real, 0) */
 	/* Int32 complex = Int16 real (MSBs) + Int16 imag (LSBs) */
-	for (i = 0; i < FFT_LENGTH; i++) {
-		*(complex_data + i) = ( (Int32) (*(H + i)) ) << 16;
+	for (ii = 0; ii < FFT_LENGTH; ii++) {
+		*(complex_data + ii) = ( (Int32) (*(H + ii)) ) << 16;
 	}	
 
 	/* Perform bit-reversing */
@@ -101,13 +101,14 @@ void EQfilter( Uint8 *a, DATA *H )
 	}
 
 	/* Extract real part  */
-	/*** OBS! Filtercoefficient H scaled x4 ***/
-	for (i = 0; i < FFT_LENGTH; i++) {
-		*(H + i) = (Int16)(*(fft_data + i) >> 14); // (no scale: >> 16)
+	for (ii = 0; ii < FFT_LENGTH; ii++) {
+		*(H + ii) = (Int16)(*(fft_data + ii) >> 16); 
 		//*(imagR + i) = (Int16)((*(fft_data + i)) & 0x0000FFFF);
 	}
 
 	/* Window */
-	for (i = 0; i < FFT_LENGTH; i++ ) { 	H[i] = (DATA)(((LDATA)(DATA)H[i] * (LDATA)(DATA)turkey512[i]) >> 15);	}
-	 
+	for (ii = 0; ii < FFT_LENGTH; ii++ ) { 	H[ii] = (DATA)(((LDATA)(DATA)H[ii] * (LDATA)(DATA)turkey512[ii]) >> 15);	}
+	
+	/* Print filter coeff. */
+	//for (ii = 0; ii < FFT_LENGTH; ii++ ) { 	printf("%d\n",*(H + ii)); }
 }

@@ -3,7 +3,7 @@
 // *                                                                         
 // * Description: Declare filter buffers and filter coefficient buffer
 // *               
-// * Erik Payerl 2014-05-09                                                          
+// * Erik Payerl 2014-05-13                                                          
 //////////////////////////////////////////////////////////////////////////////
 
 #ifndef EQFILTER_H_
@@ -11,7 +11,7 @@
 
 #define FFT_LENGTH 512
 
-void EQfilter( Uint8 *a, DATA *H );
+void EQcoeff( Uint8 *a, DATA *H );
 
 //EQ-band 
 Uint8 a[8];

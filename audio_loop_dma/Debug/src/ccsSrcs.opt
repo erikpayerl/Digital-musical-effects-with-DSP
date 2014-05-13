@@ -1,1 +1,1 @@
-"../src/EQfilter.c" "../src/aic3204.c" "../src/aic_dma.c" "../src/fir2.asm" "../src/led_test.c" "../src/main.c" "../src/stereo.c" "../src/systemInit.c" 
+"../src/ main.c" "../src/EQfilter.c" "../src/LFO.c" "../src/aic3204.c" "../src/aic_dma.c" "../src/echo.c" "../src/fir2.asm" "../src/fuzz.c" "../src/stereo.c" "../src/svf.c" "../src/systemInit.c" "../src/tremolo.c" "../src/uart_config.c" 
