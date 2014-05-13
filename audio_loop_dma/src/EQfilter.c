@@ -1,6 +1,22 @@
 //////////////////////////////////////////////////////////////////////////////
 // * File name:    EQfilter.c
 // * 
+// * Function:     EQ                                                                        
+// * Description:  Filters input sample s through 8-band graphic equalizer using 
+// *               DSPLIB function fir2().
+// *                                                                                     
+// * Usage:        void  = EQfilter( Int16 s,         // imput sample
+// *                                 Int16 not_used1, // not used, for parameters
+// *                                 Int16 not_used2, //  to be consistent with 
+// *                                 Int16 not_used3,)//  the other musical effects.
+// *                                 
+// * Benchmarks:  
+// * --------------------------------------------------------------------------
+// *
+// * Function:     EQ_clear                                                                        
+// * Description:  Clears delay buffers used in EQ(). A must befor filtering. 
+// * --------------------------------------------------------------------------               
+// *
 // * Function:     EQcoeff                                                                        
 // * Description:  Calculate filter coefficiants for 8-band graphic equalizer.
 // *               Method: Frequency sampling. FFT with hwafft. FFT_LENGTH = 512.
@@ -13,7 +29,7 @@
 // * Erik Payerl   2014-05-12                                                           
 //////////////////////////////////////////////////////////////////////////////
 #include "ezdsp5535.h"
-#include "tms320.h"
+#include "dsplib.h"
 #include "hwafft.h"
 #include "EQ.h"
 
@@ -21,7 +37,28 @@
 Int32 *complex_data, *bitrev_data, *scratch, *fft_data;
 Uint16 out_sel;
 
-void EQcoeff( Uint8 *a, DATA *H ) {	
+Int16 EQ_output;
+
+//Delay buffers for EQ fir filtering
+DATA  *dbptrL = &dbL[0];
+DATA  *dbptrR = &dbR[0];
+
+//EQ Filter coeff. buffer
+DATA *H = &coeff_buffer[0];
+
+Int16 EQ(Int16 s, Int16 not_used1, Int16 not_used2, Int16 not_used3) {
+	(void)fir2(&s, H, &EQ_output, dbptrL, 1, FFT_LENGTH);	    			
+	EQ_output *=2;
+	return EQ_output;
+}
+
+void EQ_clear() {
+	/* Clear delay buffers for EQ fir filters*/ 
+	for (ii = 0; ii < (FFT_LENGTH+2); ii++) dbL[ii] = 0;  // clear delay buffer (a must)
+	for (ii = 0; ii < (FFT_LENGTH+2); ii++) dbR[ii] = 0;  // clear delay buffer (a must)	
+}
+
+void EQcoeff( Uint8 *a ) {	
 	/* Map Uint8 to DATA (Int32) */
 	A[0] = (DATA)(a[0]) << 7;
 	A[1] = (DATA)(a[1]) << 7;

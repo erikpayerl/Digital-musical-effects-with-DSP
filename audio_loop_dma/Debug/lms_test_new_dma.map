@@ -1,10 +1,10 @@
 ******************************************************************************
               TMS320C55x Linker PC v4.3.8                      
 ******************************************************************************
->> Linked Tue May 13 10:22:51 2014
+>> Linked Tue May 13 10:36:14 2014
 
 OUTPUT FILE NAME:   <lms_test_new_dma.out>
-ENTRY POINT SYMBOL: "_c_int00"  address: 00043346
+ENTRY POINT SYMBOL: "_c_int00"  address: 000432a7
 
 
 MEMORY CONFIGURATION
@@ -15,7 +15,7 @@ MEMORY CONFIGURATION
   MMR                   00000000   000000c0  00000000  000000c0  RW  
   VEC                   000000c0   00000300  00000200  00000100  R  X
   DARAM                 00000400   0000fc00  00006688  00009578  RW  
-  SARAM                 00010000   0003df00  0003674e  000077b2  RW  
+  SARAM                 00010000   0003df00  000366a6  0000785a  RW  
 
 
 SECTION ALLOCATION MAP
@@ -36,7 +36,7 @@ cmplxBuf     0   [ 00004380 ]  000021c0          *   00000400   UNINITIALIZED
 
 dbufferLeft 
 *            0   [ 00004b80 ]  000025c0          *   00000202   UNINITIALIZED
-                 [ 00004b80 ]  000025c0          *   00000202    main.obj (dbufferLeft)
+                 [ 00004b80 ]  000025c0          *   00000202   EQfilter.obj (dbufferLeft)
 
 data_br_buf 
 *            0   [ 00005000 ]  00002800          *   00000400   UNINITIALIZED
@@ -48,10 +48,10 @@ scratch_buf
 
 dbufferRight 
 *            0   [ 00006000 ]  00003000          *   00000202   UNINITIALIZED
-                 [ 00006000 ]  00003000          *   00000202    main.obj (dbufferRight)
+                 [ 00006000 ]  00003000          *   00000202   EQfilter.obj (dbufferRight)
 
 coeffs       0   [ 00006404 ]  00003202          *   00000200   UNINITIALIZED
-                 [ 00006404 ]  00003202          *   00000200    main.obj (coeffs)
+                 [ 00006404 ]  00003202          *   00000200   EQfilter.obj (coeffs)
 
 .cio         0   [ 00006808 ]  00003404          *   00000120   UNINITIALIZED
                  [ 00006808 ]  00003404          *   00000120   rts55x.lib : trgmsg.obj (.cio)
@@ -61,148 +61,148 @@ coeffs       0   [ 00006404 ]  00003202          *   00000200   UNINITIALIZED
 
 .data        0   [ 00010000 ]  00008000          *   00000000   UNINITIALIZED
 
-.bss         0   [ 00010000 ]  00008000          *   00014a52   
+.bss         0   [ 00010000 ]  00008000          *   00014a54   
                  [ 00010000 ]  00008000          *   0001194a   echo.obj (.bss) [fill = 0]
                  [ 00033294 ]  0001994a          *   00000002   ezdsp5535bsl.lib : ezdsp5535_i2s.obj (.bss) [fill = 0]
                  [ 00033298 ]  0001994c          *   0000205a   aic_dma.obj (.bss) [fill = 0]
-                 [ 0003734c ]  0001b9a6          *   00000826    main.obj (.bss) [fill = 0]
-                 [ 00038398 ]  0001c1cc          *   0000021b   EQfilter.obj (.bss) [fill = 0]
-                 [ 000387ce ]  0001c3e7          *   00000202   LFO.obj (.bss) [fill = 0]
-                 [ 00038bd2 ]  0001c5e9          *   00000001   rts55x.lib : fopen.obj (.bss) [fill = 0]
-                 [ 00038bd4 ]  0001c5ea          *   00000119              : defs.obj (.bss) [fill = 0]
-                 [ 00038e06 ]  0001c703          *   00000001   --HOLE-- [fill = 0]
-                 [ 00038e08 ]  0001c704          *   00000110   svf.obj (.bss) [fill = 0]
-                 [ 00039028 ]  0001c814          *   000000d0   rts55x.lib : trgdrv.obj (.bss) [fill = 0]
-                 [ 000391c8 ]  0001c8e4          *   00000084   cslVC5505.lib : csl_intc.obj (.bss) [fill = 0]
-                 [ 000392d0 ]  0001c968          *   00000071   rts55x.lib : lowlev.obj (.bss) [fill = 0]
-                 [ 000393b2 ]  0001c9d9          *   0000002a   cslVC5505.lib : csl_i2s.obj (.bss) [fill = 0]
-                 [ 00039406 ]  0001ca03          *   00000001   --HOLE-- [fill = 0]
-                 [ 00039408 ]  0001ca04          *   00000025   uart_config.obj (.bss) [fill = 0]
-                 [ 00039452 ]  0001ca29          *   00000001   --HOLE-- [fill = 0]
-                 [ 00039454 ]  0001ca2a          *   00000012   cslVC5505.lib : csl_i2c.obj (.bss) [fill = 0]
-                 [ 00039478 ]  0001ca3c          *   00000006   rts55x.lib : memory.obj (.bss) [fill = 0]
-                 [ 00039484 ]  0001ca42          *   00000005   tremolo.obj (.bss) [fill = 0]
-                 [ 0003948e ]  0001ca47          *   00000001   --HOLE-- [fill = 0]
-                 [ 00039490 ]  0001ca48          *   00000004   rts55x.lib : _lock.obj (.bss) [fill = 0]
-                 [ 00039498 ]  0001ca4c          *   00000004              : exit.obj (.bss) [fill = 0]
-                 [ 000394a0 ]  0001ca50          *   00000002   fuzz.obj (.bss) [fill = 0]
+                 [ 0003734c ]  0001b9a6          *   00000821    main.obj (.bss) [fill = 0]
+                 [ 0003838e ]  0001c1c7          *   00000001   rts55x.lib : fopen.obj (.bss) [fill = 0]
+                 [ 00038390 ]  0001c1c8          *   00000222   EQfilter.obj (.bss) [fill = 0]
+                 [ 000387d4 ]  0001c3ea          *   00000202   LFO.obj (.bss) [fill = 0]
+                 [ 00038bd8 ]  0001c5ec          *   00000119   rts55x.lib : defs.obj (.bss) [fill = 0]
+                 [ 00038e0a ]  0001c705          *   00000001   --HOLE-- [fill = 0]
+                 [ 00038e0c ]  0001c706          *   00000110   svf.obj (.bss) [fill = 0]
+                 [ 0003902c ]  0001c816          *   000000d0   rts55x.lib : trgdrv.obj (.bss) [fill = 0]
+                 [ 000391cc ]  0001c8e6          *   00000084   cslVC5505.lib : csl_intc.obj (.bss) [fill = 0]
+                 [ 000392d4 ]  0001c96a          *   00000071   rts55x.lib : lowlev.obj (.bss) [fill = 0]
+                 [ 000393b6 ]  0001c9db          *   0000002a   cslVC5505.lib : csl_i2s.obj (.bss) [fill = 0]
+                 [ 0003940a ]  0001ca05          *   00000001   --HOLE-- [fill = 0]
+                 [ 0003940c ]  0001ca06          *   00000025   uart_config.obj (.bss) [fill = 0]
+                 [ 00039456 ]  0001ca2b          *   00000001   --HOLE-- [fill = 0]
+                 [ 00039458 ]  0001ca2c          *   00000012   cslVC5505.lib : csl_i2c.obj (.bss) [fill = 0]
+                 [ 0003947c ]  0001ca3e          *   00000006   rts55x.lib : memory.obj (.bss) [fill = 0]
+                 [ 00039488 ]  0001ca44          *   00000005   tremolo.obj (.bss) [fill = 0]
+                 [ 00039492 ]  0001ca49          *   00000001   --HOLE-- [fill = 0]
+                 [ 00039494 ]  0001ca4a          *   00000004   rts55x.lib : _lock.obj (.bss) [fill = 0]
+                 [ 0003949c ]  0001ca4e          *   00000004              : exit.obj (.bss) [fill = 0]
+                 [ 000394a4 ]  0001ca52          *   00000002   fuzz.obj (.bss) [fill = 0]
 
-.text        0     000394a4  [ 0001ca52 ] 00009ff2          *   
-                   000394a4  [ 0001ca52 ] 000018b8          *   cslVC5505.lib : csl_dma.obj (.text)
-                   0003ad5c  [ 0001d6ae ] 00001598          *   rts55x.lib : _printfi.obj (.text)
-                   0003c2f4  [ 0001e17a ] 000010e1          *   cslVC5505.lib : csl_uart.obj (.text)
-                   0003d3d5  [ 0001e9ea+] 00000c3c          *                 : csl_i2c.obj (.text)
-                   0003e011  [ 0001f008+] 000009f3          *                 : csl_i2s.obj (.text)
-                   0003ea04  [ 0001f502 ] 00000554          *                 : csl_intc.obj (.text)
-                   0003ef58  [ 0001f7ac ] 00000543          *   rts55x.lib : lowlev.obj (.text)
-                   0003f49b  [ 0001fa4d+] 00000528          *              : trgdrv.obj (.text)
-                   0003f9c3  [ 0001fce1+] 000004b5          *              : memory.obj (.text)
-                   0003fe78  [ 0001ff3c ] 00000454          *   aic_dma.obj (.text)
-                   000402cc  [ 00020166 ] 0000043a          *    main.obj (.text)
-                   00040706  [ 00020383 ] 0000036c          *   rts55x.lib : divd.obj (.text)
-                   00040a72  [ 00020539 ] 00000349          *   aic3204.obj (.text)
-                   00040dbb  [ 000206dd+] 0000032f          *   EQfilter.obj (.text)
-                   000410ea  [ 00020875 ] 000002ad          *   cslVC5505.lib : csl_pll.obj (.text)
-                   00041397  [ 000209cb+] 0000027f          *   rts55x.lib : fopen.obj (.text)
-                   00041616  [ 00020b0b ] 0000025e          *              : llmpy.obj (.text)
-                   00041874  [ 00020c3a ] 00000259          *              : addd.obj (.text)
-                   00041acd  [ 00020d66+] 000001ea          *              : cmpd.obj (.text)
-                   00041cb7  [ 00020e5b+] 000001d6          *   uart_config.obj (.text)
-                   00041e8d  [ 00020f46+] 00000163          *   rts55x.lib : fputs.obj (.text)
-                   00041ff0  [ 00020ff8 ] 0000014c          *              : mpyd.obj (.text)
-                   0004213c  [ 0002109e ] 0000013e          *   echo.obj (.text)
-                   0004227a  [ 0002113d ] 00000107          *   ezdsp5535bsl.lib : ezdsp5535_i2s.obj (.text)
-                   00042381  [ 000211c0+] 000000e6          *   rts55x.lib : setvbuf.obj (.text)
-                   00042467  [ 00021233+] 000000dd          *              : _io_perm.obj (.text)
-                   00042544  [ 000212a2 ] 000000cc          *   svf.obj (.text)
-                   00042610  [ 00021308 ] 000000c8          *   rts55x.lib : frcmpyd_div.obj (.text)
-                   000426d8  [ 0002136c ] 000000c2          *              : fflush.obj (.text)
-                   0004279a  [ 000213cd ] 000000ba          *              : trgmsg.obj (.text:CIO_breakpoint)
-                   00042854  [ 0002142a ] 000000a6          *              : fputc.obj (.text)
-                   000428fa  [ 0002147d ] 000000a1          *              : divul.obj (.text)
-                   0004299b  [ 000214cd+] 0000008e          *   ezdsp5535bsl.lib : ezdsp5535_i2c.obj (.text)
-                   00042a29  [ 00021514+] 0000008c          *   cslVC5505.lib : csl_irqplug.obj (.text)
-                   00042ab5  [ 0002155a+] 0000007d          *   rts55x.lib : ltoa.obj (.text)
-                   00042b32  [ 00021599 ] 0000007b          *   fir2.obj (.text)
-                   00042bad  [ 000215d6+] 0000007b          *   rts55x.lib : fclose.obj (.text)
-                   00042c28  [ 00021614 ] 00000076          *              : frcmpyd.obj (.text)
-                   00042c9e  [ 0002164f ] 00000075          *   systemInit.obj (.text)
-                   00042d13  [ 00021689+] 00000072          *   rts55x.lib : remul.obj (.text)
-                   00042d85  [ 000216c2+] 0000006f          *              : fixdli.obj (.text)
-                   00042df4  [ 000216fa ] 0000006d          *   cslVC5505.lib : vectors.obj (.text)
-                   00042e61  [ 00021730+] 0000006d          *   rts55x.lib : trgmsg.obj (.text)
-                   00042ece  [ 00021767 ] 0000006b          *              : fseek.obj (.text)
-                   00042f39  [ 0002179c+] 00000069          *   fuzz.obj (.text)
-                   00042fa2  [ 000217d1 ] 00000067          *   rts55x.lib : fltlid.obj (.text)
-                   00043009  [ 00021804+] 0000005c          *              : atoi.obj (.text)
-                   00043065  [ 00021832+] 00000059          *   tremolo.obj (.text)
-                   000430be  [ 0002185f ] 00000054          *   ezdsp5535bsl.lib : ezdsp5535.obj (.text)
-                   00043112  [ 00021889 ] 00000050          *   rts55x.lib : printf.obj (.text)
-                   00043162  [ 000218b1 ] 0000004d          *              : autoinit.obj (.text)
-                   000431af  [ 000218d7+] 0000004b          *              : args_main.obj (.text)
-                   000431fa  [ 000218fd ] 0000004b          *              : remli.obj (.text)
-                   00043245  [ 00021922+] 00000048          *              : divli.obj (.text)
-                   0004328d  [ 00021946+] 0000003f          *              : memcpy.obj (.text)
-                   000432cc  [ 00021966 ] 0000003e          *              : exit.obj (.text)
-                   0004330a  [ 00021985 ] 0000003c          *   LFO.obj (.text)
-                   00043346  [ 000219a3 ] 00000034          *   rts55x.lib : boot.obj (.text)
-                   0004337a  [ 000219bd ] 0000002a          *              : fixdi.obj (.text)
-                   000433a4  [ 000219d2 ] 0000002a          *              : udiv.obj (.text)
-                   000433ce  [ 000219e7 ] 00000023          *              : memccpy.obj (.text)
-                   000433f1  [ 000219f8+] 00000021          *   stereo.obj (.text)
-                   00043412  [ 00021a09 ] 0000001c          *   rts55x.lib : isinf.obj (.text)
-                   0004342e  [ 00021a17 ] 00000014          *              : subd.obj (.text)
-                   00043442  [ 00021a21 ] 00000013          *              : lmpy.obj (.text)
-                   00043455  [ 00021a2a+] 00000012          *              : _lock.obj (.text)
-                   00043467  [ 00021a33+] 00000010          *              : negd.obj (.text)
-                   00043477  [ 00021a3b+] 0000000a          *              : clock.obj (.text)
-                   00043481  [ 00021a40+] 0000000a          *              : remove.obj (.text)
-                   0004348b  [ 00021a45+] 00000007          *              : exit.obj (.text:CIO_breakpoint)
-                   00043492  [ 00021a49 ] 00000002          *              : vectors.obj (.text)
-                   00043494  [ 00021a4a ] 00000002          *   --HOLE-- [fill = 20]
+.text        0     000394a8  [ 0001ca54 ] 00009f4e          *   
+                   000394a8  [ 0001ca54 ] 000018b8          *   cslVC5505.lib : csl_dma.obj (.text)
+                   0003ad60  [ 0001d6b0 ] 00001598          *   rts55x.lib : _printfi.obj (.text)
+                   0003c2f8  [ 0001e17c ] 000010e1          *   cslVC5505.lib : csl_uart.obj (.text)
+                   0003d3d9  [ 0001e9ec+] 00000c3c          *                 : csl_i2c.obj (.text)
+                   0003e015  [ 0001f00a+] 000009f3          *                 : csl_i2s.obj (.text)
+                   0003ea08  [ 0001f504 ] 00000554          *                 : csl_intc.obj (.text)
+                   0003ef5c  [ 0001f7ae ] 00000543          *   rts55x.lib : lowlev.obj (.text)
+                   0003f49f  [ 0001fa4f+] 00000528          *              : trgdrv.obj (.text)
+                   0003f9c7  [ 0001fce3+] 000004b5          *              : memory.obj (.text)
+                   0003fe7c  [ 0001ff3e ] 00000454          *   aic_dma.obj (.text)
+                   000402d0  [ 00020168 ] 000003fc          *   EQfilter.obj (.text)
+                   000406cc  [ 00020366 ] 0000036c          *   rts55x.lib : divd.obj (.text)
+                   00040a38  [ 0002051c ] 00000349          *   aic3204.obj (.text)
+                   00040d81  [ 000206c0+] 000002ca          *    main.obj (.text)
+                   0004104b  [ 00020825+] 000002ad          *   cslVC5505.lib : csl_pll.obj (.text)
+                   000412f8  [ 0002097c ] 0000027f          *   rts55x.lib : fopen.obj (.text)
+                   00041577  [ 00020abb+] 0000025e          *              : llmpy.obj (.text)
+                   000417d5  [ 00020bea+] 00000259          *              : addd.obj (.text)
+                   00041a2e  [ 00020d17 ] 000001ea          *              : cmpd.obj (.text)
+                   00041c18  [ 00020e0c ] 000001d6          *   uart_config.obj (.text)
+                   00041dee  [ 00020ef7 ] 00000163          *   rts55x.lib : fputs.obj (.text)
+                   00041f51  [ 00020fa8+] 0000014c          *              : mpyd.obj (.text)
+                   0004209d  [ 0002104e+] 0000013e          *   echo.obj (.text)
+                   000421db  [ 000210ed+] 00000107          *   ezdsp5535bsl.lib : ezdsp5535_i2s.obj (.text)
+                   000422e2  [ 00021171 ] 000000e6          *   rts55x.lib : setvbuf.obj (.text)
+                   000423c8  [ 000211e4 ] 000000dd          *              : _io_perm.obj (.text)
+                   000424a5  [ 00021252+] 000000cc          *   svf.obj (.text)
+                   00042571  [ 000212b8+] 000000c8          *   rts55x.lib : frcmpyd_div.obj (.text)
+                   00042639  [ 0002131c+] 000000c2          *              : fflush.obj (.text)
+                   000426fb  [ 0002137d+] 000000ba          *              : trgmsg.obj (.text:CIO_breakpoint)
+                   000427b5  [ 000213da+] 000000a6          *              : fputc.obj (.text)
+                   0004285b  [ 0002142d+] 000000a1          *              : divul.obj (.text)
+                   000428fc  [ 0002147e ] 0000008e          *   ezdsp5535bsl.lib : ezdsp5535_i2c.obj (.text)
+                   0004298a  [ 000214c5 ] 0000008c          *   cslVC5505.lib : csl_irqplug.obj (.text)
+                   00042a16  [ 0002150b ] 0000007d          *   rts55x.lib : ltoa.obj (.text)
+                   00042a93  [ 00021549+] 0000007b          *   fir2.obj (.text)
+                   00042b0e  [ 00021587 ] 0000007b          *   rts55x.lib : fclose.obj (.text)
+                   00042b89  [ 000215c4+] 00000076          *              : frcmpyd.obj (.text)
+                   00042bff  [ 000215ff+] 00000075          *   systemInit.obj (.text)
+                   00042c74  [ 0002163a ] 00000072          *   rts55x.lib : remul.obj (.text)
+                   00042ce6  [ 00021673 ] 0000006f          *              : fixdli.obj (.text)
+                   00042d55  [ 000216aa+] 0000006d          *   cslVC5505.lib : vectors.obj (.text)
+                   00042dc2  [ 000216e1 ] 0000006d          *   rts55x.lib : trgmsg.obj (.text)
+                   00042e2f  [ 00021717+] 0000006b          *              : fseek.obj (.text)
+                   00042e9a  [ 0002174d ] 00000069          *   fuzz.obj (.text)
+                   00042f03  [ 00021781+] 00000067          *   rts55x.lib : fltlid.obj (.text)
+                   00042f6a  [ 000217b5 ] 0000005c          *              : atoi.obj (.text)
+                   00042fc6  [ 000217e3 ] 00000059          *   tremolo.obj (.text)
+                   0004301f  [ 0002180f+] 00000054          *   ezdsp5535bsl.lib : ezdsp5535.obj (.text)
+                   00043073  [ 00021839+] 00000050          *   rts55x.lib : printf.obj (.text)
+                   000430c3  [ 00021861+] 0000004d          *              : autoinit.obj (.text)
+                   00043110  [ 00021888 ] 0000004b          *              : args_main.obj (.text)
+                   0004315b  [ 000218ad+] 0000004b          *              : remli.obj (.text)
+                   000431a6  [ 000218d3 ] 00000048          *              : divli.obj (.text)
+                   000431ee  [ 000218f7 ] 0000003f          *              : memcpy.obj (.text)
+                   0004322d  [ 00021916+] 0000003e          *              : exit.obj (.text)
+                   0004326b  [ 00021935+] 0000003c          *   LFO.obj (.text)
+                   000432a7  [ 00021953+] 00000034          *   rts55x.lib : boot.obj (.text)
+                   000432db  [ 0002196d+] 0000002a          *              : fixdi.obj (.text)
+                   00043305  [ 00021982+] 0000002a          *              : udiv.obj (.text)
+                   0004332f  [ 00021997+] 00000023          *              : memccpy.obj (.text)
+                   00043352  [ 000219a9 ] 00000021          *   stereo.obj (.text)
+                   00043373  [ 000219b9+] 0000001c          *   rts55x.lib : isinf.obj (.text)
+                   0004338f  [ 000219c7+] 00000014          *              : subd.obj (.text)
+                   000433a3  [ 000219d1+] 00000013          *              : lmpy.obj (.text)
+                   000433b6  [ 000219db ] 00000012          *              : _lock.obj (.text)
+                   000433c8  [ 000219e4 ] 00000010          *              : negd.obj (.text)
+                   000433d8  [ 000219ec ] 0000000a          *              : clock.obj (.text)
+                   000433e2  [ 000219f1 ] 0000000a          *              : remove.obj (.text)
+                   000433ec  [ 000219f6 ] 00000007          *              : exit.obj (.text:CIO_breakpoint)
+                   000433f3  [ 000219f9+] 00000002          *              : vectors.obj (.text)
+                   000433f5  [ 000219fa ] 00000001          *   --HOLE-- [fill = 20]
 
-.stack       0   [ 00043498 ]  00021a4c          *   00000800   UNINITIALIZED
-                 [ 00043498 ]  00021a4c          *   00000800   --HOLE--
+.stack       0   [ 000433f8 ]  000219fc          *   00000800   UNINITIALIZED
+                 [ 000433f8 ]  000219fc          *   00000800   --HOLE--
 
 .sysstack 
-*            0   [ 00044498 ]  0002224c          *   00000800   UNINITIALIZED
-                 [ 00044498 ]  0002224c          *   00000800   --HOLE--
+*            0   [ 000443f8 ]  000221fc          *   00000800   UNINITIALIZED
+                 [ 000443f8 ]  000221fc          *   00000800   --HOLE--
 
-.cinit       0   [ 00045498 ]  00022a4c          *   0000060e   
-                 [ 00045498 ]  00022a4c          *   0000020d   EQfilter.obj (.cinit)
-                 [ 000458b2 ]  00022c59          *   0000020b   LFO.obj (.cinit)
-                 [ 00045cc8 ]  00022e64          *   0000010d   svf.obj (.cinit)
-                 [ 00045ee2 ]  00022f71          *   0000002f    main.obj (.cinit)
-                 [ 00045f40 ]  00022fa0          *   0000002d   rts55x.lib : lowlev.obj (.cinit)
-                 [ 00045f9a ]  00022fcd          *   0000002a              : defs.obj (.cinit)
-                 [ 00045fee ]  00022ff7          *   0000001c   aic_dma.obj (.cinit)
-                 [ 00046026 ]  00023013          *   00000016   uart_config.obj (.cinit)
-                 [ 00046052 ]  00023029          *   0000000a   rts55x.lib : _lock.obj (.cinit)
-                 [ 00046066 ]  00023033          *   0000000a              : exit.obj (.cinit)
-                 [ 0004607a ]  0002303d          *   00000008   cslVC5505.lib : csl_i2s.obj (.cinit)
-                 [ 0004608a ]  00023045          *   00000008   fuzz.obj (.cinit)
-                 [ 0004609a ]  0002304d          *   00000004   echo.obj (.cinit)
-                 [ 000460a2 ]  00023051          *   00000004   rts55x.lib : fopen.obj (.cinit)
-                 [ 000460aa ]  00023055          *   00000004              : memory.obj (.cinit)
-                 [ 000460b2 ]  00023059          *   00000001   --HOLE-- [fill = 0]
+.cinit       0   [ 000453f8 ]  000229fc          *   0000060a   
+                 [ 000453f8 ]  000229fc          *   0000021c   EQfilter.obj (.cinit)
+                 [ 00045830 ]  00022c18          *   0000020b   LFO.obj (.cinit)
+                 [ 00045c46 ]  00022e23          *   0000010d   svf.obj (.cinit)
+                 [ 00045e60 ]  00022f30          *   0000002d   rts55x.lib : lowlev.obj (.cinit)
+                 [ 00045eba ]  00022f5d          *   0000002a              : defs.obj (.cinit)
+                 [ 00045f0e ]  00022f87          *   0000001c    main.obj (.cinit)
+                 [ 00045f46 ]  00022fa3          *   0000001c   aic_dma.obj (.cinit)
+                 [ 00045f7e ]  00022fbf          *   00000016   uart_config.obj (.cinit)
+                 [ 00045faa ]  00022fd5          *   0000000a   rts55x.lib : _lock.obj (.cinit)
+                 [ 00045fbe ]  00022fdf          *   0000000a              : exit.obj (.cinit)
+                 [ 00045fd2 ]  00022fe9          *   00000008   cslVC5505.lib : csl_i2s.obj (.cinit)
+                 [ 00045fe2 ]  00022ff1          *   00000008   fuzz.obj (.cinit)
+                 [ 00045ff2 ]  00022ff9          *   00000004   echo.obj (.cinit)
+                 [ 00045ffa ]  00022ffd          *   00000004   rts55x.lib : fopen.obj (.cinit)
+                 [ 00046002 ]  00023001          *   00000004              : memory.obj (.cinit)
+                 [ 0004600a ]  00023005          *   00000001   --HOLE-- [fill = 0]
 
-.const       0   [ 000460b4 ]  0002305a          *   0000034e   
-                 [ 000460b4 ]  0002305a          *   00000101   rts55x.lib : ctype.obj (.const:__ctypes_)
-                 [ 000462b6 ]  0002315b          *   00000001   --HOLE-- [fill = 0]
-                 [ 000462b8 ]  0002315c          *   000000d1   aic3204.obj (.const:.string)
-                 [ 0004645a ]  0002322d          *   00000001   --HOLE-- [fill = 0]
-                 [ 0004645c ]  0002322e          *   00000093   aic_dma.obj (.const:.string)
-                 [ 00046582 ]  000232c1          *   00000001   --HOLE-- [fill = 0]
-                 [ 00046584 ]  000232c2          *   00000089   uart_config.obj (.const:.string)
-                 [ 00046696 ]  0002334b          *   00000001   --HOLE-- [fill = 0]
-                 [ 00046698 ]  0002334c          *   00000024   rts55x.lib : _printfi.obj (.const:.string)
-                 [ 000466e0 ]  00023370          *   0000001a    main.obj (.const:.string)
-                 [ 00046714 ]  0002338a          *   0000000c   rts55x.lib : _printfi.obj (.const)
-                 [ 0004672c ]  00023396          *   00000008              : divd.obj (.const:_initial_approx$1)
-                 [ 0004673c ]  0002339e          *   00000004   systemInit.obj (.const:_$P$T0$1)
-                 [ 00046744 ]  000233a2          *   00000002   rts55x.lib : fputs.obj (.const:.string)
-                 [ 00046748 ]  000233a4          *   00000002              : divd.obj (.const)
-                 [ 0004674c ]  000233a6          *   00000002              : fltlid.obj (.const)
+.const       0   [ 0004600c ]  00023006          *   0000034e   
+                 [ 0004600c ]  00023006          *   00000101   rts55x.lib : ctype.obj (.const:__ctypes_)
+                 [ 0004620e ]  00023107          *   00000001   --HOLE-- [fill = 0]
+                 [ 00046210 ]  00023108          *   000000d1   aic3204.obj (.const:.string)
+                 [ 000463b2 ]  000231d9          *   00000001   --HOLE-- [fill = 0]
+                 [ 000463b4 ]  000231da          *   00000093   aic_dma.obj (.const:.string)
+                 [ 000464da ]  0002326d          *   00000001   --HOLE-- [fill = 0]
+                 [ 000464dc ]  0002326e          *   00000089   uart_config.obj (.const:.string)
+                 [ 000465ee ]  000232f7          *   00000001   --HOLE-- [fill = 0]
+                 [ 000465f0 ]  000232f8          *   00000024   rts55x.lib : _printfi.obj (.const:.string)
+                 [ 00046638 ]  0002331c          *   0000001a    main.obj (.const:.string)
+                 [ 0004666c ]  00023336          *   0000000c   rts55x.lib : _printfi.obj (.const)
+                 [ 00046684 ]  00023342          *   00000008              : divd.obj (.const:_initial_approx$1)
+                 [ 00046694 ]  0002334a          *   00000004   systemInit.obj (.const:_$P$T0$1)
+                 [ 0004669c ]  0002334e          *   00000002   rts55x.lib : fputs.obj (.const:.string)
+                 [ 000466a0 ]  00023350          *   00000002              : divd.obj (.const)
+                 [ 000466a4 ]  00023352          *   00000002              : fltlid.obj (.const)
 
 
 GLOBAL SYMBOLS: SORTED ALPHABETICALLY BY Name 
@@ -215,209 +215,212 @@ byte addr   word addr   name
 00000001                $TI_capability_requires_rev3
             00008000    .bss
             00008000    .data
-000394a4                .text
-0004348c                C$$EXIT
-0004284f                C$$IO$$
-00043442                I$$LMPY
-000433a4                I$$UDIV
-000433b9                I$$UMOD
+000394a8                .text
+000433ed                C$$EXIT
+000427b0                C$$IO$$
+000433a3                I$$LMPY
+00043305                I$$UDIV
+0004331a                I$$UMOD
 00000100                RST
-            0001c1cf    _A
-00040a72                _AIC3204_rget
-00040abd                _AIC3204_rset
-            0001c704    _D1
-            0001c705    _D2
-000395c7                _DMA_close
-000395e6                _DMA_config
-0003a1bd                _DMA_getConfig
-0003acb0                _DMA_getLastTransferType
-000394a4                _DMA_init
-000394db                _DMA_open
-0003a940                _DMA_reset
-0003a72c                _DMA_start
-0003a83c                _DMA_stop
-0003ac2c                _DMA_swapWords
-00040dbb                _EQcoeff
-0004299b                _EZDSP5535_I2C_init
-00042a01                _EZDSP5535_I2C_read
-000429d0                _EZDSP5535_I2C_reset
-000429db                _EZDSP5535_I2C_write
-0004236f                _EZDSP5535_I2S_close
-0004227a                _EZDSP5535_I2S_init
-000422d3                _EZDSP5535_I2S_readLeft
-00042332                _EZDSP5535_I2S_readRight
-00042305                _EZDSP5535_I2S_writeLeft
-00042353                _EZDSP5535_I2S_writeRight
-00043104                _EZDSP5535_init
-000430be                _EZDSP5535_wait
-000430f2                _EZDSP5535_waitusec
-            0001c716    _F1
-00041de1                _FUART_init
-            0001b9ca    _H
-0003f965                _HOSTclock
-0003f8fa                _HOSTclose
-0003f845                _HOSTlseek
-0003f7a6                _HOSTopen
-0003f719                _HOSTread
-0003f66b                _HOSTrename
-0003f60d                _HOSTtime
-0003f5a3                _HOSTunlink
-0003f516                _HOSTwrite
-0003d47e                _I2C_config
-0003de49                _I2C_eventDisable
-0003dd15                _I2C_eventEnable
-0003d5e3                _I2C_getConfig
-0003dff5                _I2C_getEventId
-0003d3d5                _I2C_init
-0003daf7                _I2C_read
-0003df68                _I2C_setCallback
-0003d6b9                _I2C_setup
-0003d8b3                _I2C_write
-0003e446                _I2S_close
-0003e011                _I2S_open
-0003e4f8                _I2S_read
-0003e908                _I2S_reset
-0003e158                _I2S_setup
-0003e9b9                _I2S_transEnable
-0003e7b2                _I2S_write
-0003ea9e                _IRQ_clear
-0003eb08                _IRQ_clearAll
-0003eb18                _IRQ_config
-0003ec3e                _IRQ_disable
-0003ecbc                _IRQ_disableAll
-0003ecca                _IRQ_enable
-0003edc4                _IRQ_getArg
-0003ebab                _IRQ_getConfig
-0003ef12                _IRQ_globalDisable
-0003ef2b                _IRQ_globalEnable
-0003ef44                _IRQ_globalRestore
-0003ea04                _IRQ_init
-0003ee3d                _IRQ_map
-00042a29                _IRQ_plug
-0003ed54                _IRQ_restore
-0003ee0a                _IRQ_setArg
-0003ee6f                _IRQ_setVecs
-0003eea0                _IRQ_test
-0004330a                _LFO
-000412dc                _PLL_bypass
-0004114c                _PLL_config
-00041275                _PLL_enable
-00041114                _PLL_init
-0004132b                _PLL_reset
-            0001c706    _Q1
+            0001c1cb    _A
+00040a38                _AIC3204_rget
+00040a83                _AIC3204_rset
+            0001c706    _D1
+            0001c707    _D2
+000395cb                _DMA_close
+000395ea                _DMA_config
+0003a1c1                _DMA_getConfig
+0003acb4                _DMA_getLastTransferType
+000394a8                _DMA_init
+000394df                _DMA_open
+0003a944                _DMA_reset
+0003a730                _DMA_start
+0003a840                _DMA_stop
+0003ac30                _DMA_swapWords
+000402d0                _EQ
+0004030b                _EQ_clear
+            0001c3e3    _EQ_output
+0004036d                _EQcoeff
+000428fc                _EZDSP5535_I2C_init
+00042962                _EZDSP5535_I2C_read
+00042931                _EZDSP5535_I2C_reset
+0004293c                _EZDSP5535_I2C_write
+000422d0                _EZDSP5535_I2S_close
+000421db                _EZDSP5535_I2S_init
+00042234                _EZDSP5535_I2S_readLeft
+00042293                _EZDSP5535_I2S_readRight
+00042266                _EZDSP5535_I2S_writeLeft
+000422b4                _EZDSP5535_I2S_writeRight
+00043065                _EZDSP5535_init
+0004301f                _EZDSP5535_wait
+00043053                _EZDSP5535_waitusec
+            0001c718    _F1
+00041d42                _FUART_init
+            0001c3e8    _H
+0003f969                _HOSTclock
+0003f8fe                _HOSTclose
+0003f849                _HOSTlseek
+0003f7aa                _HOSTopen
+0003f71d                _HOSTread
+0003f66f                _HOSTrename
+0003f611                _HOSTtime
+0003f5a7                _HOSTunlink
+0003f51a                _HOSTwrite
+0003d482                _I2C_config
+0003de4d                _I2C_eventDisable
+0003dd19                _I2C_eventEnable
+0003d5e7                _I2C_getConfig
+0003dff9                _I2C_getEventId
+0003d3d9                _I2C_init
+0003dafb                _I2C_read
+0003df6c                _I2C_setCallback
+0003d6bd                _I2C_setup
+0003d8b7                _I2C_write
+0003e44a                _I2S_close
+0003e015                _I2S_open
+0003e4fc                _I2S_read
+0003e90c                _I2S_reset
+0003e15c                _I2S_setup
+0003e9bd                _I2S_transEnable
+0003e7b6                _I2S_write
+0003eaa2                _IRQ_clear
+0003eb0c                _IRQ_clearAll
+0003eb1c                _IRQ_config
+0003ec42                _IRQ_disable
+0003ecc0                _IRQ_disableAll
+0003ecce                _IRQ_enable
+0003edc8                _IRQ_getArg
+0003ebaf                _IRQ_getConfig
+0003ef16                _IRQ_globalDisable
+0003ef2f                _IRQ_globalEnable
+0003ef48                _IRQ_globalRestore
+0003ea08                _IRQ_init
+0003ee41                _IRQ_map
+0004298a                _IRQ_plug
+0003ed58                _IRQ_restore
+0003ee0e                _IRQ_setArg
+0003ee73                _IRQ_setVecs
+0003eea4                _IRQ_test
+0004326b                _LFO
+0004123d                _PLL_bypass
+000410ad                _PLL_config
+000411d6                _PLL_enable
+00041075                _PLL_init
+0004128c                _PLL_reset
+            0001c708    _Q1
 00000200                _Reset
             0001b9ae    _START_OF_MESSAGE
-0003c8da                _UART_config
-0003cc11                _UART_eventDisable
-0003cb79                _UART_eventEnable
-0003cf4b                _UART_fgetc
-0003d06e                _UART_fgets
-0003cfe9                _UART_fputc
-0003d19e                _UART_fputs
-0003d2b2                _UART_getConfig
-0003d28b                _UART_getEventId
-0003c379                _UART_init
-0003cca0                _UART_read
-0003cae9                _UART_reset
-0003cb2e                _UART_resetOff
-0003d36f                _UART_setCallback
-0003c433                _UART_setup
-0003c9df                _UART_setupBaudRate
-0003cdc9                _UART_write
-            0001ca26    _UARTstatus
+0003c8de                _UART_config
+0003cc15                _UART_eventDisable
+0003cb7d                _UART_eventEnable
+0003cf4f                _UART_fgetc
+0003d072                _UART_fgets
+0003cfed                _UART_fputc
+0003d1a2                _UART_fputs
+0003d2b6                _UART_getConfig
+0003d28f                _UART_getEventId
+0003c37d                _UART_init
+0003cca4                _UART_read
+0003caed                _UART_reset
+0003cb32                _UART_resetOff
+0003d373                _UART_setCallback
+0003c437                _UART_setup
+0003c9e3                _UART_setupBaudRate
+0003cdcd                _UART_write
+            0001ca28    _UARTstatus
 00000100                _VECSTART
             00003404    __CIOBUF_
-            0002224c    __STACK_END
+            000221fc    __STACK_END
 00001000                __STACK_SIZE
 00003f80                __SYSMEM_SIZE
 00001000                __SYSSTACK_SIZE
 ffffffff                ___binit__
             00008000    ___bss__
 ffffffff                ___c_args__
-            00022a4c    ___cinit__
+            000229fc    ___cinit__
             00008000    ___data__
             00008000    ___edata__
-            0001ca52    ___end__
-00043496                ___etext__
-00043412                ___isinf
+            0001ca54    ___end__
+000433f6                ___etext__
+00043373                ___isinf
 ffffffff                ___pinit__
-000394a4                ___text__
-00041874                __addd
-000431af                __args_main
-000414b8                __cleanup
-            0001ca4c    __cleanup_ptr
-00041c5f                __cmpd
-            0002305a    __ctypes_
-00040728                __divd
-00043245                __divli
-0004183f                __divlli
-000433a4                __divu
-000428fa                __divul
-0004174b                __divull
-000426d8                __doflush
-            0001ca4e    __dtors_ptr
-00041c2b                __eqld
-0004337a                __fixdi
-00042d85                __fixdli
-00042fa2                __fltlid
-00042c28                __frcmpyd
-00042610                __frcmpyd_div
-            0001c702    __ft_end
-            0001c5ea    __ftable
-00041be1                __geqd
-00041b96                __gtrd
-00041b49                __leqd
-            0001ca48    __lock
-00041b01                __lssd
-00041ff0                __mpyd
-00043442                __mpyli
-00041693                __mpylli
-00043467                __negd
-00041acd                __neqd
-00043465                __nop
-0003c0b2                __printfi
-000424e7                __rd_ok
-0004345d                __register_lock
-00043455                __register_unlock
-000431fa                __remli
-00041664                __remlli
-000433b9                __remu
-00042d13                __remul
-00041616                __remull
-            00021a4c    __stack
-0004342e                __subd
+000394a8                ___text__
+000417d5                __addd
+00043110                __args_main
+00041419                __cleanup
+            0001ca4e    __cleanup_ptr
+00041bc0                __cmpd
+            00023006    __ctypes_
+000406ee                __divd
+000431a6                __divli
+000417a0                __divlli
+00043305                __divu
+0004285b                __divul
+000416ac                __divull
+00042639                __doflush
+            0001ca50    __dtors_ptr
+00041b8c                __eqld
+000432db                __fixdi
+00042ce6                __fixdli
+00042f03                __fltlid
+00042b89                __frcmpyd
+00042571                __frcmpyd_div
+            0001c704    __ft_end
+            0001c5ec    __ftable
+00041b42                __geqd
+00041af7                __gtrd
+00041aaa                __leqd
+            0001ca4a    __lock
+00041a62                __lssd
+00041f51                __mpyd
+000433a3                __mpyli
+000415f4                __mpylli
+000433c8                __negd
+00041a2e                __neqd
+000433c6                __nop
+0003c0b6                __printfi
+00042448                __rd_ok
+000433be                __register_lock
+000433b6                __register_unlock
+0004315b                __remli
+000415c5                __remlli
+0004331a                __remu
+00042c74                __remul
+00041577                __remull
+            000219fc    __stack
+0004338f                __subd
             00000200    __sys_memory
-            0002224c    __sysstack
-            0001c662    __tmpnams
-            0001ca4a    __unlock
-00042467                __wrt_ok
+            000221fc    __sysstack
+            0001c664    __tmpnams
+            0001ca4c    __unlock
+000423c8                __wrt_ok
             0001b9a6    _a
-0004348b                _abort
-0003f3ab                _add_device
-00040da8                _aic3204_close
-00040ae7                _aic3204_init
-00043009                _atoi
-00043162                _auto_init
+000433ec                _abort
+0003f3af                _add_device
+00040d6e                _aic3204_close
+00040aad                _aic3204_init
+00042f6a                _atoi
+000430c3                _auto_init
             0001b9a4    _bin_here1
             0001b9a5    _bin_here2
-            0001c3e0    _bitrev_data
+            0001c3dc    _bitrev_data
             00002800    _bitreversed_buffer
-00043346                _c_int00
-0003fe52                _calloc
-            0001ca27    _charsent
-0003fe4a                _chkheap
-00043477                _clock
-0003f338                _close
+000432a7                _c_int00
+0003fe56                _calloc
+            0001ca29    _charsent
+0003fe4e                _chkheap
+000433d8                _clock
+0003f33c                _close
             00003202    _coeff_buffer
             000021c0    _complex_buffer
-            0001c3de    _complex_data
-            0001ca28    _count
-            0001c1ce    _dF
+            0001c3da    _complex_data
+            0001ca2a    _count
+            0001c1ca    _dF
             0001b9b0    _data_ready
             000025c0    _dbL
             00003000    _dbR
-            0001b9c6    _dbptrL
-            0001b9c8    _dbptrR
+            0001c3e4    _dbptrL
+            0001c3e6    _dbptrR
             0001b970    _dmaConfigLR
             0001b954    _dmaConfigLS
             0001b97e    _dmaConfigRR
@@ -434,42 +437,42 @@ ffffffff                ___pinit__
             0001a54c    _dmaPongDstBufRR
             0001ad4c    _dmaPongSrcBufLS
             0001b54c    _dmaPongSrcBufRS
-0003fe78                _dma_init
-00040257                _dma_isr
-0004019e                _dma_stop
+0003fe7c                _dma_init
+0004025b                _dma_isr
+000401a2                _dma_stop
             0001b9b4    _e_index
-0004218c                _echo
+000420ed                _echo
             00008000    _echo_array1
             0000ddc0    _echo_array2
             00013b80    _echo_array3
-0004213c                _echo_array_clear
-000432cc                _exit
-            0001c710    _f1
-            0001c1d7    _fc
-00042bad                _fclose
-00042741                _fflush
-            0001c3e4    _fft_data
-0003f32f                _find_registered_device
-00042b32                _fir2
-000415db                _fopen
-00042854                _fputc
-00041e8d                _fputs
-0003f9c3                _free
-0003fdf4                _free_memory
-00041512                _freopen
-            0001ca01    _fsError
-00042ece                _fseek
-00042f39                _fuzz
+0004209d                _echo_array_clear
+0004322d                _exit
+            0001c712    _f1
+            0001c1d3    _fc
+00042b0e                _fclose
+000426a2                _fflush
+            0001c3e0    _fft_data
+0003f333                _find_registered_device
+00042a93                _fir2
+0004153c                _fopen
+000427b5                _fputc
+00041dee                _fputs
+0003f9c7                _free
+0003fdf8                _free_memory
+00041473                _freopen
+            0001ca03    _fsError
+00042e2f                _fseek
+00042e9a                _fuzz
             0001b9ba    _fx
-            0001ca2a    _gI2cObj
+            0001ca2c    _gI2cObj
             0001b98c    _getdmaConfig
-0003f49b                _getenv
+0003f49f                _getenv
             0001994a    _hI2s
-            0001ca24    _hUart
-            0001c708    _hVar1
-            0001c70a    _hVar2
-            0001c70c    _hVar3
-            0001c70e    _hfc
+            0001ca26    _hUart
+            0001c70a    _hVar1
+            0001c70c    _hVar2
+            0001c70e    _hVar3
+            0001c710    _hfc
 00ff0c1c                _hwafft_1024pts
 00ff0593                _hwafft_128pts
 00feff9f                _hwafft_16pts
@@ -480,84 +483,83 @@ ffffffff                ___pinit__
 00fefeb0                _hwafft_8pts
 00fefe9c                _hwafft_br
             0001b9b9    _i
-            0001ca3a    _i2cHandle
+            0001ca3c    _i2cHandle
             0001b9a1    _ifrflags
-            0001c1cd    _ii
+            0001c1c9    _ii
             00019941    _j
-0003f2c9                _lseek
+0003f2cd                _lseek
             0001b9a2    _lst_xfer_ping
             0001b9a3    _lst_xfer_pong
-00042ab5                _ltoa
-000402cc                _main
-0003faf4                _malloc
-0003fd9a                _max_free
-            0001b9c2    _max_in
-            0001b9c4    _max_tmp
-            0001b9c3    _max_ut
-000433ce                _memccpy
-0004328d                _memcpy
+00042a16                _ltoa
+00040d81                _main
+0003faf8                _malloc
+0003fd9e                _max_free
+            0001b9c4    _max_in
+            0001b9c6    _max_tmp
+            0001b9c5    _max_ut
+0004332f                _memccpy
+000431ee                _memcpy
             0001b9af    _messagestart
-0003fa8f                _minit
-            0001ca46    _modsignal
-            0001ca43    _modulator
-            0001b9cc    _monoInputPing
-            0001bdcc    _monoInputPong
-            0001b9c5    _new_EQ_filter
+0003fa93                _minit
+            0001ca48    _modsignal
+            0001ca45    _modulator
+            0001b9c7    _monoInputPing
+            0001bdc7    _monoInputPong
             00019944    _oldest_input1
             00019946    _oldest_input2
             00019948    _oldest_input3
-0003f20a                _open
+0003f20e                _open
             0001b9b1    _opmode
-            0001ca02    _ouError
-            0001c3e6    _out_sel
-            0001ca42    _output
-            0001ca44    _output32
-            0001c712    _outputs
-            0001ca50    _pGain
+            0001ca04    _ouError
+            0001c3e2    _out_sel
+            0001ca44    _output
+            0001ca46    _output32
+            0001c714    _outputs
+            0001ca52    _pGain
             0001b9b2    _param1
             0001b9b3    _param2
-            0001c707    _pi
+            0001c709    _pi
             0001b99a    _pingLR
             0001b99c    _pingLS
             0001b99b    _pingRR
             0001b99d    _pingRS
             0001b9a0    _pp
-00043112                _printf
-00042854                _putc
-000428eb                _putchar
-00041fc2                _puts
-0003f15c                _read
-00042e61                _readmsg
-0003fbe9                _realloc
-00043481                _remove
-0003f126                _remove_device
-0003f0cd                _rename
+00043073                _printf
+000427b5                _putc
+0004284c                _putchar
+00041f23                _puts
+0003f160                _read
+00042dc2                _readmsg
+0003fbed                _realloc
+000433e2                _remove
+0003f12a                _remove_device
+0003f0d1                _rename
             0001b9b5    _rx
-            0001c3e2    _scratch
+            0001c3de    _scratch
             00002c00    _scratch_buffer
-00042381                _setvbuf
+000422e2                _setvbuf
             0001b99f    _status
-000433f1                _stereo_to_mono
-00042544                _svf
-00042c9e                _systemInit
+00043352                _stereo_to_mono
+000424a5                _svf
+00042bff                _systemInit
             0001b99e    _tcr2
             00019942    _temp
-            0001ca51    _thresh
-00043065                _tremolo
-            0001c1de    _turkey512
-            0001ca10    _uartObj
-            0001ca04    _uartSetup
-00041cb7                _uart_init
-00041dbe                _uart_isr
-0003f09a                _unlink
-0003ef58                _write
-0004279a                _writemsg
-            0001c1cc    _x
+            0001ca53    _thresh
+00042fc6                _tremolo
+            0001c1da    _turkey512
+            0001ca12    _uartObj
+            0001ca06    _uartSetup
+00041c18                _uart_init
+00041d1f                _uart_isr
+0003f09e                _unlink
+0003ef5c                _write
+000426fb                _writemsg
+            0001c1c8    _x
 ffffffff                binit
-            00022a4c    cinit
+            000229fc    cinit
             00008000    edata
-            0001ca52    end
-00043496                etext
+            0001ca54    end
+000433f6                etext
 ffffffff                pinit
 
 
@@ -638,269 +640,271 @@ byte addr   word addr   name
             0001b9b5    _rx
             0001b9b9    _i
             0001b9ba    _fx
-            0001b9c2    _max_in
-            0001b9c3    _max_ut
-            0001b9c4    _max_tmp
-            0001b9c5    _new_EQ_filter
-            0001b9c6    _dbptrL
-            0001b9c8    _dbptrR
-            0001b9ca    _H
-            0001b9cc    _monoInputPing
-            0001bdcc    _monoInputPong
-            0001c1cc    _x
-            0001c1cd    _ii
-            0001c1ce    _dF
-            0001c1cf    _A
-            0001c1d7    _fc
-            0001c1de    _turkey512
-            0001c3de    _complex_data
-            0001c3e0    _bitrev_data
-            0001c3e2    _scratch
-            0001c3e4    _fft_data
-            0001c3e6    _out_sel
-            0001c5ea    __ftable
-            0001c662    __tmpnams
-            0001c702    __ft_end
-            0001c704    _D1
-            0001c705    _D2
-            0001c706    _Q1
-            0001c707    _pi
-            0001c708    _hVar1
-            0001c70a    _hVar2
-            0001c70c    _hVar3
-            0001c70e    _hfc
-            0001c710    _f1
-            0001c712    _outputs
-            0001c716    _F1
-            0001ca01    _fsError
-            0001ca02    _ouError
-            0001ca04    _uartSetup
-            0001ca10    _uartObj
-            0001ca24    _hUart
-            0001ca26    _UARTstatus
-            0001ca27    _charsent
-            0001ca28    _count
-            0001ca2a    _gI2cObj
-            0001ca3a    _i2cHandle
-            0001ca42    _output
-            0001ca43    _modulator
-            0001ca44    _output32
-            0001ca46    _modsignal
-            0001ca48    __lock
-            0001ca4a    __unlock
-            0001ca4c    __cleanup_ptr
-            0001ca4e    __dtors_ptr
-            0001ca50    _pGain
-            0001ca51    _thresh
-000394a4                .text
-000394a4                _DMA_init
-            0001ca52    ___end__
-000394a4                ___text__
-            0001ca52    end
-000394db                _DMA_open
-000395c7                _DMA_close
-000395e6                _DMA_config
-0003a1bd                _DMA_getConfig
-0003a72c                _DMA_start
-0003a83c                _DMA_stop
-0003a940                _DMA_reset
-0003ac2c                _DMA_swapWords
-0003acb0                _DMA_getLastTransferType
-0003c0b2                __printfi
-0003c379                _UART_init
-0003c433                _UART_setup
-0003c8da                _UART_config
-0003c9df                _UART_setupBaudRate
-0003cae9                _UART_reset
-0003cb2e                _UART_resetOff
-0003cb79                _UART_eventEnable
-0003cc11                _UART_eventDisable
-0003cca0                _UART_read
-0003cdc9                _UART_write
-0003cf4b                _UART_fgetc
-0003cfe9                _UART_fputc
-0003d06e                _UART_fgets
-0003d19e                _UART_fputs
-0003d28b                _UART_getEventId
-0003d2b2                _UART_getConfig
-0003d36f                _UART_setCallback
-0003d3d5                _I2C_init
-0003d47e                _I2C_config
-0003d5e3                _I2C_getConfig
-0003d6b9                _I2C_setup
-0003d8b3                _I2C_write
-0003daf7                _I2C_read
-0003dd15                _I2C_eventEnable
-0003de49                _I2C_eventDisable
-0003df68                _I2C_setCallback
-0003dff5                _I2C_getEventId
-0003e011                _I2S_open
-0003e158                _I2S_setup
-0003e446                _I2S_close
-0003e4f8                _I2S_read
-0003e7b2                _I2S_write
-0003e908                _I2S_reset
-0003e9b9                _I2S_transEnable
-0003ea04                _IRQ_init
-0003ea9e                _IRQ_clear
-0003eb08                _IRQ_clearAll
-0003eb18                _IRQ_config
-0003ebab                _IRQ_getConfig
-0003ec3e                _IRQ_disable
-0003ecbc                _IRQ_disableAll
-0003ecca                _IRQ_enable
-0003ed54                _IRQ_restore
-0003edc4                _IRQ_getArg
-0003ee0a                _IRQ_setArg
-0003ee3d                _IRQ_map
-0003ee6f                _IRQ_setVecs
-0003eea0                _IRQ_test
-0003ef12                _IRQ_globalDisable
-0003ef2b                _IRQ_globalEnable
-0003ef44                _IRQ_globalRestore
-0003ef58                _write
-0003f09a                _unlink
-0003f0cd                _rename
-0003f126                _remove_device
-0003f15c                _read
-0003f20a                _open
-0003f2c9                _lseek
-0003f32f                _find_registered_device
-0003f338                _close
-0003f3ab                _add_device
-0003f49b                _getenv
-0003f516                _HOSTwrite
-0003f5a3                _HOSTunlink
-0003f60d                _HOSTtime
-0003f66b                _HOSTrename
-0003f719                _HOSTread
-0003f7a6                _HOSTopen
-0003f845                _HOSTlseek
-0003f8fa                _HOSTclose
-0003f965                _HOSTclock
-0003f9c3                _free
-0003fa8f                _minit
-0003faf4                _malloc
-0003fbe9                _realloc
-0003fd9a                _max_free
-0003fdf4                _free_memory
-0003fe4a                _chkheap
-0003fe52                _calloc
-0003fe78                _dma_init
-0004019e                _dma_stop
-00040257                _dma_isr
-000402cc                _main
-00040728                __divd
-00040a72                _AIC3204_rget
-00040abd                _AIC3204_rset
-00040ae7                _aic3204_init
-00040da8                _aic3204_close
-00040dbb                _EQcoeff
-00041114                _PLL_init
-0004114c                _PLL_config
-00041275                _PLL_enable
-000412dc                _PLL_bypass
-0004132b                _PLL_reset
-000414b8                __cleanup
-00041512                _freopen
-000415db                _fopen
-00041616                __remull
-00041664                __remlli
-00041693                __mpylli
-0004174b                __divull
-0004183f                __divlli
-00041874                __addd
-00041acd                __neqd
-00041b01                __lssd
-00041b49                __leqd
-00041b96                __gtrd
-00041be1                __geqd
-00041c2b                __eqld
-00041c5f                __cmpd
-00041cb7                _uart_init
-00041dbe                _uart_isr
-00041de1                _FUART_init
-00041e8d                _fputs
-00041fc2                _puts
-00041ff0                __mpyd
-0004213c                _echo_array_clear
-0004218c                _echo
-0004227a                _EZDSP5535_I2S_init
-000422d3                _EZDSP5535_I2S_readLeft
-00042305                _EZDSP5535_I2S_writeLeft
-00042332                _EZDSP5535_I2S_readRight
-00042353                _EZDSP5535_I2S_writeRight
-0004236f                _EZDSP5535_I2S_close
-00042381                _setvbuf
-00042467                __wrt_ok
-000424e7                __rd_ok
-00042544                _svf
-00042610                __frcmpyd_div
-000426d8                __doflush
-00042741                _fflush
-0004279a                _writemsg
-0004284f                C$$IO$$
-00042854                _fputc
-00042854                _putc
-000428eb                _putchar
-000428fa                __divul
-0004299b                _EZDSP5535_I2C_init
-000429d0                _EZDSP5535_I2C_reset
-000429db                _EZDSP5535_I2C_write
-00042a01                _EZDSP5535_I2C_read
-00042a29                _IRQ_plug
-00042ab5                _ltoa
-00042b32                _fir2
-00042bad                _fclose
-00042c28                __frcmpyd
-00042c9e                _systemInit
-00042d13                __remul
-00042d85                __fixdli
-00042e61                _readmsg
-00042ece                _fseek
-00042f39                _fuzz
-00042fa2                __fltlid
-00043009                _atoi
-00043065                _tremolo
-000430be                _EZDSP5535_wait
-000430f2                _EZDSP5535_waitusec
-00043104                _EZDSP5535_init
-00043112                _printf
-00043162                _auto_init
-000431af                __args_main
-000431fa                __remli
-00043245                __divli
-0004328d                _memcpy
-000432cc                _exit
-0004330a                _LFO
-00043346                _c_int00
-0004337a                __fixdi
-000433a4                I$$UDIV
-000433a4                __divu
-000433b9                I$$UMOD
-000433b9                __remu
-000433ce                _memccpy
-000433f1                _stereo_to_mono
-00043412                ___isinf
-0004342e                __subd
-00043442                I$$LMPY
-00043442                __mpyli
-00043455                __register_unlock
-0004345d                __register_lock
-00043465                __nop
-00043467                __negd
-00043477                _clock
-00043481                _remove
-0004348b                _abort
-0004348c                C$$EXIT
-00043496                ___etext__
-00043496                etext
-            00021a4c    __stack
-            0002224c    __STACK_END
-            0002224c    __sysstack
-            00022a4c    ___cinit__
-            00022a4c    cinit
-            0002305a    __ctypes_
+            0001b9c4    _max_in
+            0001b9c5    _max_ut
+            0001b9c6    _max_tmp
+            0001b9c7    _monoInputPing
+            0001bdc7    _monoInputPong
+            0001c1c8    _x
+            0001c1c9    _ii
+            0001c1ca    _dF
+            0001c1cb    _A
+            0001c1d3    _fc
+            0001c1da    _turkey512
+            0001c3da    _complex_data
+            0001c3dc    _bitrev_data
+            0001c3de    _scratch
+            0001c3e0    _fft_data
+            0001c3e2    _out_sel
+            0001c3e3    _EQ_output
+            0001c3e4    _dbptrL
+            0001c3e6    _dbptrR
+            0001c3e8    _H
+            0001c5ec    __ftable
+            0001c664    __tmpnams
+            0001c704    __ft_end
+            0001c706    _D1
+            0001c707    _D2
+            0001c708    _Q1
+            0001c709    _pi
+            0001c70a    _hVar1
+            0001c70c    _hVar2
+            0001c70e    _hVar3
+            0001c710    _hfc
+            0001c712    _f1
+            0001c714    _outputs
+            0001c718    _F1
+            0001ca03    _fsError
+            0001ca04    _ouError
+            0001ca06    _uartSetup
+            0001ca12    _uartObj
+            0001ca26    _hUart
+            0001ca28    _UARTstatus
+            0001ca29    _charsent
+            0001ca2a    _count
+            0001ca2c    _gI2cObj
+            0001ca3c    _i2cHandle
+            0001ca44    _output
+            0001ca45    _modulator
+            0001ca46    _output32
+            0001ca48    _modsignal
+            0001ca4a    __lock
+            0001ca4c    __unlock
+            0001ca4e    __cleanup_ptr
+            0001ca50    __dtors_ptr
+            0001ca52    _pGain
+            0001ca53    _thresh
+000394a8                .text
+000394a8                _DMA_init
+            0001ca54    ___end__
+000394a8                ___text__
+            0001ca54    end
+000394df                _DMA_open
+000395cb                _DMA_close
+000395ea                _DMA_config
+0003a1c1                _DMA_getConfig
+0003a730                _DMA_start
+0003a840                _DMA_stop
+0003a944                _DMA_reset
+0003ac30                _DMA_swapWords
+0003acb4                _DMA_getLastTransferType
+0003c0b6                __printfi
+0003c37d                _UART_init
+0003c437                _UART_setup
+0003c8de                _UART_config
+0003c9e3                _UART_setupBaudRate
+0003caed                _UART_reset
+0003cb32                _UART_resetOff
+0003cb7d                _UART_eventEnable
+0003cc15                _UART_eventDisable
+0003cca4                _UART_read
+0003cdcd                _UART_write
+0003cf4f                _UART_fgetc
+0003cfed                _UART_fputc
+0003d072                _UART_fgets
+0003d1a2                _UART_fputs
+0003d28f                _UART_getEventId
+0003d2b6                _UART_getConfig
+0003d373                _UART_setCallback
+0003d3d9                _I2C_init
+0003d482                _I2C_config
+0003d5e7                _I2C_getConfig
+0003d6bd                _I2C_setup
+0003d8b7                _I2C_write
+0003dafb                _I2C_read
+0003dd19                _I2C_eventEnable
+0003de4d                _I2C_eventDisable
+0003df6c                _I2C_setCallback
+0003dff9                _I2C_getEventId
+0003e015                _I2S_open
+0003e15c                _I2S_setup
+0003e44a                _I2S_close
+0003e4fc                _I2S_read
+0003e7b6                _I2S_write
+0003e90c                _I2S_reset
+0003e9bd                _I2S_transEnable
+0003ea08                _IRQ_init
+0003eaa2                _IRQ_clear
+0003eb0c                _IRQ_clearAll
+0003eb1c                _IRQ_config
+0003ebaf                _IRQ_getConfig
+0003ec42                _IRQ_disable
+0003ecc0                _IRQ_disableAll
+0003ecce                _IRQ_enable
+0003ed58                _IRQ_restore
+0003edc8                _IRQ_getArg
+0003ee0e                _IRQ_setArg
+0003ee41                _IRQ_map
+0003ee73                _IRQ_setVecs
+0003eea4                _IRQ_test
+0003ef16                _IRQ_globalDisable
+0003ef2f                _IRQ_globalEnable
+0003ef48                _IRQ_globalRestore
+0003ef5c                _write
+0003f09e                _unlink
+0003f0d1                _rename
+0003f12a                _remove_device
+0003f160                _read
+0003f20e                _open
+0003f2cd                _lseek
+0003f333                _find_registered_device
+0003f33c                _close
+0003f3af                _add_device
+0003f49f                _getenv
+0003f51a                _HOSTwrite
+0003f5a7                _HOSTunlink
+0003f611                _HOSTtime
+0003f66f                _HOSTrename
+0003f71d                _HOSTread
+0003f7aa                _HOSTopen
+0003f849                _HOSTlseek
+0003f8fe                _HOSTclose
+0003f969                _HOSTclock
+0003f9c7                _free
+0003fa93                _minit
+0003faf8                _malloc
+0003fbed                _realloc
+0003fd9e                _max_free
+0003fdf8                _free_memory
+0003fe4e                _chkheap
+0003fe56                _calloc
+0003fe7c                _dma_init
+000401a2                _dma_stop
+0004025b                _dma_isr
+000402d0                _EQ
+0004030b                _EQ_clear
+0004036d                _EQcoeff
+000406ee                __divd
+00040a38                _AIC3204_rget
+00040a83                _AIC3204_rset
+00040aad                _aic3204_init
+00040d6e                _aic3204_close
+00040d81                _main
+00041075                _PLL_init
+000410ad                _PLL_config
+000411d6                _PLL_enable
+0004123d                _PLL_bypass
+0004128c                _PLL_reset
+00041419                __cleanup
+00041473                _freopen
+0004153c                _fopen
+00041577                __remull
+000415c5                __remlli
+000415f4                __mpylli
+000416ac                __divull
+000417a0                __divlli
+000417d5                __addd
+00041a2e                __neqd
+00041a62                __lssd
+00041aaa                __leqd
+00041af7                __gtrd
+00041b42                __geqd
+00041b8c                __eqld
+00041bc0                __cmpd
+00041c18                _uart_init
+00041d1f                _uart_isr
+00041d42                _FUART_init
+00041dee                _fputs
+00041f23                _puts
+00041f51                __mpyd
+0004209d                _echo_array_clear
+000420ed                _echo
+000421db                _EZDSP5535_I2S_init
+00042234                _EZDSP5535_I2S_readLeft
+00042266                _EZDSP5535_I2S_writeLeft
+00042293                _EZDSP5535_I2S_readRight
+000422b4                _EZDSP5535_I2S_writeRight
+000422d0                _EZDSP5535_I2S_close
+000422e2                _setvbuf
+000423c8                __wrt_ok
+00042448                __rd_ok
+000424a5                _svf
+00042571                __frcmpyd_div
+00042639                __doflush
+000426a2                _fflush
+000426fb                _writemsg
+000427b0                C$$IO$$
+000427b5                _fputc
+000427b5                _putc
+0004284c                _putchar
+0004285b                __divul
+000428fc                _EZDSP5535_I2C_init
+00042931                _EZDSP5535_I2C_reset
+0004293c                _EZDSP5535_I2C_write
+00042962                _EZDSP5535_I2C_read
+0004298a                _IRQ_plug
+00042a16                _ltoa
+00042a93                _fir2
+00042b0e                _fclose
+00042b89                __frcmpyd
+00042bff                _systemInit
+00042c74                __remul
+00042ce6                __fixdli
+00042dc2                _readmsg
+00042e2f                _fseek
+00042e9a                _fuzz
+00042f03                __fltlid
+00042f6a                _atoi
+00042fc6                _tremolo
+0004301f                _EZDSP5535_wait
+00043053                _EZDSP5535_waitusec
+00043065                _EZDSP5535_init
+00043073                _printf
+000430c3                _auto_init
+00043110                __args_main
+0004315b                __remli
+000431a6                __divli
+000431ee                _memcpy
+0004322d                _exit
+0004326b                _LFO
+000432a7                _c_int00
+000432db                __fixdi
+00043305                I$$UDIV
+00043305                __divu
+0004331a                I$$UMOD
+0004331a                __remu
+0004332f                _memccpy
+00043352                _stereo_to_mono
+00043373                ___isinf
+0004338f                __subd
+000433a3                I$$LMPY
+000433a3                __mpyli
+000433b6                __register_unlock
+000433be                __register_lock
+000433c6                __nop
+000433c8                __negd
+000433d8                _clock
+000433e2                _remove
+000433ec                _abort
+000433ed                C$$EXIT
+000433f6                ___etext__
+000433f6                etext
+            000219fc    __stack
+            000221fc    __STACK_END
+            000221fc    __sysstack
+            000229fc    ___cinit__
+            000229fc    cinit
+            00023006    __ctypes_
 00fefe9c                _hwafft_br
 00fefeb0                _hwafft_8pts
 00feff9f                _hwafft_16pts
@@ -916,4 +920,4 @@ ffffffff                ___pinit__
 ffffffff                binit
 ffffffff                pinit
 
-[349 symbols]
+[351 symbols]
