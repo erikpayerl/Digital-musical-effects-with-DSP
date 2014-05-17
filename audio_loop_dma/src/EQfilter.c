@@ -64,7 +64,7 @@ void EQcoeff( Uint8 *a, DATA *H ) {
 	/* Phase = exp(-1i*pi*k)= 1, -1, 1 -1,...  , k = 0,1,2,... */
 	for (ii=1;ii<(FFT_LENGTH/2);ii+=2)    H[ii]=-H[ii];
 	
-	/* Linear phase -> H(FFT_LENGTH-k) = *H(k) */
+	/* Linear phase, real coefficients -> H(FFT_LENGTH-k) = *H(k) */
 	for (ii=0;ii<(FFT_LENGTH/2 -1);ii++) 	H[FFT_LENGTH-1-ii] = H[ii+1];
 	
 	/* FFT_LENGTH = EVEN -> H[FFT_LENGTH/2] = 0, for linear phase */

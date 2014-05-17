@@ -11,6 +11,7 @@ C_SRCS += \
 ../src/aic_dma.c \
 ../src/echo.c \
 ../src/fuzz.c \
+../src/reverb.c \
 ../src/stereo.c \
 ../src/svf.c \
 ../src/systemInit.c \
@@ -32,6 +33,7 @@ OBJS += \
 ./src/echo.obj \
 ./src/fir2.obj \
 ./src/fuzz.obj \
+./src/reverb.obj \
 ./src/stereo.obj \
 ./src/svf.obj \
 ./src/systemInit.obj \
@@ -46,6 +48,7 @@ C_DEPS += \
 ./src/aic_dma.pp \
 ./src/echo.pp \
 ./src/fuzz.pp \
+./src/reverb.pp \
 ./src/stereo.pp \
 ./src/svf.pp \
 ./src/systemInit.pp \
@@ -61,6 +64,7 @@ OBJS__QTD += \
 ".\src\echo.obj" \
 ".\src\fir2.obj" \
 ".\src\fuzz.obj" \
+".\src\reverb.obj" \
 ".\src\stereo.obj" \
 ".\src\svf.obj" \
 ".\src\systemInit.obj" \
@@ -78,6 +82,7 @@ C_DEPS__QTD += \
 ".\src\aic_dma.pp" \
 ".\src\echo.pp" \
 ".\src\fuzz.pp" \
+".\src\reverb.pp" \
 ".\src\stereo.pp" \
 ".\src\svf.pp" \
 ".\src\systemInit.pp" \
@@ -92,6 +97,7 @@ C_SRCS_QUOTED += \
 "../src/aic_dma.c" \
 "../src/echo.c" \
 "../src/fuzz.c" \
+"../src/reverb.c" \
 "../src/stereo.c" \
 "../src/svf.c" \
 "../src/systemInit.c" \

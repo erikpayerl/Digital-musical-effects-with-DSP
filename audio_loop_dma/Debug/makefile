@@ -15,6 +15,7 @@ $(GEN_CMDS_QUOTED) \
 "./src/systemInit.obj" \
 "./src/svf.obj" \
 "./src/stereo.obj" \
+"./src/reverb.obj" \
 "./src/fuzz.obj" \
 "./src/fir2.obj" \
 "./src/echo.obj" \
@@ -142,9 +143,9 @@ lms_test_new_dma.out: $(OBJS) $(CMD_SRCS) $(LIB_SRCS) $(GEN_CMDS)
 # Other Targets
 clean:
 	-$(RM) $(C5500_EXECUTABLE_OUTPUTS__QTD) "lms_test_new_dma.out"
-	-$(RM) ".\src\ main.obj" ".\src\EQfilter.obj" ".\src\LFO.obj" ".\src\aic3204.obj" ".\src\aic_dma.obj" ".\src\echo.obj" ".\src\fir2.obj" ".\src\fuzz.obj" ".\src\stereo.obj" ".\src\svf.obj" ".\src\systemInit.obj" ".\src\tremolo.obj" ".\src\uart_config.obj" 
+	-$(RM) ".\src\ main.obj" ".\src\EQfilter.obj" ".\src\LFO.obj" ".\src\aic3204.obj" ".\src\aic_dma.obj" ".\src\echo.obj" ".\src\fir2.obj" ".\src\fuzz.obj" ".\src\reverb.obj" ".\src\stereo.obj" ".\src\svf.obj" ".\src\systemInit.obj" ".\src\tremolo.obj" ".\src\uart_config.obj" 
 	-$(RM) ".\src\fir2.pp" 
-	-$(RM) ".\src\ main.pp" ".\src\EQfilter.pp" ".\src\LFO.pp" ".\src\aic3204.pp" ".\src\aic_dma.pp" ".\src\echo.pp" ".\src\fuzz.pp" ".\src\stereo.pp" ".\src\svf.pp" ".\src\systemInit.pp" ".\src\tremolo.pp" ".\src\uart_config.pp" 
+	-$(RM) ".\src\ main.pp" ".\src\EQfilter.pp" ".\src\LFO.pp" ".\src\aic3204.pp" ".\src\aic_dma.pp" ".\src\echo.pp" ".\src\fuzz.pp" ".\src\reverb.pp" ".\src\stereo.pp" ".\src\svf.pp" ".\src\systemInit.pp" ".\src\tremolo.pp" ".\src\uart_config.pp" 
 	-@echo ' '
 
 .PHONY: all clean dependents

@@ -5,5 +5,5 @@
 
 
 // Size of DMA Ping Pong buffers (in total 8 buffers)
-#define CSL_DMA_BUFFER_SIZE 1024
+#define CSL_DMA_BUFFER_SIZE 64
 
