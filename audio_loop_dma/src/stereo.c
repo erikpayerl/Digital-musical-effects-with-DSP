@@ -23,3 +23,14 @@ Int16 stereo_to_mono(Int16 left_channel, Int16 right_channel)
  
 	return ((Int16) temp); /* Return mono value to calling function */
 }
+
+void stereo_to_mono_buffer(Int16 *left_channel, Int16 *right_channel, Int16 *mono_out, Int16 nx)
+{
+	Int16 i;
+ 
+	/* Take average of left and right channels. */
+ 	for(i = 0; i < nx; i++)
+	{
+		mono_out[i] = (Int16)((Int32) left_channel[i] + (Int32) right_channel[i])/2;
+	} 
+}

@@ -62,35 +62,30 @@ int data_ready;
 int opmode = 0;
 int param1 = 128;
 int param2 = 200;
-int e_index = 5;
+int e_index = 4;
 
 char rx[5];
 int i = 0;
 
 Int16 (*fx[5])(Int16 s, Int16 a, Int16 b, Int16 opmode);
 
-short max_in=0;
-short max_ut=0;
-short max_tmp=0;
-
 int new_EQ_filter = 1; //If>0 new EQ filter is calculated
 
 //Delay buffers for EQ fir filtering
-DATA  *dbptrL = &dbL[0];
-DATA  *dbptrR = &dbR[0];
+DATA  *dbptr = &db[0];
 
 //EQ Filter coeff. buffer
 DATA *H = &coeff_buffer[0];
   
 /* Mono sound data buffers */
-Uint16 monoInputPing[CSL_DMA_BUFFER_SIZE];
-Uint16 monoInputPong[CSL_DMA_BUFFER_SIZE];
+Int16 monoInputPing[CSL_DMA_BUFFER_SIZE];
+Int16 monoInputPong[CSL_DMA_BUFFER_SIZE];
 
 #define SAMPLES_PER_SECOND 48000	//12000, 24000, 48000
 
 void main( void )
 { 	   	
-	clock_t start, stop, overhead; //For profiling...
+	//clock_t start, stop, overhead; //For profiling...
 		
 	int index;
 	
@@ -102,18 +97,17 @@ void main( void )
 	
 	/* EQ-band gains, 0-1 -> Uint8 0 - 255 */
 	/* Default values */
-	a[0] = 255;
-	a[1] = 255;
-	a[2] = 0;
-	a[3] = 0;
-	a[4] = 0;
-	a[5] = 0;
-	a[6] = 0;
-	a[7] = 0;
+	a[0] = 128;
+	a[1] = 128;
+	a[2] = 128;
+	a[3] = 128;
+	a[4] = 128;
+	a[5] = 128;
+	a[6] = 128;
+	a[7] = 128;
 	
 	/* Clear delay buffers for EQ fir filters*/ 
-	for (index = 0; index < (FFT_LENGTH+2); index++) dbL[index] = 0;  // clear delay buffer (a must)
-	for (index = 0; index < (FFT_LENGTH+2); index++) dbR[index] = 0;  // clear delay buffer (a must)
+	for (index = 0; index < (FFT_LENGTH+2); index++) db[index] = 0;  // clear delay buffer (a must)
 	
 	echo_array_clear();
 	reverb_array_clear();
@@ -131,7 +125,7 @@ void main( void )
 
     /* Call aic init */
     aic3204_init(SAMPLES_PER_SECOND,0);
-    
+        
     /* Call dma init */
     dma_init( );
     
@@ -196,61 +190,64 @@ void main( void )
         	if (pp == 0)
         	{
     		// PING EVENT
-
+			
+			stereo_to_mono_buffer(dmaPingDstBufLR, dmaPingDstBufRR, monoInputPing, CSL_DMA_BUFFER_SIZE);
+			
+			
     			if (e_index==5) //EQ
     			{		      			
 	    			/* compute 2-chanels: cycles ca 790000 when FFT_LENGTH = 512 */
-	    			
-	    			(void)fir2(dmaPingDstBufLR, H, dmaPingSrcBufLS, dbptrL, CSL_DMA_BUFFER_SIZE, FFT_LENGTH);	    			
-	    			(void)fir2(dmaPingDstBufRR, H, dmaPingSrcBufRS, dbptrR, CSL_DMA_BUFFER_SIZE, FFT_LENGTH);
+	    			//start = clock();
+	    			(void)fir2(monoInputPing, H, dmaPingSrcBufLS, dbptr, CSL_DMA_BUFFER_SIZE, FFT_LENGTH);	    			
 	      			
-	      			//start = clock();
-	      			for(index = 0; index < CSL_DMA_BUFFER_SIZE; index++)
-	      			{
-	      				dmaPingSrcBufRS[index] <<=  1; 
-    					dmaPingSrcBufLS[index] <<=  1;
-	      			}
 	      			//stop = clock();
 					//printf("cycles: %ld\n", (long)(stop - start - overhead));
+					
+	      			for(index = 0; index < CSL_DMA_BUFFER_SIZE; index++)
+	      			{
+    					dmaPingSrcBufRS[index] = dmaPingSrcBufLS[index] <<=  1;
+	      			}
+	      			
     			}
     			else 
     			{
     				
     				for(index = 0; index < CSL_DMA_BUFFER_SIZE; index++)
 	      			{   
-	      				start = clock();					
-    					monoInputPing[index] = stereo_to_mono(dmaPingDstBufLR[index], dmaPingDstBufRR[index]);
+	      				//start = clock();					
+    					//monoInputPing[index] = stereo_to_mono(dmaPingDstBufLR[index], dmaPingDstBufRR[index]);
 						dmaPingSrcBufRS[index] = dmaPingSrcBufLS[index] = (*fx[e_index])(monoInputPing[index], param1, param2, opmode);
-						stop = clock();
-						printf("cycles: %ld\n", (long)(stop - start - overhead));
+						//stop = clock();
+						//printf("cycles: %ld\n", (long)(stop - start - overhead));
 	      			}
 	      			
     			}
 			}
   			else //  PONG EVENT
   			{  	
+  		
+  				stereo_to_mono_buffer(dmaPongDstBufLR, dmaPongDstBufRR, monoInputPong, CSL_DMA_BUFFER_SIZE);
+  				
 				if (e_index==5) //EQ
 				{				
 	  				/* compute 2-chanels: cycles ca 790000 when FFT_LENGTH = 512 */
-	    			(void)fir2(dmaPongDstBufLR, H, dmaPongSrcBufLS, dbptrL, CSL_DMA_BUFFER_SIZE, FFT_LENGTH);
-	    			(void)fir2(dmaPongDstBufRR, H, dmaPongSrcBufRS, dbptrR, CSL_DMA_BUFFER_SIZE, FFT_LENGTH);
-	    			
+	    			(void)fir2(monoInputPong, H, dmaPongSrcBufLS, dbptr, CSL_DMA_BUFFER_SIZE, FFT_LENGTH);
+	    				    			
 	    			for(index = 0; index < CSL_DMA_BUFFER_SIZE; index++)
 	      			{
-	      				dmaPongSrcBufRS[index] *=  2; 
-    					dmaPongSrcBufLS[index] *=  2;
+    					dmaPongSrcBufRS[index] = dmaPongSrcBufLS[index] *=  2;
 	      			}
 				}
 				else
     			{
     				for(index = 0; index < CSL_DMA_BUFFER_SIZE; index++)
 	      			{
- 						monoInputPong[index] = stereo_to_mono(dmaPongDstBufLR[index], dmaPongDstBufRR[index]);
+ 						//monoInputPong[index] = stereo_to_mono(dmaPongDstBufLR[index], dmaPongDstBufRR[index]);
       					dmaPongSrcBufRS[index] = dmaPongSrcBufLS[index] = (*fx[e_index])(monoInputPong[index], param1, param2, opmode);
 	      			}  				
     			}
 			}
 		}       
 	}	
-	aic3204_close( );
+	//aic3204_close( );
 }

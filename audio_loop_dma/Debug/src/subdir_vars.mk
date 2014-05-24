@@ -11,6 +11,7 @@ C_SRCS += \
 ../src/aic_dma.c \
 ../src/echo.c \
 ../src/fuzz.c \
+../src/led_test.c \
 ../src/reverb.c \
 ../src/stereo.c \
 ../src/svf.c \
@@ -33,6 +34,7 @@ OBJS += \
 ./src/echo.obj \
 ./src/fir2.obj \
 ./src/fuzz.obj \
+./src/led_test.obj \
 ./src/reverb.obj \
 ./src/stereo.obj \
 ./src/svf.obj \
@@ -48,6 +50,7 @@ C_DEPS += \
 ./src/aic_dma.pp \
 ./src/echo.pp \
 ./src/fuzz.pp \
+./src/led_test.pp \
 ./src/reverb.pp \
 ./src/stereo.pp \
 ./src/svf.pp \
@@ -64,6 +67,7 @@ OBJS__QTD += \
 ".\src\echo.obj" \
 ".\src\fir2.obj" \
 ".\src\fuzz.obj" \
+".\src\led_test.obj" \
 ".\src\reverb.obj" \
 ".\src\stereo.obj" \
 ".\src\svf.obj" \
@@ -82,6 +86,7 @@ C_DEPS__QTD += \
 ".\src\aic_dma.pp" \
 ".\src\echo.pp" \
 ".\src\fuzz.pp" \
+".\src\led_test.pp" \
 ".\src\reverb.pp" \
 ".\src\stereo.pp" \
 ".\src\svf.pp" \
@@ -97,6 +102,7 @@ C_SRCS_QUOTED += \
 "../src/aic_dma.c" \
 "../src/echo.c" \
 "../src/fuzz.c" \
+"../src/led_test.c" \
 "../src/reverb.c" \
 "../src/stereo.c" \
 "../src/svf.c" \

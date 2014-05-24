@@ -32,8 +32,7 @@ SECTIONS
     cmplxBuf    : > DARAM
     scratch_buf : > DARAM
     
-    dbufferLeft : > DARAM
-    dbufferRight : > DARAM
+    dbuffer : > DARAM
     coeffs      : > DARAM
 }
 

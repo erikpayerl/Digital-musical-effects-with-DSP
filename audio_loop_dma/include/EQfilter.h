@@ -17,11 +17,8 @@ void EQcoeff( Uint8 *a, DATA *H );
 Uint8 a[8];
 
 /* Filter buffers */
-#pragma DATA_SECTION(dbL,"dbufferLeft")
-DATA dbL[FFT_LENGTH+2] ;
-
-#pragma DATA_SECTION(dbR,"dbufferRight")
-DATA dbR[FFT_LENGTH+2] ;
+#pragma DATA_SECTION(db,"dbuffer")
+DATA db[FFT_LENGTH+2] ;
 
 /* EQ-coefficients */ 
 #pragma DATA_SECTION(coeff_buffer,"coeffs")
