@@ -1,6 +1,21 @@
 //////////////////////////////////////////////////////////////////////////////
 // * File name:    EQfilter.c
 // * 
+// * Function:     EQ                                                                        
+// * Description:  Filters input sample s through 8-band graphic equalizer.
+// *                                                                                     
+// * Usage:        void  = EQfilter( Int16 s,         // imput sample
+// *                                 Int16 not_used1, // not used, for parameters
+// *                                 Int16 not_used2, //  to be consistent with 
+// *                                 Int16 not_used3,)//  the other musical effects.
+// *                                 
+// * Benchmarks:  
+// * --------------------------------------------------------------------------
+// *
+// * Function:     EQ_clear                                                                        
+// * Description:  Clears delay buffer used in EQ(). A must befor filtering. 
+// * --------------------------------------------------------------------------               
+// *
 // * Function:     EQcoeff                                                                        
 // * Description:  Calculate filter coefficiants for 8-band graphic equalizer.
 // *               Method: Frequency sampling. FFT with hwafft. FFT_LENGTH = 512.
@@ -10,10 +25,10 @@
 // * Benchmarks:   Cycles ca 80000 for FFT_LENGTH 512              
 // *
 // *
-// * Erik Payerl   2014-05-12                                                           
+// * Erik Payerl, Erik Sandgren   2014-05-24                                                           
 //////////////////////////////////////////////////////////////////////////////
 #include "ezdsp5535.h"
-#include "tms320.h"
+#include "dsplib.h"
 #include "hwafft.h"
 #include "EQ.h"
 
@@ -21,7 +36,45 @@
 Int32 *complex_data, *bitrev_data, *scratch, *fft_data;
 Uint16 out_sel;
 
-void EQcoeff( Uint8 *a, DATA *H ) {	
+Int16 EQ_output;
+
+//Delay buffer for EQ fir filtering
+DATA  *circular_buffer = &db[0];
+
+//EQ Filter coeff. buffer
+DATA *H = &coeff_buffer[0];
+
+// Index for circular buffer	
+Int16 bufferindex=0;
+
+Int16 EQ(Int16 s, Int16 not_used1, Int16 not_used2, Int16 not_used3) {
+
+	short k;
+	short h = 0;
+	long sum=0;
+	
+	circular_buffer[bufferindex]=s;
+	
+	for (k = bufferindex; k>=0; k--) {
+		sum += (long)H[h] * circular_buffer[k];
+		h++;
+	}
+	for (k = FFT_LENGTH-1; k > bufferindex; k--) {
+		sum += (long)H[h] * circular_buffer[k];
+		h++;
+	}
+		
+	bufferindex= (bufferindex + 1) & (FFT_LENGTH-1);
+	
+	return (Int16)((sum>>15));
+}
+
+void EQ_clear() {
+	/* Clear delay buffers for EQ fir filters*/ 
+	for (ii = 0; ii < (FFT_LENGTH); ii++) circular_buffer[ii] = 0;  // clear delay buffer (a must)	
+}
+
+void EQcoeff( Uint8 *a ) {	
 	/* Map Uint8 to DATA (Int32) */
 	A[0] = (DATA)(a[0]) << 7;
 	A[1] = (DATA)(a[1]) << 7;
@@ -64,7 +117,7 @@ void EQcoeff( Uint8 *a, DATA *H ) {
 	/* Phase = exp(-1i*pi*k)= 1, -1, 1 -1,...  , k = 0,1,2,... */
 	for (ii=1;ii<(FFT_LENGTH/2);ii+=2)    H[ii]=-H[ii];
 	
-	/* Linear phase, real coefficients -> H(FFT_LENGTH-k) = *H(k) */
+	/* Linear phase -> H(FFT_LENGTH-k) = *H(k) */
 	for (ii=0;ii<(FFT_LENGTH/2 -1);ii++) 	H[FFT_LENGTH-1-ii] = H[ii+1];
 	
 	/* FFT_LENGTH = EVEN -> H[FFT_LENGTH/2] = 0, for linear phase */
@@ -112,13 +165,3 @@ void EQcoeff( Uint8 *a, DATA *H ) {
 	/* Print filter coeff. */
 	//for (ii = 0; ii < FFT_LENGTH; ii++ ) { 	printf("%d\n",*(H + ii)); }
 }
-
-
-/*Int16 fir(Int16 onchip *H, Int16 *buffer, Int16 nH)
-{
-	short k;
-	long sum=0;
-	for (k = 0; k < nH; j++))
-		sum += (long)H[k] * buffer[k];
-	return (Int16)((sum>>15) & 0x0000FFFFL);
-}*/

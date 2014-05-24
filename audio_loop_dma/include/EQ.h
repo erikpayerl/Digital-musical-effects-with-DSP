@@ -1,5 +1,5 @@
 //////////////////////////////////////////////////////////////////////////////
-// * File name:    EQ.h
+// * File name:   EQ.h
 // *                                                                         
 // * Description: Used by EQfilter.c
 // * 			  Sets frequencies deviding the bands in the EQ to: 
@@ -14,6 +14,14 @@
 #define EQ_H_
 
 #define FFT_LENGTH 512
+
+/* Filter buffers */
+//#pragma DATA_SECTION(db,"dbuffer")
+DATA db[FFT_LENGTH] ;
+
+/* EQ-coefficients */ 
+//#pragma DATA_SECTION(coeff_buffer,"coeffs")
+DATA coeff_buffer[FFT_LENGTH] ;
 
 /* --- Special buffers required for HWAFFT ---*/
 #pragma DATA_SECTION(complex_buffer, "cmplxBuf");

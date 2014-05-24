@@ -71,16 +71,8 @@ int e_index = 4;
 char rx[5];
 int i = 0;
 
-Int16 (*fx[5])(Int16 s, Int16 a, Int16 b, Int16 opmode);
-
-int new_EQ_filter = 1; //If>0 new EQ filter is calculated
-
-//Delay buffers for EQ fir filtering
-DATA  *dbptr = &db[0];
-
-//EQ Filter coeff. buffer
-DATA *H = &coeff_buffer[0];
-  
+Int16 (*fx[6])(Int16 s, Int16 a, Int16 b, Int16 opmode);
+ 
 /* Mono sound data buffers */
 Int16 monoInputPing[CSL_DMA_BUFFER_SIZE];
 Int16 monoInputPong[CSL_DMA_BUFFER_SIZE];
@@ -98,6 +90,7 @@ void main( void )
 	fx[2] = tremolo;
 	fx[3] = echo;
 	fx[4] = reverb;
+	fx[5] = EQ;
 	
 	/* EQ-band gains, 0-1 -> Uint8 0 - 255 */
 	/* Default values */
@@ -109,12 +102,10 @@ void main( void )
 	a[5] = 128;
 	a[6] = 128;
 	a[7] = 128;
-	
-	/* Clear delay buffers for EQ fir filters*/ 
-	for (index = 0; index < (FFT_LENGTH+2); index++) db[index] = 0;  // clear delay buffer (a must)
-	
+		
 	echo_array_clear();
 	reverb_array_clear();
+	EQ_clear();
 	
 	/* Initialize board */
     systemInit();
@@ -170,24 +161,11 @@ void main( void )
 				if (e_index == 5) 
 				{
 					a[param1] = param2; //Sets amplitude of band # param1
-					new_EQ_filter++; //Set flag to calculate new EQ filter
+					(void) EQcoeff(a); //Calculate new EQ-filter coeff. 
 				} 	
 			}
 	   	}
-		/* Calculate new EQ-filter coeff. */
-		if (new_EQ_filter>0)
-		{			
-			//start = clock();
-			new_EQ_filter--;
-			(void)EQcoeff(a, H);
-			
-			/* Print filter coeff. */
-			//for (index = 0; index < FFT_LENGTH; index++ ) { 	printf("%d\n",*(H + index)); }
-			
-			//stop = clock();
-			//printf("cycles: %ld\n", (long)(stop - start - overhead));
-		}
-				
+						
  		if (data_ready>0)
  		{               
             data_ready--;
@@ -198,11 +176,11 @@ void main( void )
 			stereo_to_mono_buffer(dmaPingDstBufLR, dmaPingDstBufRR, monoInputPing, CSL_DMA_BUFFER_SIZE);
 			
 			
-    			if (e_index==5) //EQ
+    			if (e_index==6) //EQ
     			{		      			
 	    			/* compute 2-chanels: cycles ca 790000 when FFT_LENGTH = 512 */
 	    			//start = clock();
-	    			(void)fir2(monoInputPing, H, dmaPingSrcBufLS, dbptr, CSL_DMA_BUFFER_SIZE, FFT_LENGTH);	    			
+	    			//(void)fir2(monoInputPing, H, dmaPingSrcBufLS, dbptr, CSL_DMA_BUFFER_SIZE, FFT_LENGTH);	    			
 	      			
 	      			//stop = clock();
 					//printf("cycles: %ld\n", (long)(stop - start - overhead));
@@ -232,10 +210,10 @@ void main( void )
   		
   				stereo_to_mono_buffer(dmaPongDstBufLR, dmaPongDstBufRR, monoInputPong, CSL_DMA_BUFFER_SIZE);
   				
-				if (e_index==5) //EQ
+				if (e_index==6) //EQ
 				{				
 	  				/* compute 2-chanels: cycles ca 790000 when FFT_LENGTH = 512 */
-	    			(void)fir2(monoInputPong, H, dmaPongSrcBufLS, dbptr, CSL_DMA_BUFFER_SIZE, FFT_LENGTH);
+	    			//(void)fir2(monoInputPong, H, dmaPongSrcBufLS, dbptr, CSL_DMA_BUFFER_SIZE, FFT_LENGTH);
 	    				    			
 	    			for(index = 0; index < CSL_DMA_BUFFER_SIZE; index++)
 	      			{
