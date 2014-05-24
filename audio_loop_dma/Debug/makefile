@@ -18,7 +18,6 @@ $(GEN_CMDS_QUOTED) \
 "./src/reverb.obj" \
 "./src/led_test.obj" \
 "./src/fuzz.obj" \
-"./src/fir2.obj" \
 "./src/echo.obj" \
 "./src/aic_dma.obj" \
 "./src/aic3204.obj" \
@@ -137,15 +136,14 @@ all: lms_test_new_dma.out
 lms_test_new_dma.out: $(OBJS) $(CMD_SRCS) $(LIB_SRCS) $(GEN_CMDS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: Linker'
-	"C:/Program Files (x86)/Texas Instruments/ccsv4/tools/compiler/c5500/bin/cl55" -v5515 -g --diag_warning=225 --ptrdiff_size=16 --no_mac_expand --memory_model=large -z -m"lms_test_new_dma.map" --warn_sections -i"C:/Program Files (x86)/Texas Instruments/ccsv4/tools/compiler/c5500/lib" -i"C:/Program Files (x86)/Texas Instruments/ccsv4/tools/compiler/c5500/include" --reread_libs --rom_model -o "lms_test_new_dma.out" $(ORDERED_OBJS)
+	"C:/Program Files (x86)/Texas Instruments/ccsv4/tools/compiler/c5500/bin/cl55" -v5515 -g --diag_warning=225 --ptrdiff_size=16 --no_mac_expand --memory_model=large --assume_bss_onchip -z -m"lms_test_new_dma.map" --warn_sections -i"C:/Program Files (x86)/Texas Instruments/ccsv4/tools/compiler/c5500/lib" -i"C:/Program Files (x86)/Texas Instruments/ccsv4/tools/compiler/c5500/include" --reread_libs --rom_model -o "lms_test_new_dma.out" $(ORDERED_OBJS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 
 # Other Targets
 clean:
 	-$(RM) $(C5500_EXECUTABLE_OUTPUTS__QTD) "lms_test_new_dma.out"
-	-$(RM) ".\src\ main.obj" ".\src\EQfilter.obj" ".\src\LFO.obj" ".\src\aic3204.obj" ".\src\aic_dma.obj" ".\src\echo.obj" ".\src\fir2.obj" ".\src\fuzz.obj" ".\src\led_test.obj" ".\src\reverb.obj" ".\src\stereo.obj" ".\src\svf.obj" ".\src\systemInit.obj" ".\src\tremolo.obj" ".\src\uart_config.obj" 
-	-$(RM) ".\src\fir2.pp" 
+	-$(RM) ".\src\ main.obj" ".\src\EQfilter.obj" ".\src\LFO.obj" ".\src\aic3204.obj" ".\src\aic_dma.obj" ".\src\echo.obj" ".\src\fuzz.obj" ".\src\led_test.obj" ".\src\reverb.obj" ".\src\stereo.obj" ".\src\svf.obj" ".\src\systemInit.obj" ".\src\tremolo.obj" ".\src\uart_config.obj" 
 	-$(RM) ".\src\ main.pp" ".\src\EQfilter.pp" ".\src\LFO.pp" ".\src\aic3204.pp" ".\src\aic_dma.pp" ".\src\echo.pp" ".\src\fuzz.pp" ".\src\led_test.pp" ".\src\reverb.pp" ".\src\stereo.pp" ".\src\svf.pp" ".\src\systemInit.pp" ".\src\tremolo.pp" ".\src\uart_config.pp" 
 	-@echo ' '
 

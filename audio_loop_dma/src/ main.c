@@ -4,7 +4,11 @@
 // *                                                                          
 // * Description:  Main function.
 // * 
-// * Erik Payerl    2014-05-09                                                                         
+// * 
+// * Erik Payerl, Erik Sandgren, Gustaf Johansson  
+// * Rickard Dahl, Omid Fassihi - 2014-05-24
+// * 
+// *                                                                        
 // * Tomas McKelvey 2013-11-20                                                                        
 //////////////////////////////////////////////////////////////////////////////
 

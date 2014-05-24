@@ -112,3 +112,13 @@ void EQcoeff( Uint8 *a, DATA *H ) {
 	/* Print filter coeff. */
 	//for (ii = 0; ii < FFT_LENGTH; ii++ ) { 	printf("%d\n",*(H + ii)); }
 }
+
+
+/*Int16 fir(Int16 onchip *H, Int16 *buffer, Int16 nH)
+{
+	short k;
+	long sum=0;
+	for (k = 0; k < nH; j++))
+		sum += (long)H[k] * buffer[k];
+	return (Int16)((sum>>15) & 0x0000FFFFL);
+}*/

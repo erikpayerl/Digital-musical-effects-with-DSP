@@ -1,7 +1,7 @@
 ******************************************************************************
               TMS320C55x Linker PC v4.3.8                      
 ******************************************************************************
->> Linked Sat May 24 10:40:43 2014
+>> Linked Sat May 24 12:29:21 2014
 
 OUTPUT FILE NAME:   <lms_test_new_dma.out>
 ENTRY POINT SYMBOL: "_c_int00"  address: 0002af93
@@ -125,7 +125,7 @@ coeffs       0   [ 00006000 ]  00003000          *   00000200   UNINITIALIZED
                    0002a586  [ 000152c3 ] 0000008c          *   cslVC5505.lib : csl_irqplug.obj (.text)
                    0002a612  [ 00015309 ] 00000087          *   ezdsp5535bsl.lib : ezdsp5535_gpio.obj (.text)
                    0002a699  [ 0001534c+] 0000007d          *   rts55x.lib : ltoa.obj (.text)
-                   0002a716  [ 0001538b ] 0000007b          *   fir2.obj (.text)
+                   0002a716  [ 0001538b ] 0000007b          *   55xdspx_r3.lib : fir2.obj (.text)
                    0002a791  [ 000153c8+] 0000007b          *   rts55x.lib : fclose.obj (.text)
                    0002a80c  [ 00015406 ] 00000076          *              : frcmpyd.obj (.text)
                    0002a882  [ 00015441 ] 00000075          *   systemInit.obj (.text)

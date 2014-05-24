@@ -4,7 +4,6 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
-../src/\ main.c \
 ../src/EQfilter.c \
 ../src/LFO.c \
 ../src/aic3204.c \
@@ -19,12 +18,6 @@ C_SRCS += \
 ../src/tremolo.c \
 ../src/uart_config.c 
 
-ASM_SRCS += \
-../src/fir2.asm 
-
-ASM_DEPS += \
-./src/fir2.pp 
-
 OBJS += \
 ./src/\ main.obj \
 ./src/EQfilter.obj \
@@ -32,7 +25,6 @@ OBJS += \
 ./src/aic3204.obj \
 ./src/aic_dma.obj \
 ./src/echo.obj \
-./src/fir2.obj \
 ./src/fuzz.obj \
 ./src/led_test.obj \
 ./src/reverb.obj \
@@ -65,7 +57,6 @@ OBJS__QTD += \
 ".\src\aic3204.obj" \
 ".\src\aic_dma.obj" \
 ".\src\echo.obj" \
-".\src\fir2.obj" \
 ".\src\fuzz.obj" \
 ".\src\led_test.obj" \
 ".\src\reverb.obj" \
@@ -74,9 +65,6 @@ OBJS__QTD += \
 ".\src\systemInit.obj" \
 ".\src\tremolo.obj" \
 ".\src\uart_config.obj" 
-
-ASM_DEPS__QTD += \
-".\src\fir2.pp" 
 
 C_DEPS__QTD += \
 ".\src\ main.pp" \
@@ -95,7 +83,6 @@ C_DEPS__QTD += \
 ".\src\uart_config.pp" 
 
 C_SRCS_QUOTED += \
-"../src/ main.c" \
 "../src/EQfilter.c" \
 "../src/LFO.c" \
 "../src/aic3204.c" \
@@ -109,8 +96,5 @@ C_SRCS_QUOTED += \
 "../src/systemInit.c" \
 "../src/tremolo.c" \
 "../src/uart_config.c" 
-
-ASM_SRCS_QUOTED += \
-"../src/fir2.asm" 
 
 
