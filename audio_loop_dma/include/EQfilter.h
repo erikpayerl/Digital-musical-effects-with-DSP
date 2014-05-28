@@ -1,9 +1,8 @@
 //////////////////////////////////////////////////////////////////////////////
 // * File name:    EQfilter.h
 // *                                                                         
-// * Description: Declare filter buffers and filter coefficient buffer
 // *               
-// * Erik Payerl 2014-05-09                                                          
+// * Erik Payerl 2014-05-28                                                          
 //////////////////////////////////////////////////////////////////////////////
 
 #ifndef EQFILTER_H_

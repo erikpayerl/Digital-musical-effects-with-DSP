@@ -2,15 +2,15 @@
 // * File name:    EQfilter.c
 // * 
 // * Function:     EQ                                                                        
-// * Description:  Filters input sample s through 8-band graphic equalizer using 
-// *               DSPLIB function fir2().
+// * Description:  Filters input sample s through 8-band graphic equalizer fir-filter. 
+// *               .
 // *                                                                                     
 // * Usage:        void  = EQfilter( Int16 s,         // imput sample
 // *                                 Int16 not_used1, // not used, for parameters
 // *                                 Int16 not_used2, //  to be consistent with 
 // *                                 Int16 not_used3,)//  the other musical effects.
 // *                                 
-// * Benchmarks:  
+// * Benchmarks:  ca 880 cykles per sample.
 // * --------------------------------------------------------------------------
 // *
 // * Function:     EQ_clear                                                                        
@@ -26,7 +26,7 @@
 // * Benchmarks:   Cycles ca 80000 for FFT_LENGTH 512              
 // *
 // *
-// * Erik Payerl   2014-05-12                                                           
+// * Erik Payerl   2014-05-28                                                           
 //////////////////////////////////////////////////////////////////////////////
 #include "ezdsp5535.h"
 #include "FIR_Filters_asm.h"

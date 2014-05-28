@@ -3,7 +3,9 @@
 // * File name: main.c
 // *                                                                          
 // * Description:  Main function.
-// *                                                                                                                                              
+// *                               
+// * Erik Payerl, Erik Sandgren, Gustaf Johansson  
+// * Rickard Dahl, Omid Fassihi - 2014-05-24                                                                                                               
 //////////////////////////////////////////////////////////////////////////////
 
 #include "stdio.h"
@@ -17,7 +19,7 @@
 #include "uart_config.h"
 #include "csl_uart.h"
 
-/* Musical effects */
+/* ----------- Musical effects ------------ */
 extern Int16 svf(Int16 s, Int16 F1, Int16 Q1, Int16 opmode);
 extern Int16 fuzz(Int16 s, Int16 th, Int16 pG, Int16 opmode);
 extern Int16 tremolo(Int16 sample, Int16 LFOspeed, Int16 depth, Int16 opmode);
@@ -30,23 +32,28 @@ extern void reverb_array_clear(void);
  * Int16 EQ(Int16 s, Int16 not_used1, Int16 not_used2, Int16 not_used3);
  * void EQcoeff( Uint8 *a );
  * void EQ_clear(); */
+ 
+ Int16 (*fx[6])(Int16 s, Int16 a, Int16 b, Int16 opmode);
+/* ----------------------------------------- */
 
+/* --- Uart communication with interface --- */
 extern CSL_UartHandle hUart;
 
 int START_OF_MESSAGE = 255;
 int messagestart = 0;
 
+char rx[4];
+int i = 0;
 int data_ready;
+
+/* Parameters from interface */
+int e_index = 4;
 int opmode = 0;
 int param1 = 128;
 int param2 = 200;
-int e_index = 5;
+/* ------------------------------------------ */
 
-char rx[4];
-int i = 0;
-
-Int16 (*fx[6])(Int16 s, Int16 a, Int16 b, Int16 opmode);
-
+/* --- Audio --- */
 Int16 left_input;
 Int16 right_input;
 Int16 left_output;
@@ -56,8 +63,6 @@ Int16 mono_input;
 #define SAMPLES_PER_SECOND 48000
 #define GAIN_IN_dB         0
 
-int new_EQ_filter = 1;
-
 /* ------------------------------------------------------------------------ *
  *                                                                          *
  *  main( )                                                                 *
@@ -65,6 +70,7 @@ int new_EQ_filter = 1;
  * ------------------------------------------------------------------------ */
 void main( void ) 
 {
+	/* Initialize function pointers */
 	fx[0] = svf;
 	fx[1] = fuzz;
 	fx[2] = tremolo;
@@ -76,16 +82,17 @@ void main( void )
 	/* Default values */
 	a[0] = 128;
 	a[1] = 128;
-	a[2] = 0;
-	a[3] = 0;
-	a[4] = 0;
-	a[5] = 0;
+	a[2] = 128;
+	a[3] = 128;
+	a[4] = 128;
+	a[5] = 128;
 	a[6] = 128;
 	a[7] = 128;
 	
-	/* Clear delay buffers for EQ fir filters*/ 
-	//for (index = 0; index < (FFT_LENGTH+2); index++) db[index] = 0;  // clear delay buffer (a must)
+	/* Calculate new EQ filter */
+	(void)EQCoeff(a);
 	
+	/* Clear arrays used in different music effects */
 	echo_array_clear();
 	reverb_array_clear();
 	EQ_clear();
@@ -94,7 +101,7 @@ void main( void )
     USBSTK5505_init( );
     
     /* Initialize the Phase Locked Loop in EEPROM */
-    pll_frequency_setup(100);
+    pll_frequency_setup(100); //100MHz
     
 	/* Initialise hardware interface and I2C for code */
     aic3204_hardware_init();
@@ -110,8 +117,10 @@ void main( void )
 
     asm(" bclr XF");
     
+    /* Infinite loop */
  	while (1)
  	{
+ 		/* Get parameters from user interface*/
  		if(CSL_FEXT(hUart->uartRegs->LSR, UART_LSR_DR))
 		{
 			if(messagestart == 0)
@@ -139,24 +148,19 @@ void main( void )
 				if (e_index == 5) 
 				{
 					a[param1] = param2; //Sets amplitude of band # param1
-					new_EQ_filter++; //Set flag to calculate new EQ filter
+					(void)EQCoeff(a); //Calculate new EQ filter
 				} 
 			}
 		}
- 		if (new_EQ_filter>0)
-		{		
-			new_EQ_filter--;
-			(void)EQCoeff(a);
-		}
 
-		aic3204_codec_read(&left_input, &right_input); // Configured for one interrupt per two channels.
+		/* Configured for one interrupt per two channels. */
+		aic3204_codec_read(&left_input, &right_input); 
+
+		mono_input = stereo_to_mono(left_input, right_input);
 		
-	    mono_input = stereo_to_mono(left_input, right_input);
+		/* Compute music effect */
 		right_output =  left_output = (*fx[e_index])(mono_input, param1, param2, opmode);
-		
-		//left_output = FIR_filter_asm(H, mono_input);
-        //right_output =  left_output;  
-	      
+
 	    aic3204_codec_write(left_output, right_output);
  	}
 }
@@ -166,5 +170,3 @@ void main( void )
  *  End of main.c                                                           *
  *                                                                          *
  * ------------------------------------------------------------------------ */
-
-
