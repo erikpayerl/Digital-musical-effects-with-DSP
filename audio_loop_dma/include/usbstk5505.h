@@ -55,18 +55,20 @@
 #ifndef STK5505_
 #define STK5505_
 
+#include "tistdtypes.h"
+
 /* ------------------------------------------------------------------------ *
  *                                                                          *
  *  Variable types                                                          *
  *                                                                          *
  * ------------------------------------------------------------------------ */
 
-#define Uint32  unsigned long
+/*#define Uint32  unsigned long
 #define Uint16  unsigned short
 #define Uint8   unsigned char
 #define Int32   int
 #define Int16   short
-#define Int8    char
+#define Int8    char*/
 
 #define SW_BREAKPOINT      while(1);
 /* ------------------------------------------------------------------------ *

@@ -11,29 +11,41 @@
 #include "aic3204.h"
 #include "PLL.h"
 #include "stereo.h"
-#include "Dsplib.h"
 
-#include "EQ.h"
+#include "EQfilter.h"
 
-#define BUFFER_SIZE 128
-Int16 left_in_buffer[BUFFER_SIZE];  
-Int16 right_in_buffer[BUFFER_SIZE];   
+#include "uart_config.h"
+#include "csl_uart.h"
 
-Int16 left_out_buffer[BUFFER_SIZE];  
-Int16 right_out_buffer[BUFFER_SIZE]; 
+/* Musical effects */
+extern Int16 svf(Int16 s, Int16 F1, Int16 Q1, Int16 opmode);
+extern Int16 fuzz(Int16 s, Int16 th, Int16 pG, Int16 opmode);
+extern Int16 tremolo(Int16 sample, Int16 LFOspeed, Int16 depth, Int16 opmode);
+extern Int16 echo(Int16 latest_input, Int16 depth, Int16 buffer_length, Int16 opmode);
+extern Int16 reverb( Int16 latest_input, Int16 depth, Int16 rsvd, Int16 opmode); 
+extern void echo_array_clear(void);
+extern void reverb_array_clear(void);
 
-Int16 *li = &left_in_buffer[0];
-Int16 *ri = &right_in_buffer[0];
-Int16 *lo = &left_out_buffer[0];
-Int16 *ro = &right_out_buffer[0];
+/* Declared in EQfilter.h 
+ * Int16 EQ(Int16 s, Int16 not_used1, Int16 not_used2, Int16 not_used3);
+ * void EQcoeff( Uint8 *a );
+ * void EQ_clear(); */
 
-Int16 *tmpL;
-Int16 *tmpR;
+extern CSL_UartHandle hUart;
 
-Int16 counter = 0;
+int START_OF_MESSAGE = 255;
+int messagestart = 0;
 
-//Filter coeff. buffer
-Int16 *H = &coeff_buffer[0];
+int data_ready;
+int opmode = 0;
+int param1 = 128;
+int param2 = 200;
+int e_index = 5;
+
+char rx[4];
+int i = 0;
+
+Int16 (*fx[6])(Int16 s, Int16 a, Int16 b, Int16 opmode);
 
 Int16 left_input;
 Int16 right_input;
@@ -41,15 +53,10 @@ Int16 left_output;
 Int16 right_output;
 Int16 mono_input;
 
-//Delay buffers
-Int16  *dbptrL = &dbL[0];
-Int16  *dbptrR = &dbR[0];
-
 #define SAMPLES_PER_SECOND 48000
 #define GAIN_IN_dB         0
 
-unsigned int i = 0;
-int new_filter = 1;
+int new_EQ_filter = 1;
 
 /* ------------------------------------------------------------------------ *
  *                                                                          *
@@ -58,24 +65,31 @@ int new_filter = 1;
  * ------------------------------------------------------------------------ */
 void main( void ) 
 {
-	a[0] = 255;
-	a[1] = 255;
-	a[2] = 255;
-	a[3] = 255;
-	a[4] = 255;
-	a[5] = 255;
-	a[6] = 255;
-
-	/* clear delay buffers */ 
-	for (i = 0; i < (FFT_LENGTH+2); i++) dbL[i] = 0;  // clear delay buffer (a must)
-	for (i = 0; i < (FFT_LENGTH+2); i++) dbR[i] = 0;  // clear delay buffer (a must)
+	fx[0] = svf;
+	fx[1] = fuzz;
+	fx[2] = tremolo;
+	fx[3] = echo;
+	fx[4] = reverb;
+	fx[5] = EQ;
 	
-	/* clear in/out buffers */
-	for (i = 0; i < (BUFFER_SIZE); i++) left_in_buffer[i] = 0;
-	for (i = 0; i < (BUFFER_SIZE); i++) left_out_buffer[i] = 0;
-	for (i = 0; i < (BUFFER_SIZE); i++) right_in_buffer[i] = 0;
-	for (i = 0; i < (BUFFER_SIZE); i++) right_out_buffer[i] = 0;
+	/* EQ-band gains, 0-1 -> Uint8 0 - 255 */
+	/* Default values */
+	a[0] = 128;
+	a[1] = 128;
+	a[2] = 0;
+	a[3] = 0;
+	a[4] = 0;
+	a[5] = 0;
+	a[6] = 128;
+	a[7] = 128;
 	
+	/* Clear delay buffers for EQ fir filters*/ 
+	//for (index = 0; index < (FFT_LENGTH+2); index++) db[index] = 0;  // clear delay buffer (a must)
+	
+	echo_array_clear();
+	reverb_array_clear();
+	EQ_clear();
+		
     /* Initialize BSL */
     USBSTK5505_init( );
     
@@ -87,58 +101,61 @@ void main( void )
     
     /* Initialise the AIC3204 codec */
 	aic3204_init(); 
-
-    printf("\n\nRunning FIR Filters Project\n");
-    printf( "<-> Audio Loopback from Stereo Line IN --> to HP/Lineout\n\n" );
 	
 	/* Set sampling frequency in Hz and ADC gain in dB */
     set_sampling_frequency_and_gain(SAMPLES_PER_SECOND, GAIN_IN_dB); 
+    
+    /* Call uart init */
+	uart_init();
 
     asm(" bclr XF");
     
  	while (1)
  	{
- 		if (new_filter>0)
+ 		if(CSL_FEXT(hUart->uartRegs->LSR, UART_LSR_DR))
+		{
+			if(messagestart == 0)
+				rx[0] = CSL_FEXT(hUart->uartRegs->RBR,UART_RBR_DATA);
+			else 
+			{
+				rx[i] = CSL_FEXT(hUart->uartRegs->RBR,UART_RBR_DATA);
+				i++;
+			}
+			
+			if(rx[0] == START_OF_MESSAGE)
+				messagestart = 1;
+			//printf("%i\nBREAK\n", rx[i]);//, param2, opmode);
+			
+			if(i > 3) 
+			{
+				e_index = (int)rx[0];
+				param1 = (int)rx[1];
+				param2 = (int)rx[2];
+				opmode = (int)rx[3];
+				i = 0;
+				messagestart = 0;
+				//printf("e_index %i \n param1 %i \n param2 %i \n opmode %i \n", e_index,param1,param2,opmode);
+				
+				if (e_index == 5) 
+				{
+					a[param1] = param2; //Sets amplitude of band # param1
+					new_EQ_filter++; //Set flag to calculate new EQ filter
+				} 
+			}
+		}
+ 		if (new_EQ_filter>0)
 		{		
-			new_filter--;
-			EQCoeff(a, H);
+			new_EQ_filter--;
+			(void)EQCoeff(a);
 		}
 
 		aic3204_codec_read(&left_input, &right_input); // Configured for one interrupt per two channels.
 		
-		/* Store latest input in buffer */
-	  	li[counter] = left_input; 
-		ri[counter] = right_input;
+	    mono_input = stereo_to_mono(left_input, right_input);
+		right_output =  left_output = (*fx[e_index])(mono_input, param1, param2, opmode);
 		
-		//left_output = lo[counter]; 
-	    //right_output = ro[counter];
-		
-	 	if ( counter < (BUFFER_SIZE-1))
-	    {
-	    	counter++; /* Point to next buffer location */
-	    } 
-	 	else if (counter == (BUFFER_SIZE-1))
-	    {
-	     	/* Receive buffer is now full */
-	     	tmpL = li;
-	     	tmpR = ri;
-	     	
-	     	li=lo;
-	     	ri=ro;
-	     	
-	     	lo=tmpL;
-	     	ro=tmpR;
-	    	
-	    	counter = 0; /* Reset counter */    
-	    }
-	    
-	    (void)fir2(&left_input, H, &left_output, dbptrL, 1, FFT_LENGTH);
-		(void)fir2(&right_input, H, &right_output, dbptrR, 1, FFT_LENGTH);
-		
-	    //mono_input = stereo_to_mono(left_input, right_input);
-		 
-	    //left_output =  left_input;            // Very simple processing. Replace with your own code!
-	    //right_output = right_input;          // Directly connect inputs to outputs.
+		//left_output = FIR_filter_asm(H, mono_input);
+        //right_output =  left_output;  
 	      
 	    aic3204_codec_write(left_output, right_output);
  	}

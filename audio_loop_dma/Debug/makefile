@@ -14,13 +14,21 @@ $(GEN_CMDS_QUOTED) \
 "./src/usbstk5505_i2c.obj" \
 "./src/usbstk5505_gpio.obj" \
 "./src/usbstk5505.obj" \
+"./src/uart_config.obj" \
+"./src/tremolo.obj" \
+"./src/svf.obj" \
 "./src/stereo.obj" \
+"./src/reverb.obj" \
 "./src/main.obj" \
+"./src/fuzz.obj" \
+"./src/echo.obj" \
 "./src/aic3204_init.obj" \
 "./src/aic3204.obj" \
 "./src/PLL.obj" \
+"./src/LFO.obj" \
 "./src/LEDFlasher5505.obj" \
-"./src/EQ.obj" \
+"./src/FIR_filters_asm.obj" \
+"./src/EQfilter.obj" \
 -l"C:\Users\eld.hakansson\Documents\Chalmers\Kandidatarbete\Digital-musical-effects-with-DSP\audio_loop_dma\lib\CSLc55x5h.lib" \
 -l"C:\Users\eld.hakansson\Documents\Chalmers\Kandidatarbete\Digital-musical-effects-with-DSP\audio_loop_dma\lib\ezdsp5535bsl.lib" \
 -l"rts55h.lib" \
@@ -133,15 +141,16 @@ all: lms_test_new_dma.out
 lms_test_new_dma.out: $(OBJS) $(CMD_SRCS) $(LIB_SRCS) $(GEN_CMDS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: Linker'
-	"C:/Program Files (x86)/Texas Instruments/ccsv4/tools/compiler/c5500/bin/cl55" -v5515 -g --diag_warning=225 --ptrdiff_size=32 --no_mac_expand --memory_model=huge -z -m"lms_test_new_dma.map" --warn_sections -i"C:/Program Files (x86)/Texas Instruments/ccsv4/tools/compiler/c5500/lib" -i"C:/Program Files (x86)/Texas Instruments/ccsv4/tools/compiler/c5500/include" --reread_libs --rom_model -o "lms_test_new_dma.out" $(ORDERED_OBJS)
+	"C:/Program Files (x86)/Texas Instruments/ccsv4/tools/compiler/c5500/bin/cl55" -v5515 -g --diag_warning=225 --ptrdiff_size=32 --no_mac_expand --memory_model=huge --assume_bss_onchip -z -m"lms_test_new_dma.map" --warn_sections -i"C:/Program Files (x86)/Texas Instruments/ccsv4/tools/compiler/c5500/lib" -i"C:/Program Files (x86)/Texas Instruments/ccsv4/tools/compiler/c5500/include" --reread_libs --rom_model -o "lms_test_new_dma.out" $(ORDERED_OBJS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 
 # Other Targets
 clean:
 	-$(RM) $(C5500_EXECUTABLE_OUTPUTS__QTD) "lms_test_new_dma.out"
-	-$(RM) ".\src\EQ.obj" ".\src\LEDFlasher5505.obj" ".\src\PLL.obj" ".\src\aic3204.obj" ".\src\aic3204_init.obj" ".\src\main.obj" ".\src\stereo.obj" ".\src\usbstk5505.obj" ".\src\usbstk5505_gpio.obj" ".\src\usbstk5505_i2c.obj" ".\src\usbstk5505_led.obj" 
-	-$(RM) ".\src\EQ.pp" ".\src\LEDFlasher5505.pp" ".\src\PLL.pp" ".\src\aic3204.pp" ".\src\aic3204_init.pp" ".\src\main.pp" ".\src\stereo.pp" ".\src\usbstk5505.pp" ".\src\usbstk5505_gpio.pp" ".\src\usbstk5505_i2c.pp" ".\src\usbstk5505_led.pp" 
+	-$(RM) ".\src\EQfilter.obj" ".\src\FIR_filters_asm.obj" ".\src\LEDFlasher5505.obj" ".\src\LFO.obj" ".\src\PLL.obj" ".\src\aic3204.obj" ".\src\aic3204_init.obj" ".\src\echo.obj" ".\src\fuzz.obj" ".\src\main.obj" ".\src\reverb.obj" ".\src\stereo.obj" ".\src\svf.obj" ".\src\tremolo.obj" ".\src\uart_config.obj" ".\src\usbstk5505.obj" ".\src\usbstk5505_gpio.obj" ".\src\usbstk5505_i2c.obj" ".\src\usbstk5505_led.obj" 
+	-$(RM) ".\src\FIR_filters_asm.pp" 
+	-$(RM) ".\src\EQfilter.pp" ".\src\LEDFlasher5505.pp" ".\src\LFO.pp" ".\src\PLL.pp" ".\src\aic3204.pp" ".\src\aic3204_init.pp" ".\src\echo.pp" ".\src\fuzz.pp" ".\src\main.pp" ".\src\reverb.pp" ".\src\stereo.pp" ".\src\svf.pp" ".\src\tremolo.pp" ".\src\uart_config.pp" ".\src\usbstk5505.pp" ".\src\usbstk5505_gpio.pp" ".\src\usbstk5505_i2c.pp" ".\src\usbstk5505_led.pp" 
 	-@echo ' '
 
 .PHONY: all clean dependents

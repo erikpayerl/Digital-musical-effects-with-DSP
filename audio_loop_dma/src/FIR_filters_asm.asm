@@ -55,7 +55,7 @@
 
 	.mmregs
 FP	.set	AR7
-N   .set    51              
+N   .set    512              
 
 	.sect	".text"
 

@@ -47,7 +47,7 @@ MEMORY
 
 SECTIONS
 {
-   .text     >> SARAM1|SARAM2|SARAM0  /* Code                        */
+   .text     >> SARAM1|SARAM0  /* Code                        */
 
    /* Both stacks must be on same physical memory page               */
    .stack    >  DARAM0                /* Primary system stack        */
@@ -57,11 +57,11 @@ SECTIONS
    .bss      >> DARAM0|SARAM0|SARAM1  /* Global & static vars        */
    .const    >> DARAM0|SARAM0|SARAM1  /* Constant data               */
    .sysmem   >  DARAM0|SARAM0|SARAM1  /* Dynamic memory (malloc)     */
-   .switch   >  SARAM2                /* Switch statement tables     */
-   .cinit    >  SARAM2                /* Auto-initialization tables  */
-   .pinit    >  SARAM2                /* Initialization fn tables    */
-   .cio      >  SARAM2                /* C I/O buffers               */
-   .args     >  SARAM2                /* Arguments to main()         */
+   .switch   >  SARAM1                /* Switch statement tables     */
+   .cinit    >  SARAM1                /* Auto-initialization tables  */
+   .pinit    >  SARAM1                /* Initialization fn tables    */
+   .cio      >  SARAM1                /* C I/O buffers               */
+   .args     >  SARAM1                /* Arguments to main()         */
 
     vectors  >  VECS                  /* Interrupt vectors           */
 
@@ -72,8 +72,7 @@ SECTIONS
     cmplxBuf    : > DARAM0
     scratch_buf : > DARAM0
     
-    dbufferLeft : > DARAM0
-    dbufferRight : > DARAM0
+    dbuffer     : > DARAM0
     coeffs      : > DARAM0
    
 }

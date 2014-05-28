@@ -110,9 +110,23 @@ PLL_Config *pConfigInfo;
 #define CSL_TEST_FAILED         (1)
 #define CSL_TEST_PASSED         (0)
 
+#define SYS_ICR        *(volatile ioport Uint16*)(0x0001)
+
 int pll_frequency_setup(unsigned int frequency)
 {
-    CSL_Status status;
+	Uint16 i;
+	CSL_Status status;
+	
+	/* Config Idle control */
+    SYS_ICR = 0xFF2E;
+    asm(" IDLE");
+    
+    /* Reset peripherals */
+    CSL_FINS(CSL_SYSCTRL_REGS->PSRCR, SYS_PSRCR_COUNT, 0x02);
+    CSL_SYSCTRL_REGS->PRCR = 0xfb;
+    
+    /* Delay for devices to reset */
+    for (i=0; i< 200; i++);
 
     status = PLL_init(&pllObj, CSL_PLL_INST_0);
     if(CSL_SOK != status)

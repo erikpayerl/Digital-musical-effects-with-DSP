@@ -50,9 +50,9 @@
 
  void FIR_filters_asm_init(void);
 
- signed int FIR_filter_asm(const signed int * filter_constants, signed int input);
+ signed int FIR_filter_asm(Int16 * filter_constants, signed int input);
 
- signed int FIR_filter_asm_2(const signed int * filter_constants, signed int input);
+ signed int FIR_filter_asm_2(Int16 * filter_constants, signed int input);
 
  signed long FIR_dual_filter_asm( const signed int * filter_constants, signed int input);
 

@@ -28,6 +28,10 @@
 <listOptionValue builtIn="false" value="&quot;${CG_TOOL_ROOT}/include&quot;"/>
 </option>
 <option id="com.ti.ccstudio.buildDefinitions.C5500_4.3.compilerID.NO_MAC_EXPAND.921517213" superClass="com.ti.ccstudio.buildDefinitions.C5500_4.3.compilerID.NO_MAC_EXPAND" value="true" valueType="boolean"/>
+<option id="com.ti.ccstudio.buildDefinitions.C5500_4.3.compilerID.OPT_LEVEL.1761007362" superClass="com.ti.ccstudio.buildDefinitions.C5500_4.3.compilerID.OPT_LEVEL" value="com.ti.ccstudio.buildDefinitions.C5500_4.3.compilerID.OPT_LEVEL._none" valueType="enumerated"/>
+<option id="com.ti.ccstudio.buildDefinitions.C5500_4.3.compilerID.PROGRAM_LEVEL_COMPILE.2123776771" superClass="com.ti.ccstudio.buildDefinitions.C5500_4.3.compilerID.PROGRAM_LEVEL_COMPILE" value="false" valueType="boolean"/>
+<option id="com.ti.ccstudio.buildDefinitions.C5500_4.3.compilerID.ASSUME_BSS_ONCHIP.1442183309" superClass="com.ti.ccstudio.buildDefinitions.C5500_4.3.compilerID.ASSUME_BSS_ONCHIP" value="true" valueType="boolean"/>
+<option id="com.ti.ccstudio.buildDefinitions.C5500_4.3.compilerID.CALL_ASSUMPTIONS.1224075504" superClass="com.ti.ccstudio.buildDefinitions.C5500_4.3.compilerID.CALL_ASSUMPTIONS" value="com.ti.ccstudio.buildDefinitions.C5500_4.3.compilerID.CALL_ASSUMPTIONS._none" valueType="enumerated"/>
 </tool>
 <tool id="com.ti.ccstudio.buildDefinitions.C5500_4.3.exe.linkerDebug.246937054" name="C5500 Linker" superClass="com.ti.ccstudio.buildDefinitions.C5500_4.3.exe.linkerDebug">
 <option id="com.ti.ccstudio.buildDefinitions.C5500_4.3.linkerID.OUTPUT_FILE.881253484" superClass="com.ti.ccstudio.buildDefinitions.C5500_4.3.linkerID.OUTPUT_FILE" value="&quot;lms_test_new_dma.out&quot;" valueType="string"/>
@@ -44,11 +48,11 @@
 </tool>
 <macros expandEnvironmentMacros="true"/>
 </toolChain>
-<resourceConfiguration exclude="false" id="com.ti.ccstudio.buildDefinitions.C5500.Debug.206312667./audio_loop_dma/lib/55xdsph.lib" name="55xdsph.lib" rcbsApplicability="disable" resourcePath="/audio_loop_dma/lib/55xdsph.lib" toolsToInvoke="com.ti.ccstudio.buildDefinitions.C5500_4.3.exe.linkerDebug.246937054./audio_loop_dma/lib/55xdsph.lib">
-<tool id="com.ti.ccstudio.buildDefinitions.C5500_4.3.exe.linkerDebug.246937054./audio_loop_dma/lib/55xdsph.lib" name="C5500 Linker" superClass="com.ti.ccstudio.buildDefinitions.C5500_4.3.exe.linkerDebug.246937054"/>
+<resourceConfiguration exclude="false" id="com.ti.ccstudio.buildDefinitions.C5500.Debug.206312667./audio_loop_dma/lnkxbakupp.cmd" name="lnkxbakupp.cmd" rcbsApplicability="disable" resourcePath="/audio_loop_dma/lnkx.cmd" toolsToInvoke="com.ti.ccstudio.buildDefinitions.C5500_4.3.exe.linkerDebug.246937054./audio_loop_dma/lnkxbakupp.cmd">
+<tool id="com.ti.ccstudio.buildDefinitions.C5500_4.3.exe.linkerDebug.246937054./audio_loop_dma/lnkxbakupp.cmd" name="C5500 Linker" superClass="com.ti.ccstudio.buildDefinitions.C5500_4.3.exe.linkerDebug.246937054"/>
 </resourceConfiguration>
-<resourceConfiguration exclude="true" id="com.ti.ccstudio.buildDefinitions.C5500.Debug.206312667./audio_loop_dma/src/FIR_filters_asm.asm" name="FIR_filters_asm.asm" rcbsApplicability="disable" resourcePath="/audio_loop_dma/src/FIR_filters_asm.asm" toolsToInvoke="com.ti.ccstudio.buildDefinitions.C5500_4.3.exe.compilerDebug.1853457428./audio_loop_dma/src/FIR_filters_asm.asm">
-<tool id="com.ti.ccstudio.buildDefinitions.C5500_4.3.exe.compilerDebug.1853457428./audio_loop_dma/src/FIR_filters_asm.asm" name="C5500 Compiler" superClass="com.ti.ccstudio.buildDefinitions.C5500_4.3.exe.compilerDebug.1853457428"/>
+<resourceConfiguration exclude="true" id="com.ti.ccstudio.buildDefinitions.C5500.Debug.206312667./audio_loop_dma/src/EQ.c" name="EQ.c" rcbsApplicability="disable" resourcePath="/audio_loop_dma/src/EQ.c" toolsToInvoke="com.ti.ccstudio.buildDefinitions.C5500_4.3.exe.compilerDebug.1853457428./audio_loop_dma/src/EQ.c">
+<tool id="com.ti.ccstudio.buildDefinitions.C5500_4.3.exe.compilerDebug.1853457428./audio_loop_dma/src/EQ.c" name="C5500 Compiler" superClass="com.ti.ccstudio.buildDefinitions.C5500_4.3.exe.compilerDebug.1853457428"/>
 </resourceConfiguration>
 </configuration>
 <configuration artifactExtension="out" artifactName="lms_test_new_dma" description="" id="com.ti.ccstudio.buildDefinitions.C5500.Release.164980437" name="Release" parent="com.ti.ccstudio.buildDefinitions.C5500.Release">
