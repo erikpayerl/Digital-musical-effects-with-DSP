@@ -13,6 +13,7 @@
 #include "aic3204.h"
 #include "PLL.h"
 #include "stereo.h"
+#include "time.h"
 
 #include "EQfilter.h"
 
@@ -70,6 +71,12 @@ Int16 mono_input;
  * ------------------------------------------------------------------------ */
 void main( void ) 
 {
+	clock_t start, stop, overhead; //For profiling...
+	
+	start = clock(); /* Calculate the overhead of calling clock */
+	stop = clock(); /* and subtract this amount from the results. */
+	overhead = stop - start;	
+	
 	/* Initialize function pointers */
 	fx[0] = svf;
 	fx[1] = fuzz;
@@ -159,8 +166,11 @@ void main( void )
 		mono_input = stereo_to_mono(left_input, right_input);
 		
 		/* Compute music effect */
+		start = clock();
 		right_output =  left_output = (*fx[e_index])(mono_input, param1, param2, opmode);
-
+		stop = clock();
+		printf("cycles: %ld\n", (long)(stop - start - overhead));
+		
 	    aic3204_codec_write(left_output, right_output);
  	}
 }
