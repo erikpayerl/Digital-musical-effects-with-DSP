@@ -8,12 +8,12 @@
 #include "LFO.h"
 #include "math.h"
 	
-
 Int16 output;
 Int32 output32;
 Int16 modulator;
 Int16 modsignal;
- 
+
+
 Int16 tremolo(Int16 sample, Int16 LFOspeed, Int16 depth, Int16 opmode)
 {	
 	depth = depth>>3;
@@ -26,3 +26,5 @@ Int16 tremolo(Int16 sample, Int16 LFOspeed, Int16 depth, Int16 opmode)
 	
 	return output;		
 }
+
+

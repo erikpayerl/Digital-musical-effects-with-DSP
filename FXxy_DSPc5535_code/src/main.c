@@ -13,12 +13,14 @@
 #include "aic3204.h"
 #include "PLL.h"
 #include "stereo.h"
-#include "time.h"
 
 #include "EQfilter.h"
 
 #include "uart_config.h"
 #include "csl_uart.h"
+
+#include "vibrato.h"
+#include "flanger.h"
 
 /* ----------- Musical effects ------------ */
 extern Int16 svf(Int16 s, Int16 F1, Int16 Q1, Int16 opmode);
@@ -26,6 +28,9 @@ extern Int16 fuzz(Int16 s, Int16 th, Int16 pG, Int16 opmode);
 extern Int16 tremolo(Int16 sample, Int16 LFOspeed, Int16 depth, Int16 opmode);
 extern Int16 echo(Int16 latest_input, Int16 depth, Int16 buffer_length, Int16 opmode);
 extern Int16 reverb( Int16 latest_input, Int16 depth, Int16 rsvd, Int16 opmode); 
+//extern Int16 vibrato(Int16 sample, Int16 LFOspeed, Int16 depth, Int16 opmode);
+//extern Int16 flanger(Int16 sample, Int16 LFOspeed, Int16 depth, Int16 opmode);
+
 extern void echo_array_clear(void);
 extern void reverb_array_clear(void);
 
@@ -34,7 +39,7 @@ extern void reverb_array_clear(void);
  * void EQcoeff( Uint8 *a );
  * void EQ_clear(); */
  
- Int16 (*fx[6])(Int16 s, Int16 a, Int16 b, Int16 opmode);
+ Int16 (*fx[8])(Int16 s, Int16 a, Int16 b, Int16 opmode);
 /* ----------------------------------------- */
 
 /* --- Uart communication with interface --- */
@@ -71,19 +76,15 @@ Int16 mono_input;
  * ------------------------------------------------------------------------ */
 void main( void ) 
 {
-	clock_t start, stop, overhead; //For profiling...
-	
-	start = clock(); /* Calculate the overhead of calling clock */
-	stop = clock(); /* and subtract this amount from the results. */
-	overhead = stop - start;	
-	
 	/* Initialize function pointers */
 	fx[0] = svf;
 	fx[1] = fuzz;
-	fx[2] = tremolo;
+	fx[2] = tremolo; //tremolo;
 	fx[3] = echo;
 	fx[4] = reverb;
 	fx[5] = EQ;
+	fx[6] = vibrato;
+	fx[7] = flanger;
 	
 	/* EQ-band gains, 0-1 -> Uint8 0 - 255 */
 	/* Default values */
@@ -166,11 +167,8 @@ void main( void )
 		mono_input = stereo_to_mono(left_input, right_input);
 		
 		/* Compute music effect */
-		start = clock();
 		right_output =  left_output = (*fx[e_index])(mono_input, param1, param2, opmode);
-		stop = clock();
-		printf("cycles: %ld\n", (long)(stop - start - overhead));
-		
+
 	    aic3204_codec_write(left_output, right_output);
  	}
 }
