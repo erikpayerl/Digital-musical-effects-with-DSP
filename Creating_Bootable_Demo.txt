@@ -14,7 +14,7 @@ Creating the demo program
 Creating the boot image
 -----------------------
 The demo program needs to be converted to a bootable format for the boot image. This can be done by the following steps.
-1. Open directory Debug in audio_loop_dma
+1. Open directory Debug in FXxy_DSPC5535_code
 2. Run makeBin.bat
 3. The bootimg.bin file will be created in the same directory.
 
